@@ -1,0 +1,17 @@
+# Environment variables
+*.env
+!.example.env
+
+# Astro folders
+/astro/node_modules
+/astro/dist
+
+# Express folders
+/express/node_modules
+/express/dist
+
+# Mac specific files
+.DS_Store
+
+# JetBrains files
+.idea/

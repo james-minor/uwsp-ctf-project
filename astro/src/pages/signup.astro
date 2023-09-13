@@ -1,0 +1,29 @@
+---
+if (Astro.request.method === 'POST')
+{
+	try
+	{
+		const data = await Astro.request.formData();
+
+		const username = data.get('username');
+		const password = data.get('password');
+	}
+	catch (error)
+	{
+		if (error instanceof Error)
+		{
+			console.error(error.message);
+		}
+	}
+}
+---
+
+<form method="POST">
+	<label for="username">Username</label>
+	<input type="text" name="username" id="username">
+
+	<label for="password">Password</label>
+	<input type="password" name="password" id="password">
+
+	<input type="submit" value="Sign Up">
+</form>

@@ -1,0 +1,39 @@
+version: "3"
+
+services:
+  astro:
+    container_name: "astro"
+    build: ./astro
+    command: "npm run dev -- --host 0.0.0.0 --verbose"
+    restart: "unless-stopped"
+    ports:
+      - "${ASTRO_PORT}:4321"
+    environment:
+      ENVIRONMENT_TYPE: "development"
+
+  express:
+    container_name: "express"
+    build: ./express
+    restart: "unless-stopped"
+    ports:
+      - "${EXPRESS_PORT}:8000"
+    environment:
+      ENVIRONMENT_TYPE: "development"
+
+  postgres:
+    container_name: "postgres"
+    image: "postgres:15.4-alpine"
+    restart: "unless-stopped"
+    ports:
+      - "${POSTGRES_PORT}:5432"
+    environment:
+      POSTGRES_DB: ${POSTGRES_DB}
+      POSTGRES_USER: ${POSTGRES_USERNAME}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      POSTGRES_HOST_AUTH_METHOD: scram-sha-256
+    volumes:
+      - ./postgres/:/docker-entrypoint-initdb.d/
+      - db-data:/var/lib/postgresql/data
+
+volumes:
+  db-data:
