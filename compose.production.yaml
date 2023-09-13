@@ -16,6 +16,8 @@ services:
       - "${EXPRESS_PORT}:8000"
     environment:
       ENVIRONMENT_TYPE: "production"
+      POSTGRES_USERNAME: ${POSTGRES_USERNAME}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
 
   postgres:
     container_name: "postgres"
