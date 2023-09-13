@@ -10,8 +10,6 @@ const router: Router = express.Router();
  */
 app.use((req: Request, res: Response, next: NextFunction) =>
 {
-	Logger.outputToConsole = process.env.ENVIRONMENT_TYPE === 'development';
-
 	Logger.info(req.ip);
 	(req.method);
 	//Logger.info(req.baseUrl); // No
@@ -42,6 +40,7 @@ app.use('/api/v1/', router);
  */
 app.listen(port, () =>
 {
+	Logger.outputToConsole = process.env.ENVIRONMENT_TYPE === 'development';
 	Logger.info(`Express API listening on port ${port}...`);
 });
 
