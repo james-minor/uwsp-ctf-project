@@ -10,12 +10,7 @@ const router: Router = express.Router();
  */
 app.use((req: Request, res: Response, next: NextFunction) =>
 {
-	Logger.info(req.ip);
-	(req.method);
-	//Logger.info(req.baseUrl); // No
-	//Logger.info(req.protocol) // Not rly useful but maybe.
-	Logger.info(req.route);  // Is undefined, see if its NOT when a route is found.
-
+	Logger.info(`${req.method} ${req.url} ${req.protocol.toUpperCase()}/${req.httpVersion}`);
 	next();
 });
 
