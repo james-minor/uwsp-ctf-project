@@ -30,7 +30,7 @@ export default class Logger
 
 	public static log(level: LogLevel, message: string)
 	{
-		let logfile: string = path.join(Logger.logDirectory, `${new Date().getDate()}.txt`);
+		let logfile: string = path.join(Logger.logDirectory, `${new Date().toISOString().split('T')[0]}.txt`);
 		let output: string = `[${new Date().toISOString()}] [${level}]: ${message}`;
 
 		try
@@ -39,7 +39,7 @@ export default class Logger
 		}
 		catch (error)
 		{
-			console.log(error);
+			console.warn(error);
 		}
 
 		/* Handling the output to the dev console, if applicable.
