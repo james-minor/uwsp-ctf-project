@@ -1,7 +1,12 @@
 # UWSP CTF Project
 
-An open-source CTF game board created as a capstone project 
-for CIS 480.
+![GitHub](https://img.shields.io/github/license/james-minor/uwsp-ctf-project)
+
+An open-source CTF game board created as a capstone project for CIS 480.
+
+**Note:** This is not intended to be the *best* way to create a CTF board, nor is this repository intended to be used
+as a tutorial or guide for creating a web app. In any case, feel free to use or modify this repository in accordance
+the [project license](https://github.com/james-minor/uwsp-ctf-project/blob/master/LICENSE).
 
 ## Getting Started
 
