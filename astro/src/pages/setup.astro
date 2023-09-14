@@ -1,19 +1,33 @@
 ---
+import fetchAPI from '../lib/fetchapi';
+import Count from '../interfaces/api/count';
 
 /* Returning to the home page if the database tables have been initialized AND
  * there is an admin account in the database.
  */
-if(true)
+const res = await fetchAPI<Count>('/admin/count');
+console.log(res);
+
+if (res === undefined)
 {
-	return Astro.redirect('/')
+	return new Response(null, {
+		status: 500,
+		statusText: 'Internal server error.'
+	});
 }
 
+if (res.count !== 0)
+{
+	return Astro.redirect('/');
+}
 ---
 
 <div>
-
+	<form>
+		<input type="text" name="username" id="username"/>
+	</form>
 </div>
 
 <style>
 
-</style>
+</style>`
