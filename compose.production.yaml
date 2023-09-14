@@ -16,8 +16,8 @@ services:
       - "${EXPRESS_PORT}:8000"
     environment:
       ENVIRONMENT_TYPE: "production"
-      POSTGRES_USERNAME: ${POSTGRES_USERNAME}
       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      POSTGRES_MAX_CLIENTS: ${POSTGRES_MAX_CLIENTS}
 
   postgres:
     container_name: "postgres"
@@ -26,8 +26,6 @@ services:
     ports:
       - "${POSTGRES_PORT}:5432"
     environment:
-      POSTGRES_DB: ${POSTGRES_DB}
-      POSTGRES_USER: ${POSTGRES_USERNAME}
       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
       POSTGRES_HOST_AUTH_METHOD: scram-sha-256
     volumes:
