@@ -8,8 +8,6 @@ services:
     restart: "unless-stopped"
     ports:
       - "${ASTRO_PORT}:4321"
-    environment:
-      ENVIRONMENT_TYPE: "development"
 
   express:
     container_name: "express"
