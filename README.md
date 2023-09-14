@@ -14,7 +14,7 @@ For more in-depth documentation and tutorials, visit our
 ## Getting Started
 
 All the services for the CTF web app have already been Dockerized, and
-are all **intended to be ran as services** using Docker Compose.
+are all **intended to be run as services** using Docker Compose.
 
 To start the webapp in **development** mode, run:
 ```shell
@@ -26,3 +26,7 @@ To deploy the webapp for **production**, run:
 docker-compose -f compose.production.yaml up
 ```
 
+To run **test suites** on the container, run:
+```shell
+docker-compose -f compose.test.yaml up
+```
