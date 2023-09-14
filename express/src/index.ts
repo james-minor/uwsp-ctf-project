@@ -104,7 +104,7 @@ router.get('/admin/count', (req: Request, res: Response) =>
 	).then(result =>
 	{
 		res.status(200).json({
-			count: result.rows[0].count
+			count: parseInt(result.rows[0].count)
 		});
 	});
 });
