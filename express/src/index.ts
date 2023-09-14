@@ -93,3 +93,18 @@ app.listen(port, () =>
 {
 	Logger.info(`Express API listening on port ${port}...`);
 });
+
+router.get('/admin/count', (req: Request, res: Response) =>
+{
+	pool.query(`
+		SELECT COUNT(*) 
+		FROM user_accounts
+		WHERE role='ADMIN'
+		`
+	).then(result =>
+	{
+		res.status(200).json({
+			count: result.rows[0].count
+		});
+	});
+});
