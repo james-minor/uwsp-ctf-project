@@ -5,8 +5,8 @@ CREATE TYPE user_role AS ENUM (
 
 CREATE TABLE user_accounts (
     user_id         SERIAL PRIMARY KEY,
-    username        varchar(30),
-    password        varchar(300),
+    username        varchar(30) NOT NULL,
+    password_hash   char(60) NOT NULL,
     session_token   char(20),
     role            user_role NOT NULL DEFAULT 'USER'
 );
