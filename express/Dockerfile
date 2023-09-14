@@ -9,5 +9,3 @@ RUN ["npm", "run", "build"]
 EXPOSE 8000
 
 RUN mkdir -p /express/logs
-
-CMD node ./dist/index.js

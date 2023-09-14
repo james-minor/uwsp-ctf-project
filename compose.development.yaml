@@ -12,6 +12,7 @@ services:
   express:
     container_name: "express"
     build: ./express
+    command: "npm run start"
     restart: "unless-stopped"
     ports:
       - "${EXPRESS_PORT}:8000"
