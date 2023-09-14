@@ -8,6 +8,9 @@ An open-source CTF game board created as a capstone project for CIS 480.
 as a tutorial or guide for creating a web app. In any case, feel free to use or modify this repository in accordance
 the [project license](https://github.com/james-minor/uwsp-ctf-project/blob/master/LICENSE).
 
+For more in-depth documentation and tutorials, visit our 
+[documentation website](https://james-minor.github.io/uwsp-ctf-project/).
+
 ## Getting Started
 
 All the services for the CTF web app have already been Dockerized, and
