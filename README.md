@@ -25,8 +25,3 @@ To deploy the webapp for **production**, run:
 ```shell
 docker-compose -f compose.production.yaml up
 ```
-
-To run **test suites** on the container, run:
-```shell
-docker-compose -f compose.test.yaml up
-```
