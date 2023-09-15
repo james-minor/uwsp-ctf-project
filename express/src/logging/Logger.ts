@@ -1,36 +1,36 @@
 import { LogLevel } from './LogLevel';
 import fs from 'fs';
 import path from 'path';
+import ILogger from './ILogger';
 
-export default class Logger
+export default class Logger implements ILogger
 {
-	public static outputToConsole: boolean = true;
+	public outputToConsole: boolean = true;
+	public logDirectory: string = '/express/logs/';
 
-	public static logDirectory: string = '/express/logs/';
-
-	public static debug(message: string)
+	debug(message: string)
 	{
-		Logger.log(LogLevel.DEBUG, message);
+		this.log(LogLevel.DEBUG, message);
 	}
 
-	public static info(message: string)
+	info(message: string)
 	{
-		Logger.log(LogLevel.INFO, message);
+		this.log(LogLevel.INFO, message);
 	}
 
-	public static warn(message: string)
+	warn(message: string)
 	{
-		Logger.log(LogLevel.WARN, message);
+		this.log(LogLevel.WARN, message);
 	}
 
-	public static error(message: string)
+	error(message: string)
 	{
-		Logger.log(LogLevel.ERROR, message);
+		this.log(LogLevel.ERROR, message);
 	}
 
-	public static log(level: LogLevel, message: string)
+	log(level: LogLevel, message: string)
 	{
-		let logfile: string = path.join(Logger.logDirectory, `${new Date().toISOString().split('T')[0]}.txt`);
+		let logfile: string = path.join(this.logDirectory, `${new Date().toISOString().split('T')[0]}.txt`);
 		let output: string = `[${new Date().toISOString()}] [${level}]: ${message}`;
 
 		try
@@ -44,7 +44,7 @@ export default class Logger
 
 		/* Handling the output to the dev console, if applicable.
 		 */
-		if(Logger.outputToConsole)
+		if(this.outputToConsole)
 		{
 			switch(level)
 			{
