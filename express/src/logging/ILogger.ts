@@ -2,6 +2,7 @@ import {LogLevel} from './LogLevel';
 
 export default interface ILogger
 {
+	outputToFile: boolean;
 	outputToConsole: boolean;
 	logDirectory: string;
 
