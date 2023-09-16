@@ -5,6 +5,7 @@ import ILogger from './ILogger';
 
 export default class Logger implements ILogger
 {
+	public outputToFile: boolean = true;
 	public outputToConsole: boolean = true;
 	public logDirectory: string = '/express/logs/';
 
@@ -30,16 +31,21 @@ export default class Logger implements ILogger
 
 	log(level: LogLevel, message: string)
 	{
-		let logfile: string = path.join(this.logDirectory, `${new Date().toISOString().split('T')[0]}.txt`);
 		let output: string = `[${new Date().toISOString()}] [${level}]: ${message}`;
 
-		try
+		/* Handling the output to the log file, if applicable.
+		 */
+		if (this.outputToFile)
 		{
-			fs.appendFileSync(logfile, output);
-		}
-		catch (error)
-		{
-			console.warn(error);
+			try
+			{
+				let logfile: string = path.join(this.logDirectory, `${new Date().toISOString().split('T')[0]}.txt`);
+				fs.appendFileSync(logfile, output);
+			}
+			catch (error)
+			{
+				console.warn(error);
+			}
 		}
 
 		/* Handling the output to the dev console, if applicable.
