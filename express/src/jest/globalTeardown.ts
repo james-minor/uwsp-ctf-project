@@ -1,7 +1,6 @@
 import { execSync } from 'child_process';
 
-module.exports = function()
+export default function()
 {
-	const command = `docker rm -f ${global.POSTGRES_DOCKER_ID}`;
-	execSync(command);
+	execSync('docker rm postgres__temp');
 }

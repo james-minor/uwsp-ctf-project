@@ -14,9 +14,6 @@ const config: JestConfigWithTsJest = {
 	},
 	displayName: 'Express API',
 	extensionsToTreatAsEsm: ['.ts'],
-	globals: {
-		POSTGRES_DOCKER_ID: '',
-	},
 	globalSetup: './src/jest/globalSetup.ts',
 	globalTeardown: './src/jest/globalTeardown.ts',
 	preset: 'ts-jest/presets/default-esm',
