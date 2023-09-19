@@ -12,13 +12,34 @@ CREATE TABLE user_accounts (
 );
 
 CREATE TABLE teams (
-    team_id         SERIAL PRIMARY KEY
+    team_id         SERIAL PRIMARY KEY,
+    name            varchar(30) NOT NULL
 );
 
 CREATE TABLE categories (
-    category_id     SERIAL PRIMARY KEY
+    category_id     SERIAL PRIMARY KEY,
+    title           varchar(15) NOT NULL
 );
 
 CREATE TABLE challenges (
-    challenge_id    SERIAL PRIMARY KEY
+    challenge_id    SERIAL PRIMARY KEY,
+    category_id     SERIAL NOT NULL REFERENCES categories(category_id),
+    value           int NOT NULL DEFAULT 0,
+    title           varchar(30) NOT NULL,
+    body            varchar(750) NOT NULL,
+    attachments     varchar(100)[3]
+);
+
+CREATE TABLE announcements (
+    announcement_id     SERIAL PRIMARY KEY,
+    creation_date       timestamp NOT NULL,
+    author_user_id      SERIAL NOT NULL REFERENCES user_accounts(user_id),
+    body                varchar(1000) NOT NULL
+);
+
+CREATE TABLE scores (
+    score_id            SERIAL PRIMARY KEY,
+    team_id             SERIAL NOT NULL REFERENCES teams(team_id),
+    challenge_id        SERIAL NOT NULL REFERENCES challenges(challenge_id),
+    solve_date          timestamp NOT NULL
 );
