@@ -21,8 +21,8 @@ CREATE TABLE IF NOT EXISTS categories (
     title           varchar(15) NOT NULL
 );
 
-CREATE TABLE IF NOT EXISTS challenges (
-    challenge_id    SERIAL PRIMARY KEY,
+CREATE TABLE IF NOT EXISTS flags (
+    flag_id         SERIAL PRIMARY KEY,
     category_id     SERIAL NOT NULL REFERENCES categories(category_id),
     value           int NOT NULL DEFAULT 0,
     title           varchar(30) NOT NULL,
@@ -40,6 +40,6 @@ CREATE TABLE IF NOT EXISTS announcements (
 CREATE TABLE IF NOT EXISTS scores (
     score_id            SERIAL PRIMARY KEY,
     team_id             SERIAL NOT NULL REFERENCES teams(team_id),
-    challenge_id        SERIAL NOT NULL REFERENCES challenges(challenge_id),
+    flag_id             SERIAL NOT NULL REFERENCES flags(flag_id),
     solve_date          timestamp NOT NULL
 );
