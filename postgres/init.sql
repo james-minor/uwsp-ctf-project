@@ -32,7 +32,7 @@ CREATE TABLE IF NOT EXISTS flags (
 
 CREATE TABLE IF NOT EXISTS announcements (
     announcement_id     SERIAL PRIMARY KEY,
-    creation_date       timestamp NOT NULL,
+    creation_date       timestamp NOT NULL DEFAULT NOW(),
     author_user_id      SERIAL NOT NULL REFERENCES user_accounts(user_id),
     body                varchar(1000) NOT NULL
 );
@@ -41,5 +41,5 @@ CREATE TABLE IF NOT EXISTS scores (
     score_id            SERIAL PRIMARY KEY,
     team_id             SERIAL NOT NULL REFERENCES teams(team_id),
     flag_id             SERIAL NOT NULL REFERENCES flags(flag_id),
-    solve_date          timestamp NOT NULL
+    solve_date          timestamp NOT NULL DEFAULT NOW()
 );
