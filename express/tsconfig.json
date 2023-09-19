@@ -107,6 +107,9 @@
     "skipLibCheck": true                                 /* Skip type checking all .d.ts files. */
   },
   "exclude": [
-    "tests"
+    "tests",
+    "src/jest",
+    "jest.config.ts",
+    "src/**/*.test.ts"
   ]
 }
