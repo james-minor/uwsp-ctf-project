@@ -1,6 +1,6 @@
-import type { Config } from 'jest';
+import type { JestConfigWithTsJest } from 'ts-jest';
 
-const config: Config = {
+const config: JestConfigWithTsJest = {
 	coverageThreshold: {
 		global: {
 			branches: 60,
@@ -13,11 +13,13 @@ const config: Config = {
 		}
 	},
 	displayName: 'Express API',
+	extensionsToTreatAsEsm: ['.ts'],
 	globals: {
-		__POSTGRES_ID__: '',
+		POSTGRES_DOCKER_ID: '',
 	},
-	globalSetup: './src/jest/setup.ts',
-	globalTeardown: './src/jest/teardown.ts',
+	globalSetup: './src/jest/globalSetup.ts',
+	globalTeardown: './src/jest/globalTeardown.ts',
+	preset: 'ts-jest/presets/default-esm',
 	testEnvironment: 'node',
 	testPathIgnorePatterns: [
 		'/node_modules/',
