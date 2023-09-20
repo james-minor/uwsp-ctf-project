@@ -6,6 +6,9 @@ services:
     build: ./astro
     command: "npm run dev -- --host 0.0.0.0 --verbose"
     restart: "unless-stopped"
+    depends_on:
+      express:
+        condition: service_healthy
     ports:
       - "${ASTRO_PORT}:4321"
 
@@ -14,12 +17,16 @@ services:
     build: ./express
     command: "npm run start"
     restart: "unless-stopped"
+    depends_on:
+      postgres:
+        condition: service_completed_successfully
     ports:
       - "${EXPRESS_PORT}:8000"
     environment:
       ENVIRONMENT_TYPE: "development"
       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
       POSTGRES_MAX_CLIENTS: ${POSTGRES_MAX_CLIENTS}
+      POSTGRES_URL: "postgresql://postgres:${POSTGRES_PASSWORD}@postgres:5432/postgres"
 
   postgres:
     container_name: "postgres"
