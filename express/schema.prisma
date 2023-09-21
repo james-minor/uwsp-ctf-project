@@ -1,0 +1,74 @@
+datasource db {
+	provider = "postgresql"
+	url      = env("DATABASE_URL")
+}
+
+generator client {
+	provider      = "prisma-client-js"
+	binaryTargets = ["native", "linux-musl"]
+}
+
+enum Role {
+	USER
+	ADMIN
+}
+
+model User {
+	id            Int            @id @default(autoincrement())
+	username      String         @unique @db.VarChar(30)
+	passwordHash  String         @db.Char(60)
+	sessionToken  String         @db.Char(20)
+	role          Role           @default(USER)
+	team          Team           @relation(fields: [teamId], references: [id])
+	teamId        Int
+	announcements Announcement[]
+}
+
+model Announcement {
+	id           Int      @id @default(autoincrement())
+	creationDate DateTime @default(now())
+	author       User     @relation(fields: [authorId], references: [id])
+	authorId     Int
+	body         String   @db.VarChar(1000)
+}
+
+model Category {
+	id    Int    @id @default(autoincrement())
+	title String @unique @db.VarChar(15)
+	flags Flag[]
+}
+
+model Flag {
+	id          Int          @id @default(autoincrement())
+	category    Category     @relation(fields: [categoryId], references: [id])
+	categoryId  Int
+	value       Int          @default(0)
+	title       String       @unique @db.VarChar(30)
+	body        String       @db.VarChar(750)
+	attachments Attachment[]
+	captures    Capture[]
+}
+
+model Attachment {
+	id     Int    @id @default(autoincrement())
+	title  String @db.VarChar(30)
+	source String
+	flag   Flag   @relation(fields: [flagId], references: [id])
+	flagId Int
+}
+
+model Team {
+	id       Int       @id @default(autoincrement())
+	name     String    @unique @db.VarChar()
+	users    User[]
+	captures Capture[]
+}
+
+model Capture {
+	id        Int      @id @default(autoincrement())
+	team      Team     @relation(fields: [teamId], references: [id])
+	teamId    Int
+	flag      Flag     @relation(fields: [flagId], references: [id])
+	flagId    Int
+	solveDate DateTime @default(now())
+}
