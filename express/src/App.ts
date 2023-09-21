@@ -1,7 +1,7 @@
 import 'dotenv/config';
-import { Pool } from 'pg';
 import Server from './Server';
 import Logger from './logging/Logger';
+import { PrismaClient } from '@prisma/client';
 
 const port: number = 8000;
 const logger = new Logger();
@@ -31,7 +31,7 @@ const environmentType: 'development' | 'production' = (() =>
 	}
 })();
 
-/* Setting up the connection pool to the Postgres service.
+/* Validating that a POSTGRES_PASSWORD was passed to the Express service.
  */
 if (process.env.POSTGRES_PASSWORD === undefined)
 {
@@ -40,28 +40,25 @@ if (process.env.POSTGRES_PASSWORD === undefined)
 	process.exit();
 }
 
-const pool: Pool = new Pool({
-	host: 'postgres',
-	port: 5432,
-	user: 'postgres',
-	password: process.env.POSTGRES_PASSWORD,
-	max: maxClients,
-	database: 'ctf'
-});
-
-/* Validating that the pool is able to successfully connect to the Postgres service.
+/* Setting up the PrismaClient and validating that the client is able to successfully connect to the Postgres service.
  */
-pool.connect().then(() =>
-{
-	logger.info('Successfully connected to the Postgres service!');
-}).catch(error =>
-{
-	logger.error('Could not connect to the Postgres service, stopping express service.');
-	logger.error(error.message);
-	process.exit();
-});
+const client: PrismaClient = new PrismaClient();
+
+(async function()
+	{
+		await client.$connect().then(() =>
+		{
+			logger.info('Successfully connected to the Postgres service!');
+		}).catch(error =>
+		{
+			logger.error('Could not connect to the Postgres service, stopping express service.');
+			logger.error(error.message);
+			process.exit();
+		});
+	}
+)();
 
 /* Starting the API Server.
  */
-const server = new Server(pool, logger, port, environmentType);
+const server = new Server(client, logger, port, environmentType);
 server.start();

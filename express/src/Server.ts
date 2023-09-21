@@ -1,28 +1,28 @@
 import express, { Express, NextFunction, Request, Response, Router } from 'express';
-import { Pool } from 'pg';
 import ILogger from './logging/ILogger';
 import fs from 'fs';
 import path from 'path';
+import { PrismaClient } from '@prisma/client';
 
 export default class Server
 {
 	public app: Express;
 	public router: Router;
 
-	public pool: Pool;
+	public client: PrismaClient;
 	public logger: ILogger;
 
 	public port: number;
 	public environment: 'development' | 'production';
 
 	constructor(
-		pool: Pool,
+		client: PrismaClient,
 		logger: ILogger,
 		port: number = 8000,
 		environment?: 'development' | 'production'
 	)
 	{
-		this.pool = pool;
+		this.client = client;
 		this.logger = logger;
 
 		this.app = express();
