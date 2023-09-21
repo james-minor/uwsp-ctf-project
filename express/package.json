@@ -18,6 +18,9 @@
     "typescript": "^5.2.2"
   },
   "devDependencies": {
-    "@types/bcryptjs": "^2.4.3"
+    "@types/bcryptjs": "^2.4.3",
+    "chai": "^4.3.8",
+    "chai-http": "^4.4.0",
+    "mocha": "^10.2.0"
   }
 }
