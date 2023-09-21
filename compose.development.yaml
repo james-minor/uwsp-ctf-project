@@ -2,44 +2,61 @@ version: "3"
 
 services:
   astro:
-    container_name: "astro"
     build: ./astro
     command: "npm run dev -- --host 0.0.0.0 --verbose"
-    restart: "unless-stopped"
+    container_name: "astro"
     depends_on:
       express:
-        condition: service_healthy
+        condition: service_started
+    networks:
+      - ctf-network
     ports:
       - "${ASTRO_PORT}:4321"
+    restart: "unless-stopped"
 
   express:
+    build:
+      context: ./express
+      args:
+        CONNECTION_STRING: "postgres://postgres:${POSTGRES_PASSWORD}@postgres:5432/postgres"
+    command: "./startup.sh"
     container_name: "express"
-    build: ./express
-    command: "npm run start"
-    restart: "unless-stopped"
     depends_on:
       postgres:
-        condition: service_completed_successfully
-    ports:
-      - "${EXPRESS_PORT}:8000"
+        condition: service_healthy
     environment:
       ENVIRONMENT_TYPE: "development"
-      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
       POSTGRES_MAX_CLIENTS: ${POSTGRES_MAX_CLIENTS}
-      POSTGRES_URL: "postgresql://postgres:${POSTGRES_PASSWORD}@postgres:5432/postgres"
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+    networks:
+      - ctf-network
+    ports:
+      - "8000:8000"
+    restart: "unless-stopped"
 
   postgres:
     container_name: "postgres"
-    image: "postgres:15.4-alpine"
-    restart: "unless-stopped"
-    ports:
-      - "${POSTGRES_PORT}:5432"
     environment:
-      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      POSTGRES_DB: "ctf"
       POSTGRES_HOST_AUTH_METHOD: scram-sha-256
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+    healthcheck:
+      interval: 5s
+      retries: 10
+      test: [ "CMD", "pg_isready" ]
+      timeout: 5s
+    image: "postgres:16-alpine"
+    networks:
+      - ctf-network
+    ports:
+      - "5432:5432"
+    restart: "unless-stopped"
     volumes:
-      - ./postgres/:/docker-entrypoint-initdb.d/
       - db-data:/var/lib/postgresql/data
+
+networks:
+  ctf-network:
+    driver: bridge
 
 volumes:
   db-data:
