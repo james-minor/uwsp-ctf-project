@@ -5,7 +5,6 @@ import { PrismaClient } from '@prisma/client';
 
 const port: number = 8000;
 const logger = new Logger();
-const maxClients: number = process.env.POSTGRES_MAX_CLIENTS === undefined ? 50 : parseInt(process.env.POSTGRES_MAX_CLIENTS);
 
 /* The current environment type. Defaults to 'production', set to 'development' to output logging to the console,
  * and to allow for connection from any remote host. Even though with our current Docker Compose configuration outside
