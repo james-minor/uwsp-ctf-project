@@ -7,8 +7,7 @@ import HeroContainer from '../components/HeroContainer.astro';
 import fetchAPI from '../lib/fetchapi';
 import Count from '../interfaces/api/count';
 
-/* Returning to the home page if the database tables have been initialized AND
- * there is an admin account in the database.
+/* Redirecting if malformed response OR there is an existing admin account.
  */
 const res = await fetchAPI<Count>('/admin/count');
 
@@ -19,8 +18,7 @@ if (res === undefined)
 		statusText: 'Internal server error.'
 	});
 }
-
-if (res.count !== 0)
+else if (res.count !== 0)
 {
 	return Astro.redirect('/');
 }
@@ -29,10 +27,8 @@ if (res.count !== 0)
  */
 
 // TODO: passwords are going to have a "significant" digit amount of 512 characters. Trim any passwords to that size
-// TODO: ensure username is > 3 and < 30 characters
 // TODO: ensure password meets 10 character, 2 num requirement
 // TODO: post user data to the API.
-// TODO: have a CLIENT SIDE JS script to validate the username and password requirements.
 
 const usernameError: string = '';
 const passwordError: string = '';
@@ -58,14 +54,14 @@ const passwordError: string = '';
                         <div class="input-container__icon" set:html={ feather.icons.user.toSvg({ stroke: 'white'}) } />
                         <input type="text" name="username" id="username" placeholder="Username" maxlength="30"/>
                     </div>
-                    <span class="error">{ usernameError }</span>
+                    <span class="error" id="username-error">{ usernameError }</span>
 
                     <label class="sr-only" for="password">Password:</label>
                     <div class="input-container">
                         <div class="input-container__icon" set:html={ feather.icons.lock.toSvg({ stroke: 'white'}) } />
                         <input type="password" name="password" id="password" placeholder="Password"/>
                     </div>
-                    <span class="error">{ passwordError }</span>
+                    <span class="error" id="password-error">{ passwordError }</span>
                 </div>
 
                 <input type="submit" value="Create Account">
@@ -73,6 +69,78 @@ const passwordError: string = '';
         </HeroContainer>
     </body>
 </html>
+
+<script>
+    // Client-Side Form Validation.
+
+    const usernameInput = document.getElementById('username');
+    const passwordInput = document.getElementById('password');
+
+    const usernameError = document.getElementById('username-error');
+    const passwordError = document.getElementById('password-error');
+
+    usernameInput.addEventListener('input', (event: InputEvent) =>
+    {
+        let data: string = event.target.value;
+
+        if (data.length)
+        {
+            if (data.length < 3 || data.length > 30)
+            {
+                setUsernameError('Username must be between 3 and 30 characters')
+                return;
+            }
+
+            setUsernameError('');
+        }
+
+        function setUsernameError(message: string)
+        {
+
+
+            document.getElementById('username-error').innerText = message;
+        }
+    });
+
+    passwordInput.addEventListener('input', (event: InputEvent) =>
+    {
+        let data: string = event.target.value;
+
+        if (data.length)
+        {
+            if (data.length < 10)
+            {
+                setPasswordError('Password must be at least 10 characters long');
+                return;
+            }
+
+            let totalNumbers: number = 0;
+            for (let i = 0; i < data.length; i++)
+            {
+                if (!isNaN(parseInt(data[i])))
+                {
+                    totalNumbers++;
+                }
+            }
+
+            if (totalNumbers < 2)
+            {
+                setPasswordError('Password must contain at least 2 numbers');
+                return;
+            }
+
+            setPasswordError('');
+        }
+
+        function setPasswordError(message: string)
+        {
+            document.getElementById('password-error').innerText = message;
+        }
+    });
+
+
+
+</script>
 
 <style>
 	form {
