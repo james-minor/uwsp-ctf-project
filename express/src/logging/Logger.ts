@@ -9,29 +9,29 @@ export default class Logger implements ILogger
 	public outputToConsole: boolean = true;
 	public logDirectory: string = '/express/logs/';
 
-	debug(message: string)
+	debug(message: string | number)
 	{
 		this.log(LogLevel.DEBUG, message);
 	}
 
-	info(message: string)
+	info(message: string | number)
 	{
 		this.log(LogLevel.INFO, message);
 	}
 
-	warn(message: string)
+	warn(message: string | number)
 	{
 		this.log(LogLevel.WARN, message);
 	}
 
-	error(message: string)
+	error(message: string | number)
 	{
 		this.log(LogLevel.ERROR, message);
 	}
 
-	log(level: LogLevel, message: string)
+	log(level: LogLevel, message: string | number)
 	{
-		let output: string = `[${new Date().toISOString()}] [${level}]: ${message}`;
+		let output: string = `[${new Date().toISOString()}] [${level}]: ${message.toString()}`;
 
 		/* Handling the output to the log file, if applicable.
 		 */

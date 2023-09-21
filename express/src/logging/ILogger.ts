@@ -6,10 +6,10 @@ export default interface ILogger
 	outputToConsole: boolean;
 	logDirectory: string;
 
-	debug: (message: string) => void;
-	info: (message: string) => void;
-	warn: (message: string) => void;
-	error: (message: string) => void;
+	debug: (message: string | number) => void;
+	info: (message: string | number) => void;
+	warn: (message: string | number) => void;
+	error: (message: string | number) => void;
 
-	log: (level: LogLevel, message: string) => void;
+	log: (level: LogLevel, message: string | number) => void;
 }
