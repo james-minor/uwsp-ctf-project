@@ -8,7 +8,8 @@ const logger = new Logger();
 const maxClients: number = process.env.POSTGRES_MAX_CLIENTS === undefined ? 50 : parseInt(process.env.POSTGRES_MAX_CLIENTS);
 
 /* The current environment type. Defaults to 'production', set to 'development' to output logging to the console,
- * and to allow for connection from any remote host.
+ * and to allow for connection from any remote host. Even though with our current Docker Compose configuration outside
+ * connections aren't possible in production mode, this serves as our last line of defense from outside users.
  */
 const environmentType: 'development' | 'production' = (() =>
 {
@@ -45,6 +46,7 @@ const pool: Pool = new Pool({
 	user: 'postgres',
 	password: process.env.POSTGRES_PASSWORD,
 	max: maxClients,
+	database: 'ctf'
 });
 
 /* Validating that the pool is able to successfully connect to the Postgres service.
