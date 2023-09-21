@@ -25,13 +25,66 @@ else if (res.count !== 0)
 
 /* Validating the form fields on the backend before POSTing to our API.
  */
+let usernameError: string = '';
+let passwordError: string = '';
 
-// TODO: passwords are going to have a "significant" digit amount of 512 characters. Trim any passwords to that size
-// TODO: ensure password meets 10 character, 2 num requirement
-// TODO: post user data to the API.
+if (Astro.request.method === 'POST')
+{
+    try
+    {
+        /* Gathering form data.
+         */
 
-const usernameError: string = '';
-const passwordError: string = '';
+        const data = await Astro.request.formData();
+        const username: string = data.get('username').toString();
+        const password: string = data.get('password').toString();
+
+        /* Validating the username field.
+         */
+
+        if (username.length < 3 || username.length > 30)
+        {
+            usernameError = 'Username must be between 3 and 30 characters';
+        }
+
+        /* Validating the password field.
+         */
+
+        if (password.length < 10)
+        {
+            passwordError = 'Password must be at least 10 characters long';
+        }
+
+        let totalNumbers: number = 0;
+        for (let i = 0; i < password.length; i++)
+        {
+            if (!isNaN(parseInt(password[i])))
+            {
+                totalNumbers++;
+            }
+        }
+
+        if (totalNumbers < 2)
+        {
+            passwordError = 'Password must contain at least 2 numbers!!';
+        }
+
+        /* POSTing user data to the REST API.
+         */
+        if (usernameError == '' && passwordError == '')
+        {
+            // TODO: post to database, create the user, and redirect to admin dashboard.
+        }
+    }
+    catch (error)
+    {
+        return new Response(null, {
+            status: 500,
+            statusText: 'Internal server error.'
+        });
+    }
+}
+
 ---
 
 <html lang="en">
