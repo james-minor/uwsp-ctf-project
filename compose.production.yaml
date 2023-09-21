@@ -17,7 +17,7 @@ services:
     build:
       context: ./express
       args:
-        CONNECTION_STRING: "postgres://postgres:${POSTGRES_PASSWORD}@postgres:5432/postgres"
+        CONNECTION_STRING: "postgres://postgres:${POSTGRES_PASSWORD}@postgres:5432/ctf"
     command: "./startup.sh"
     container_name: "express"
     depends_on:
