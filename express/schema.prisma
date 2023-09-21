@@ -22,6 +22,8 @@ model User {
 	team          Team           @relation(fields: [teamId], references: [id])
 	teamId        Int
 	announcements Announcement[]
+
+	@@map("users")
 }
 
 model Announcement {
@@ -30,12 +32,16 @@ model Announcement {
 	author       User     @relation(fields: [authorId], references: [id])
 	authorId     Int
 	body         String   @db.VarChar(1000)
+
+	@@map("announcements")
 }
 
 model Category {
 	id    Int    @id @default(autoincrement())
 	title String @unique @db.VarChar(15)
 	flags Flag[]
+
+	@@map("categories")
 }
 
 model Flag {
@@ -47,6 +53,8 @@ model Flag {
 	body        String       @db.VarChar(750)
 	attachments Attachment[]
 	captures    Capture[]
+
+	@@map("flags")
 }
 
 model Attachment {
@@ -55,6 +63,8 @@ model Attachment {
 	source String
 	flag   Flag   @relation(fields: [flagId], references: [id])
 	flagId Int
+
+	@@map("attachments")
 }
 
 model Team {
@@ -62,6 +72,8 @@ model Team {
 	name     String    @unique @db.VarChar()
 	users    User[]
 	captures Capture[]
+
+	@@map("teams")
 }
 
 model Capture {
@@ -71,4 +83,6 @@ model Capture {
 	flag      Flag     @relation(fields: [flagId], references: [id])
 	flagId    Int
 	solveDate DateTime @default(now())
+
+	@@map("captures")
 }
