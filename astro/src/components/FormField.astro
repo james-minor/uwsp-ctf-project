@@ -44,11 +44,10 @@ const
 </div>
 
 <script define:vars={{ name, minLength, maxLength }}>
-	let inputElement = document.getElementById(name);
 	let errorElement = document.getElementById(`${name}-error`);
 	let formattedFieldName = name.charAt(0).toUpperCase() + name.slice(1);
 
-	inputElement.addEventListener('input', (event) =>
+	document.getElementById(name).addEventListener('input', event =>
 	{
 		let value = event.target.value;
 
