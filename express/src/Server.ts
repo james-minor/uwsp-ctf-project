@@ -60,6 +60,8 @@ export default class Server
 		this.setupMiddleware();
 		this.linkRoutes();
 
+		this.app.disable('x-powered-by');  // Disables the x-powered-by header, obfuscation measure.
+
 		this.app.listen(this.port, () =>
 		{
 			this.logger.info(`Express API listening on port ${this.port}...`);
