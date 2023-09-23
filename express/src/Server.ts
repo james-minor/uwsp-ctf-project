@@ -3,6 +3,7 @@ import ILogger from './logging/ILogger';
 import fs from 'fs';
 import path from 'path';
 import { PrismaClient } from '@prisma/client';
+import helmet from 'helmet';
 
 export default class Server
 {
@@ -60,8 +61,6 @@ export default class Server
 		this.setupMiddleware();
 		this.linkRoutes();
 
-		this.app.disable('x-powered-by');  // Disables the x-powered-by header, obfuscation measure.
-
 		this.app.listen(this.port, () =>
 		{
 			this.logger.info(`Express API listening on port ${this.port}...`);
@@ -70,6 +69,10 @@ export default class Server
 
 	protected setupMiddleware()
 	{
+		/* Using helmet.js to prevent common attacks. For more information see https://helmetjs.github.io/
+		 */
+		this.app.use(helmet());
+
 		/* Setting up the logging middleware to log all API requests.
 		 */
 		this.app.use((req: Request, res: Response, next: NextFunction) =>
