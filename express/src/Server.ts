@@ -9,20 +9,20 @@ export default class Server
 	public app: Express;
 	public router: Router;
 
-	public client: PrismaClient;
+	public prisma: PrismaClient;
 	public logger: ILogger;
 
 	public port: number;
 	public environment: 'development' | 'production';
 
 	constructor(
-		client: PrismaClient,
+		prisma: PrismaClient,
 		logger: ILogger,
 		port: number = 8000,
 		environment?: 'development' | 'production'
 	)
 	{
-		this.client = client;
+		this.prisma = prisma;
 		this.logger = logger;
 
 		this.app = express();
