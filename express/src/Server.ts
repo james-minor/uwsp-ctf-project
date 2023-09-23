@@ -32,23 +32,16 @@ export default class Server
 	public port: number;
 
 	/**
-	 * The current development environment.
-	 */
-	public environment: 'development' | 'production';
-
-	/**
 	 * Constructor for the Server class.
 	 *
 	 * @param prisma A passed PrismaClient, will be passed to Routes to allow for interacting with a database.
 	 * @param logger A passed logging manager that extends the ILogger interface.
 	 * @param port The port that the Server will listen on.
-	 * @param environment The current development environment.
 	 */
 	constructor(
 		prisma: PrismaClient,
 		logger: ILogger,
 		port: number = 8000,
-		environment?: 'development' | 'production'
 	)
 	{
 		this.prisma = prisma;
@@ -57,8 +50,6 @@ export default class Server
 		this.app = express();
 		this.router = express.Router();
 		this.port = port;
-
-		this.environment = environment === undefined ? 'production' : environment;
 	}
 
 	/**
@@ -84,23 +75,6 @@ export default class Server
 			this.logger.info(`${req.method} ${req.url} ${req.protocol.toUpperCase()}/${req.httpVersion}`);
 			next();
 		});
-
-		/* Application-level middleware that will prevent API access unless the remote host is our Astro service
-		 * container. (Note: this only happens in PRODUCTION mode, in DEVELOPMENT mode any remote host can access
-		 * the API).
-		 */
-		if (this.environment === 'production')
-		{
-			this.app.use((req: Request, res: Response, next: NextFunction) =>
-			{
-				if (req.ip === 'https://astro:4321' || req.ip === 'http://astro:4321')
-				{
-					next();
-				}
-
-				res.status(403).json({error: 'Attempted access from invalid remote host.'});
-			});
-		}
 
 		/* Prefixing '/api/v1/' to all internal routing.
 		 */
