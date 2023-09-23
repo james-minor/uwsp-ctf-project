@@ -6,15 +6,44 @@ import { PrismaClient } from '@prisma/client';
 
 export default class Server
 {
+	/**
+	 * Express application that is created on Server construction.
+	 */
 	public app: Express;
+
+	/**
+	 * The Express Router that is used to handle API requests.
+	 */
 	public router: Router;
 
+	/**
+	 * The passed Prisma ORM client.
+	 */
 	public prisma: PrismaClient;
+
+	/**
+	 * The passed logging handler.
+	 */
 	public logger: ILogger;
 
+	/**
+	 * The port that the Express app will listen on.
+	 */
 	public port: number;
+
+	/**
+	 * The current development environment.
+	 */
 	public environment: 'development' | 'production';
 
+	/**
+	 * Constructor for the Server class.
+	 *
+	 * @param prisma A passed PrismaClient, will be passed to Routes to allow for interacting with a database.
+	 * @param logger A passed logging manager that extends the ILogger interface.
+	 * @param port The port that the Server will listen on.
+	 * @param environment The current development environment.
+	 */
 	constructor(
 		prisma: PrismaClient,
 		logger: ILogger,
@@ -32,6 +61,9 @@ export default class Server
 		this.environment = environment === undefined ? 'production' : environment;
 	}
 
+	/**
+	 * Starts the Express application, setting up any middlewares, and linking any routes in the /routes directory.
+	 */
 	public start()
 	{
 		this.setupMiddleware();
