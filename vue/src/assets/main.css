@@ -1,35 +1,52 @@
-@import './base.css';
+@import "./base.css";
+
+:root {
+	/* UWSP Style Guide Main Colors */
+	--col-main-purple:      #512698;
+	--col-main-gold:        #FFC82E;
+
+	/* UWSP Style Guide Accent Colors (NO-TEXT) */
+	--col-accent-green-nt:  #91AC3E;
+	--col-accent-orange-nt: #F68B33;
+	--col-accent-violet-nt: #A5A0CF;
+	--col-accent-blue-nt:   #82B5BA;
+
+	/* UWSP Style Guide Accent Colors */
+	--col-accent-orange:    #FF3300;
+	--col-accent-blue:      #007279;
+	--col-accent-red:       #B61D22;
+	--col-accent-brown:     #6D473B;
+
+	/* Application Custom Colors */
+	--col-body-light:       #FFFFFF;
+	--col-body-dark:        #101010;
+}
+
+body {
+	display:        flex;
+	flex-direction: column;
+}
 
 #app {
-  max-width: 1280px;
-  margin: 0 auto;
-  padding: 2rem;
+	flex:             1;
 
-  font-weight: normal;
+	background-color: white;
+	color:            black;
 }
 
-a,
-.green {
-  text-decoration: none;
-  color: hsla(160, 100%, 37%, 1);
-  transition: 0.4s;
+@media (prefers-color-scheme: dark) {
+	#app {
+		background-color: var(--col-body-dark);
+		color:            white;
+	}
 }
 
-@media (hover: hover) {
-  a:hover {
-    background-color: hsla(160, 100%, 37%, 0.2);
-  }
-}
-
-@media (min-width: 1024px) {
-  body {
-    display: flex;
-    place-items: center;
-  }
-
-  #app {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    padding: 0 2rem;
-  }
+.sr-only {
+	position: absolute;
+	width:    1px;
+	height:   1px;
+	padding:  0;
+	margin:   -1px;
+	overflow: hidden;
+	border:   0;
 }
