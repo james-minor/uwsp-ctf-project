@@ -28,25 +28,25 @@
 	--col-text-dark:        #F0F0F0;
 
 	/* Application Length Variables */
-	--len-navbar-height:    3.5rem;
+	--len-navbar-height:    4.5rem;
 }
 
 body {
 	display:        flex;
 	flex-direction: column;
+
+	background-color: var(--col-body-dark-100);
+	color:            var(--col-text-dark);
 }
 
 #app {
 	flex:             1;
-
-	background-color: white;
-	color:            black;
 }
 
-@media (prefers-color-scheme: dark) {
-	#app {
-		background-color: var(--col-body-dark-100);
-		color:            white;
+@media (prefers-color-scheme: light) {
+	body {
+		background-color: var(--col-body-light);
+		color:            var(--col-text-light);
 	}
 }
 
