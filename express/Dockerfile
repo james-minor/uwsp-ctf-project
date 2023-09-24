@@ -1,4 +1,4 @@
-FROM node:18.18-alpine
+FROM node:18.18
 WORKDIR /express
 
 COPY . .
@@ -11,5 +11,4 @@ RUN mkdir -p /express/logs
 RUN ["npm", "install"]
 RUN ["npm", "run", "build"]
 
-EXPOSE 8000
-
+EXPOSE 8001
