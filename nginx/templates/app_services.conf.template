@@ -21,7 +21,7 @@ server {
 # Routing front-end traffic.
 server {
     listen 80;
-    server_name ${NGINX_HOST};
+    server_name ${NGINX_SERVER_NAME};
 
     location / {
         proxy_pass http://vue:8000;
@@ -31,7 +31,7 @@ server {
 # Routing API traffic.
 server {
     listen 80;
-    server_name api.${NGINX_HOST};
+    server_name api.${NGINX_SERVER_NAME};
 
     location / {
         proxy_pass http://express:8001;
