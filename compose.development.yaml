@@ -28,7 +28,7 @@ services:
       vue:
         condition: service_started
     environment:
-      NGINX_HOST: ${NGINX_HOST}
+      NGINX_SERVER_NAME: ${NGINX_SERVER_NAME}
     networks:
       - ctf-network
     ports:
@@ -63,6 +63,8 @@ services:
     depends_on:
       express:
         condition: service_started
+    environment:
+      NGINX_SERVER_NAME: ${NGINX_SERVER_NAME}
     networks:
       - ctf-network
 
