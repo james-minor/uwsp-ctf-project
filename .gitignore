@@ -10,6 +10,10 @@
 /express/node_modules
 /express/dist
 
+# Vue folders
+/vue/node_modules
+/vue/dist
+
 # Mac specific files
 .DS_Store
 
