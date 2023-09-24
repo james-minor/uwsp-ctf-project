@@ -37,14 +37,14 @@ model Announcement {
 }
 
 model Category {
-	id    Int    @id @default(autoincrement())
-	title String @unique @db.VarChar(15)
-	flags Flag[]
+	id         Int         @id @default(autoincrement())
+	title      String      @unique @db.VarChar(15)
+	challenges Challenge[]
 
 	@@map("categories")
 }
 
-model Flag {
+model Challenge {
 	id          Int          @id @default(autoincrement())
 	category    Category     @relation(fields: [categoryId], references: [id])
 	categoryId  Int
@@ -53,16 +53,17 @@ model Flag {
 	body        String       @db.VarChar(750)
 	attachments Attachment[]
 	captures    Capture[]
+	flag        String
 
-	@@map("flags")
+	@@map("challenges")
 }
 
 model Attachment {
-	id     Int    @id @default(autoincrement())
-	title  String @db.VarChar(30)
-	source String
-	flag   Flag   @relation(fields: [flagId], references: [id])
-	flagId Int
+	id          Int       @id @default(autoincrement())
+	title       String    @db.VarChar(30)
+	source      String
+	challenge   Challenge @relation(fields: [challengeId], references: [id])
+	challengeId Int
 
 	@@map("attachments")
 }
@@ -77,12 +78,12 @@ model Team {
 }
 
 model Capture {
-	id        Int      @id @default(autoincrement())
-	team      Team     @relation(fields: [teamId], references: [id])
-	teamId    Int
-	flag      Flag     @relation(fields: [flagId], references: [id])
-	flagId    Int
-	solveDate DateTime @default(now())
+	id          Int       @id @default(autoincrement())
+	team        Team      @relation(fields: [teamId], references: [id])
+	teamId      Int
+	challenge   Challenge @relation(fields: [challengeId], references: [id])
+	challengeId Int
+	solveDate   DateTime  @default(now())
 
 	@@map("captures")
 }
