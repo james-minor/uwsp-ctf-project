@@ -4,7 +4,7 @@ import Logger from './logging/Logger';
 import { PrismaClient } from '@prisma/client';
 import ILogger from './logging/ILogger';
 
-const port: number = 8000;
+const port: number = 8001;
 const logger: ILogger = new Logger();
 
 /* The current environment type. Defaults to 'production', set to 'development' to output logging to the console,
@@ -15,7 +15,6 @@ if (process.env.ENVIRONMENT_TYPE == undefined)
 {
 	logger.outputToConsole = false;
 	logger.warn('ENVIRONMENT_TYPE environment variable not set. Defaulting to "production"...');
-	return 'production';
 }
 else
 {
