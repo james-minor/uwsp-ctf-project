@@ -17,9 +17,18 @@
 	--col-accent-red:       #B61D22;
 	--col-accent-brown:     #6D473B;
 
-	/* Application Custom Colors */
+	/* Application Dark-Theme Colors */
 	--col-body-light:       #FFFFFF;
-	--col-body-dark:        #101010;
+	--col-text-light:       #1C1C1C;
+
+	/* Application Light-Theme Colors */
+	--col-body-dark-100:    #131313;
+	--col-body-dark-200:    #252525;
+	--col-body-dark-300:    #323232;
+	--col-text-dark:        #F0F0F0;
+
+	/* Application Length Variables */
+	--len-navbar-height:    3.5rem;
 }
 
 body {
@@ -36,7 +45,7 @@ body {
 
 @media (prefers-color-scheme: dark) {
 	#app {
-		background-color: var(--col-body-dark);
+		background-color: var(--col-body-dark-100);
 		color:            white;
 	}
 }
