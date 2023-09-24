@@ -1,18 +1,6 @@
 version: "3"
 
 services:
-  astro:
-    build: ./astro
-    container_name: "astro"
-    depends_on:
-      express:
-        condition: service_started
-    networks:
-      - ctf-network
-    ports:
-      - "${ASTRO_PORT}:4321"
-    restart: "unless-stopped"
-
   express:
     build:
       context: ./express
@@ -31,6 +19,22 @@ services:
       - ctf-network
     restart: "unless-stopped"
 
+  nginx:
+    build: ./nginx
+    container_name: "nginx"
+    depends_on:
+      express:
+        condition: service_started
+      vue:
+        condition: service_started
+    environment:
+      NGINX_HOST: ${NGINX_HOST}
+    networks:
+      - ctf-network
+    ports:
+      - "80:80"
+      - "443:443"
+
   postgres:
     container_name: "postgres"
     environment:
@@ -38,13 +42,25 @@ services:
       POSTGRES_HOST_AUTH_METHOD: scram-sha-256
       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
     healthcheck:
+      interval: 5s
+      retries: 10
       test: [ "CMD", "pg_isready" ]
+      timeout: 5s
     image: "postgres:16-alpine"
     networks:
       - ctf-network
     restart: "unless-stopped"
     volumes:
       - db-data:/var/lib/postgresql/data
+
+  vue:
+    container_name: "vue"
+    build: ./vue
+    depends_on:
+      express:
+        condition: service_started
+    networks:
+      - ctf-network
 
 networks:
   ctf-network:

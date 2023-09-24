@@ -1,0 +1,39 @@
+# Routing front-end traffic for localhost.
+server {
+    listen 8000;
+    server_name localhost;
+
+    location / {
+        proxy_pass http://vue:8000;
+    }
+}
+
+# Routing API traffic for localhost.
+server {
+    listen 8001;
+    server_name localhost;
+
+    location / {
+        proxy_pass http://express:8001;
+    }
+}
+
+# Routing front-end traffic.
+server {
+    listen 80;
+    server_name ${NGINX_HOST};
+
+    location / {
+        proxy_pass http://vue:8000;
+    }
+}
+
+# Routing API traffic.
+server {
+    listen 80;
+    server_name api.${NGINX_HOST};
+
+    location / {
+        proxy_pass http://express:8001;
+    }
+}
