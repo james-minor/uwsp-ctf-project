@@ -1,15 +1,20 @@
 <script setup lang="ts">
 	import feather from 'feather-icons';
 
+	const title: string = 'Pointer Overflow CTF';
 	const loginSvg: string = feather.icons['log-in'].toSvg({ stroke: 'white' });
 </script>
 
 <template>
 	<nav>
-		<router-link to="/rules">Rules</router-link>
-		<router-link to="/challenges">Challenges</router-link>
-		<router-link to="/scoreboard">Scoreboard</router-link>
-		<router-link to="/login" class="btn"><i v-html="loginSvg"></i> Login</router-link>
+		<router-link to="/" class="title">{{ title }}</router-link>
+
+		<div class="nav-links">
+			<router-link to="/rules">Rules</router-link>
+			<router-link to="/challenges">Challenges</router-link>
+			<router-link to="/scoreboard">Scoreboard</router-link>
+			<router-link to="/login" class="btn"><i v-html="loginSvg"></i> Login</router-link>
+		</div>
 	</nav>
 </template>
 
@@ -25,13 +30,20 @@
 		border-bottom-width: thin;
 		border-bottom-style: solid;
 
-		display: flex;
+		display: grid;
+		grid-template-columns: 1fr 1fr;
 		align-items: center;
-		justify-content: end;
 
-		column-gap: 2.5ch;
 		padding-left: 1ch;
 		padding-right: 1ch;
+	}
+
+	.nav-links {
+		display: flex;
+		flex-direction: row;
+		align-items: center;
+		justify-content: end;
+		column-gap: 2.5ch;
 	}
 
 	a {
@@ -82,6 +94,11 @@
 	.btn:focus-visible {
 		background-color: var(--col-main-purple);
 		color: var(--col-text-dark);
+	}
+
+	.title {
+		font-size: 1.5rem;
+		font-weight: bold;
 	}
 
 	@media (prefers-color-scheme: light)
