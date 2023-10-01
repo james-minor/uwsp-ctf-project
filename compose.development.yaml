@@ -13,7 +13,6 @@ services:
         condition: service_healthy
     environment:
       ENVIRONMENT_TYPE: "development"
-      POSTGRES_MAX_CLIENTS: ${POSTGRES_MAX_CLIENTS}
       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
     networks:
       - ctf-network
