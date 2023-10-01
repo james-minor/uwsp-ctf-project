@@ -60,12 +60,12 @@ services:
   vue:
     container_name: "vue"
     build: ./vue
+    command: "npm run dev -- --host"
     depends_on:
       express:
         condition: service_started
     environment:
-      NODE_ENV: "development"
-      VUE_APP_API_URL: "http://express:8001"
+      VITE_API_URL: "http://express:8001"
     networks:
       - ctf-network
 

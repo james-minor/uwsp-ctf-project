@@ -56,12 +56,13 @@ services:
   vue:
     container_name: "vue"
     build: ./vue
+    command: "CMD http-server dist -p 8000"
     depends_on:
       express:
         condition: service_started
     environment:
       NODE_ENV: "production"
-      VUE_APP_API_URL: "https://api.${NGINX_SERVER_NAME}"
+      VITE_API_URL: "https://api.${NGINX_SERVER_NAME}"
     networks:
       - ctf-network
 

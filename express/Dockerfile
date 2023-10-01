@@ -10,5 +10,3 @@ RUN mkdir -p /express/logs
 
 RUN ["npm", "install"]
 RUN ["npm", "run", "build"]
-
-EXPOSE 8001
