@@ -7,6 +7,6 @@ export interface APIResponseError
 export interface APIResponse
 {
 	success: boolean;
-	data: object;
+	data?: object;
 	errors?: APIResponseError[];
 }
