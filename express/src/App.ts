@@ -1,8 +1,10 @@
 import 'dotenv/config';
 import Server from './Server';
 import Logger from './logging/Logger';
-import { PrismaClient } from '@prisma/client';
 import ILogger from './logging/ILogger';
+
+import { PrismaClient } from '@prisma/client';
+import { PrismaClientInitializationError } from '@prisma/client/runtime/library';
 
 const port: number = 8001;
 const logger: ILogger = new Logger();
@@ -39,7 +41,7 @@ const prisma: PrismaClient = new PrismaClient();
 		await prisma.$connect().then(() =>
 		{
 			logger.info('Successfully connected to the Postgres service!');
-		}).catch(error =>
+		}).catch((error: PrismaClientInitializationError) =>
 		{
 			logger.error('Could not connect to the Postgres service, stopping express service.');
 			logger.error(error.message);
