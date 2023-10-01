@@ -11,6 +11,7 @@
   },
   "dependencies": {
     "@types/feather-icons": "^4.29.2",
+    "@types/node": "^18.18.0",
     "axios": "^1.5.0",
     "feather-icons": "^4.29.1",
     "vue": "^3.3.4",
@@ -18,7 +19,6 @@
   },
   "devDependencies": {
     "@tsconfig/node18": "^18.2.2",
-    "@types/node": "^18.17.19",
     "@vitejs/plugin-vue": "^4.3.4",
     "@vue/tsconfig": "^0.4.0",
     "npm-run-all2": "^6.0.6",
