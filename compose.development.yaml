@@ -64,7 +64,8 @@ services:
       express:
         condition: service_started
     environment:
-      NGINX_SERVER_NAME: ${NGINX_SERVER_NAME}
+      NODE_ENV: "development"
+      VUE_APP_API_URL: "http://express:8001"
     networks:
       - ctf-network
 
