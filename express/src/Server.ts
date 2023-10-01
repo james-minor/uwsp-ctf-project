@@ -73,6 +73,11 @@ export default class Server
 		 */
 		this.app.use(helmet());
 
+		/* Setting up middleware to handle form data.
+		 */
+		this.app.use(express.json());
+		this.app.use(express.urlencoded({ extended: false }));
+
 		/* Setting up the logging middleware to log all API requests.
 		 */
 		this.app.use((req: Request, res: Response, next: NextFunction) =>
