@@ -10,7 +10,7 @@ module.exports = function(path: string, server: Server)
 	{
 		const result = await server.prisma.user.count({
 			where: {
-				role: Role.ADMIN
+				role: Role.ADMIN as Role
 			}
 		});
 
