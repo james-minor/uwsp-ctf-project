@@ -17,13 +17,24 @@ model User {
 	id            Int            @id @default(autoincrement())
 	username      String         @unique @db.VarChar(30)
 	passwordHash  String         @db.Char(60)
-	sessionToken  String?        @db.Char(20)
 	role          Role           @default(USER)
 	team          Team?          @relation(fields: [teamId], references: [id])
 	teamId        Int?
 	announcements Announcement[]
+	session       Session?
 
 	@@map("users")
+}
+
+model Session {
+	id            Int      @id @default(autoincrement())
+	privateKey    String   @db.Char(24)
+	creationDate  DateTime @default(now())
+	maxAgeSeconds Int      @default(86400)
+	user          User     @relation(fields: [userId], references: [id])
+	userId        Int      @unique
+
+	@@map("sessions")
 }
 
 model Announcement {
