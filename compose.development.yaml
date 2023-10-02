@@ -1,6 +1,5 @@
-version: "3"
-
 services:
+
   express:
     build:
       context: ./express
@@ -11,6 +10,15 @@ services:
     depends_on:
       postgres:
         condition: service_healthy
+    develop:
+      watch:
+        - action: sync
+          path: ./express
+          target: /express
+          ignore:
+            - node_modules/
+        - action: rebuild
+          path: ./express/package.json
     environment:
       ENVIRONMENT_TYPE: "development"
       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
@@ -26,6 +34,10 @@ services:
         condition: service_started
       vue:
         condition: service_started
+    develop:
+      watch:
+        - action: rebuild
+          path: ./nginx/templates
     environment:
       NGINX_SERVER_NAME: ${NGINX_SERVER_NAME}
     networks:
@@ -33,8 +45,6 @@ services:
     ports:
       - "80:80"
       - "443:443"
-      - "8000:8000"
-      - "8001:8001"
 
   postgres:
     container_name: "postgres"
@@ -63,12 +73,20 @@ services:
     depends_on:
       express:
         condition: service_started
+    develop:
+      watch:
+        - action: sync
+          path: ./vue
+          target: /app
+          ignore:
+            - ./vue/node_modules/
+            - ./vue/dist/
+        - action: rebuild
+          path: ./vue/package.json
     environment:
       VITE_API_URL: "http://localhost:80/api"
     networks:
       - ctf-network
-    volumes:
-      - "./vue/src/:/app/src/"
 
 networks:
   ctf-network:
