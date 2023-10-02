@@ -64,7 +64,7 @@ services:
       express:
         condition: service_started
     environment:
-      VITE_API_URL: "http://localhost:8001"
+      VITE_API_URL: "http://localhost:80/api"
     networks:
       - ctf-network
 

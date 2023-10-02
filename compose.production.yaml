@@ -60,7 +60,7 @@ services:
       express:
         condition: service_started
     environment:
-      VITE_API_URL: "https://api.${NGINX_SERVER_NAME}"
+      VITE_API_URL: "https://${NGINX_SERVER_NAME}/api"
     networks:
       - ctf-network
 
