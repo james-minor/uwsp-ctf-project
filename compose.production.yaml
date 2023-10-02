@@ -42,7 +42,7 @@ services:
     healthcheck:
       interval: 5s
       retries: 10
-      test: [ "CMD", "pg_isready -d $${POSTGRES_DB} -U $${POSTGRES_USER}" ]
+      test: [ "CMD-SHELL", "pg_isready -d ctf -U postgres" ]
       timeout: 5s
     image: "postgres:16-alpine"
     networks:
