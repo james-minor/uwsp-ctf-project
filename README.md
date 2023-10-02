@@ -2,26 +2,34 @@
 
 ![GitHub](https://img.shields.io/github/license/james-minor/uwsp-ctf-project)
 
-An open-source CTF game board created as a capstone project for CIS 480.
+An open-source CTF game board created as a capstone project for University of Wisconsin - Stevens Point CIS 480 course.
 
-**Note:** This is not intended to be the *best* way to create a CTF board, nor is this repository intended to be used
+**Note:** This repository not intended to act as a *best* way to create a CTF board, nor is this repository intended to be used
 as a tutorial or guide for creating a web app. In any case, feel free to use or modify this repository in accordance
 the [project license](https://github.com/james-minor/uwsp-ctf-project/blob/master/LICENSE).
 
 For more in-depth documentation and tutorials, visit our 
 [documentation website](https://james-minor.github.io/uwsp-ctf-project/).
 
+While this repository is open-source, please note that **any** references to: UWSP, Pointers, etc.
+within the repository are trademarks of the University of Wisconsin system. Unlicensed use of these trademarks can lead
+to civil and criminal penalties. If you need more information regarding UWSP trademarks, see their 
+[licensing policy](https://www3.uwsp.edu/ucm/standards/Pages/Trademark-and-License-Policy.aspx).
+
 ## Getting Started
 
 All the services for the CTF web app have already been Dockerized, and
 are all **intended to be run as services** using Docker Compose.
 
-To start the webapp in **development** mode, run:
+To start the webapp in **development** mode, which will provide watching and rebuilding of services, run:
 ```shell
-docker-compose -f compose.development.yaml up
+docker compose -f compose.development.yaml watch
 ```
 
 To deploy the webapp for **production**, run:
 ```shell
-docker-compose -f compose.production.yaml up
+docker compose -f compose.production.yaml up
 ```
+
+**Note:** to run containers in development and take advantage of hot-reloading services, you will need a 
+Docker Compose version >= v2.22.0
