@@ -48,6 +48,14 @@ model Announcement {
 	@@map("announcements")
 }
 
+model Wave {
+	id          Int         @id @default(autoincrement())
+	releaseDate DateTime
+	challenges  Challenge[]
+
+	@@map("waves")
+}
+
 model Category {
 	id         Int         @id @default(autoincrement())
 	title      String      @unique @db.VarChar(15)
@@ -60,6 +68,8 @@ model Challenge {
 	id          Int          @id @default(autoincrement())
 	category    Category     @relation(fields: [categoryId], references: [id])
 	categoryId  Int
+	wave        Wave         @relation(fields: [waveId], references: [id])
+	waveId      Int
 	value       Int          @default(0)
 	title       String       @unique @db.VarChar(30)
 	body        String       @db.VarChar(750)
