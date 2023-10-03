@@ -1,8 +1,10 @@
 <script setup lang="ts">
 
+import NavigationBar from '@/components/NavigationBar.vue';
 </script>
 
 <template>
+	<navigation-bar/>
 	<div>
 		<section>
 			<h1>Contest Rules</h1>

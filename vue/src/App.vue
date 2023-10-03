@@ -14,7 +14,6 @@
 </script>
 
 <template>
-	<navigation-bar/>
 	<main>
 		<router-view></router-view>
 	</main>
@@ -22,6 +21,6 @@
 
 <style scoped>
 	main {
-		padding-top: var(--len-navbar-height);
+		min-height: 100svh;
 	}
 </style>
