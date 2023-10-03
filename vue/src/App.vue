@@ -1,6 +1,5 @@
 <script setup lang="ts">
 	import { provide } from 'vue';
-	import NavigationBar from './components/NavigationBar.vue';
 
 	if (import.meta.env.VITE_API_URL === undefined)
 	{
