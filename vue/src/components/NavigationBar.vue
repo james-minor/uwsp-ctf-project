@@ -20,7 +20,7 @@
 
 <style scoped>
 	nav {
-		position: fixed;
+		position: sticky;
 		top: 0;
 		left: 0;
 
