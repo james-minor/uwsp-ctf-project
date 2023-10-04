@@ -2,7 +2,6 @@ import express, { Express, NextFunction, Request, Response, Router } from 'expre
 import ILogger from './logging/ILogger';
 import fs from 'fs';
 import path from 'path';
-import { PrismaClient } from '@prisma/client';
 import helmet from 'helmet';
 
 export default class Server
@@ -18,11 +17,6 @@ export default class Server
 	public router: Router;
 
 	/**
-	 * The passed Prisma ORM client.
-	 */
-	public prisma: PrismaClient;
-
-	/**
 	 * The passed logging handler.
 	 */
 	public logger: ILogger;
@@ -35,17 +29,14 @@ export default class Server
 	/**
 	 * Constructor for the Server class.
 	 *
-	 * @param prisma A passed PrismaClient, will be passed to Routes to allow for interacting with a database.
 	 * @param logger A passed logging manager that extends the ILogger interface.
 	 * @param port The port that the Server will listen on.
 	 */
 	constructor(
-		prisma: PrismaClient,
 		logger: ILogger,
 		port: number = 8000,
 	)
 	{
-		this.prisma = prisma;
 		this.logger = logger;
 
 		this.app = express();

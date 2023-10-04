@@ -2,9 +2,8 @@ import 'dotenv/config';
 import Server from './Server';
 import Logger from './logging/Logger';
 import ILogger from './logging/ILogger';
-
-import { PrismaClient } from '@prisma/client';
 import { PrismaClientInitializationError } from '@prisma/client/runtime/library';
+import prisma from './Client';
 
 const port: number = 8001;
 const logger: ILogger = new Logger();
@@ -32,10 +31,8 @@ if (process.env.POSTGRES_PASSWORD === undefined)
 	process.exit();
 }
 
-/* Setting up the PrismaClient and validating that the client is able to successfully connect to the Postgres service.
+/* Validating that the Prisma client was able to connect to the database.
  */
-const prisma: PrismaClient = new PrismaClient();
-
 (async function()
 	{
 		await prisma.$connect().then(() =>
@@ -52,5 +49,5 @@ const prisma: PrismaClient = new PrismaClient();
 
 /* Starting the API Server.
  */
-const server = new Server(prisma, logger, port);
+const server = new Server(logger, port);
 server.start();
