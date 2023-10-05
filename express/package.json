@@ -4,7 +4,7 @@
   "main": "index.js",
   "scripts": {
     "start": "nodemon ./src/App.ts",
-    "test": "ts-mocha --paths -p src/ src/**/*.spec.ts"
+    "test": "ts-mocha -p tsconfig.json src/**/*.spec.ts"
   },
   "dependencies": {
     "@prisma/client": "^5.3.1",
