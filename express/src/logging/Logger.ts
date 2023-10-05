@@ -44,7 +44,7 @@ export default class Logger implements ILogger
 			}
 			catch (error)
 			{
-				console.warn(error);
+				console.warn(`[${new Date().toISOString()}] [WARN]: ${error}`);
 			}
 		}
 
