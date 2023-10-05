@@ -12,11 +12,15 @@ services:
         condition: service_healthy
     develop:
       watch:
-        - action: rebuild
+        - action: sync
           path: ./express
           target: /express
           ignore:
             - node_modules/
+            - package.json
+        - action: rebuild
+          path: ./express/package.json
+          target: /express/package.json
     environment:
       ENVIRONMENT_TYPE: "development"
       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
