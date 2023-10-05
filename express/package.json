@@ -20,10 +20,7 @@
   },
   "devDependencies": {
     "@types/bcryptjs": "^2.4.3",
-    "@types/chai": "^4.3.6",
     "@types/mocha": "^10.0.2",
-    "chai": "^4.3.10",
-    "chai-http": "^4.4.0",
     "mocha": "^10.2.0",
     "nodemon": "^3.0.1",
     "ts-mocha": "^10.0.0",
