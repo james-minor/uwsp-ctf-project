@@ -93,7 +93,12 @@ export default class Server
 			if (typeof route === 'string' && route.includes('.js'))
 			{
 				let endpoint = '/' + route.replace('.js', '');
+				require('./routes' + endpoint)(endpoint, this);
+			}
 
+			if (typeof route === 'string' && route.includes('.ts'))
+			{
+				let endpoint = '/' + route.replace('.ts', '');
 				require('./routes' + endpoint)(endpoint, this);
 			}
 		});
