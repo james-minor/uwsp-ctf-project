@@ -25,11 +25,14 @@ To start the webapp in **development** mode, which will provide watching and reb
 ```shell
 docker compose -f compose.development.yaml watch
 ```
+_**Note:** You will need Docker Compose version >= v2.22.0 to properly watch files._
 
 To deploy the webapp for **production**, run:
 ```shell
 docker compose -f compose.production.yaml up
 ```
 
-**Note:** to run containers in development and take advantage of hot-reloading services, you will need a 
-Docker Compose version >= v2.22.0
+If you want to run the **test suite**, run:
+```shell
+docker compose -f compose.test.yaml up
+```
