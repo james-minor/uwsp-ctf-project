@@ -1,2 +1,8 @@
 npx prisma db push
-npm run start
+
+if [[ ${ENVIRONMENT_TYPE} == "test" ]]
+then
+  npm run test
+else
+  npm run start
+fi
