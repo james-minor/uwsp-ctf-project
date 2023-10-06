@@ -25,17 +25,18 @@ export default class Password
 	 */
 	static async validate(username: string, password: string)
 	{
-		const user = await Client.user.findUnique({
+		return Client.user.findUnique({
 			where: {
 				username: username
 			}
-		});
-
-		if(!user)
+		}).then(async (user) =>
 		{
-			return false;
-		}
+			if (!user)
+			{
+				return false;
+			}
 
-		return await bcrypt.compare(password, user.passwordHash)
+			return await bcrypt.compare(password, user.passwordHash)
+		});
 	}
 }
