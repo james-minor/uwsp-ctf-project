@@ -29,7 +29,7 @@ model User {
 
 model Session {
 	id            Int      @id @default(autoincrement())
-	key           String   @db.Char(24)
+	key           String   @db.Char(48)
 	creationDate  DateTime @default(now())
 	maxAgeSeconds Int      @default(86400)
 	user          User     @relation(fields: [userId], references: [id])
