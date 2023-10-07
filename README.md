@@ -34,5 +34,5 @@ docker compose -f compose.production.yaml up
 
 If you want to run the API **test suite**, run:
 ```shell
-docker compose -f compose.test.yaml up --exit-code-from express__test
+docker compose -f compose.test.yaml up --exit-code-from express__test; docker compose -f compose.test.yaml down
 ```
