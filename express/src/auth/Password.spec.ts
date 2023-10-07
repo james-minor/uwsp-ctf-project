@@ -16,11 +16,20 @@ describe('Password Class Unit Tests', () =>
 
 	describe('create() Tests', () =>
 	{
-		it('Hash password', async () =>
+		it('Hashes string', async () =>
 		{
 			let result = await Password.create('Password123');
 
 			assert(typeof result === 'string');
+			assert(result.length === 60);
+		});
+
+		it('Hashes empty string', async () =>
+		{
+			let result = await Password.create('');
+
+			assert(typeof result === 'string');
+			assert(result.length === 60);
 		});
 
 		it('Ensuring passwords result in unique hashes', async () =>
