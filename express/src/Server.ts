@@ -90,13 +90,20 @@ export default class Server
 		let routes = fs.readdirSync(path.join(__dirname, 'routes'), { recursive: true });
 		routes.forEach(route =>
 		{
-			if (typeof route === 'string' && route.includes('.js'))
+			/* Guard to prevent route test files from being public.
+			 */
+			if (typeof route !== 'string' || route.includes('.spec'))
+			{
+				return;
+			}
+
+			if (route.includes('.js'))
 			{
 				let endpoint = '/' + route.replace('.js', '');
 				require('./routes' + endpoint)(endpoint, this);
 			}
 
-			if (typeof route === 'string' && route.includes('.ts'))
+			if (route.includes('.ts'))
 			{
 				let endpoint = '/' + route.replace('.ts', '');
 				require('./routes' + endpoint)(endpoint, this);
