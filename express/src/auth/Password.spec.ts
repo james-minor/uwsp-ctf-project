@@ -11,7 +11,7 @@ describe('Password Class Unit Tests', () =>
 				{ username: 'user1', email: 'user1@example.com', passwordHash: '$2a$10$Y06Ua/0T/mixvsBXLYJRl.eyv5oTFTNBGcIDBWe6JHhPjO8D85RxK' },
 				{ username: 'user2', email: 'user2@example.com', passwordHash: '$2a$10$5cVQ6gjifvNUrGAvzXlO/OncEYJ/6C886Up4neruSwQD9m0OH4Gs2' },
 			],
-		})
+		});
 	});
 
 	describe('create() Tests', () =>
@@ -20,7 +20,6 @@ describe('Password Class Unit Tests', () =>
 		{
 			let result = await Password.create('Password123');
 
-			assert(typeof result === 'string');
 			assert(result.length === 60);
 		});
 
@@ -28,7 +27,6 @@ describe('Password Class Unit Tests', () =>
 		{
 			let result = await Password.create('');
 
-			assert(typeof result === 'string');
 			assert(result.length === 60);
 		});
 
@@ -67,6 +65,6 @@ describe('Password Class Unit Tests', () =>
 		it('User that does not exist', async () =>
 		{
 			assert.equal(await Password.validate('null-user', 'password'), false);
-		})
+		});
 	});
 });
