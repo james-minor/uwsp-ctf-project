@@ -9,12 +9,9 @@ export default class Password
 	 */
 	static async create(password: string)
 	{
-		return new Promise((resolve, reject) =>
+		return await bcrypt.hash(password, 10).then((hash) =>
 		{
-			bcrypt.hash(password, 10, async (err, hash) =>
-			{
-				err ? reject(err) : resolve(hash);
-			});
+			return hash;
 		});
 	}
 
