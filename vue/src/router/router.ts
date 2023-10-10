@@ -1,5 +1,6 @@
 import { createRouter, createWebHistory } from 'vue-router';
 import type { RouteRecordRaw, RouteMeta } from 'vue-router';
+import Cookies from 'js-cookie';
 
 import Home from '@/views/Home.vue';
 import Rules from '@/views/Rules.vue';
@@ -15,6 +16,11 @@ import Users from '@/views/admin/Users.vue';
 import Waves from '@/views/admin/Waves.vue';
 import Profile from '@/views/Profile.vue';
 
+import isUser from '@/auth/isUser';
+import isAdmin from '@/auth/isAdmin';
+
+/* Type declarations for Route metadata.
+ */
 declare module 'vue-router'
 {
     interface RouteMeta
@@ -24,6 +30,8 @@ declare module 'vue-router'
     }
 }
 
+/* Defining route paths.
+ */
 const routes: RouteRecordRaw[] =
 [
     { path: '/', component: Home },
@@ -44,6 +52,25 @@ const routes: RouteRecordRaw[] =
 const router = createRouter({
     history: createWebHistory(),
     routes: routes,
+});
+
+/* Navigation guard for views that require authorization.
+ */
+router.beforeEach((to, from) =>
+{
+    if (to.meta.requiresAdmin && !isAdmin(Cookies.get('session')))
+    {
+        return {
+            path: '/login',
+        };
+    }
+
+    if (to.meta.requiresAuth && !isUser(Cookies.get('session')))
+    {
+        return {
+            path: '/login',
+        };
+    }
 });
 
 export default router;
