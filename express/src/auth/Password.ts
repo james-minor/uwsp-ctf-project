@@ -9,7 +9,7 @@ export default class Password
 	 */
 	static async create(password: string)
 	{
-		return await bcrypt.hash(password, 10).then((hash) =>
+		return await bcrypt.hash(password, 15).then((hash) =>
 		{
 			return hash;
 		});
