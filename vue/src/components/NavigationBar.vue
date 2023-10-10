@@ -20,7 +20,7 @@
 
 <style scoped>
 	nav {
-		position: sticky;
+		position: fixed;
 		top: 0;
 		left: 0;
 
@@ -29,7 +29,7 @@
 
 		background-color: var(--col-body-dark-100);
 		border-bottom-color: var(--col-body-dark-200);
-		border-bottom-width: thin;
+		border-bottom-width: 2px;
 		border-bottom-style: solid;
 
 		display: grid;
