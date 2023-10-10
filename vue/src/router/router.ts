@@ -9,11 +9,14 @@ import Scoreboard from '@/views/Scoreboard.vue';
 import Login from '@/views/Login.vue';
 import Register from '@/views/Register.vue';
 
-import Dashboard from '@/views/admin/Dashboard.vue';
+import Announcements from '@/views/admin/Announcements.vue';
 import Categories from '@/views/admin/Categories.vue';
+import Dashboard from '@/views/admin/Dashboard.vue';
+import Teams from '@/views/admin/Teams.vue';
 import Tools from '@/views/admin/Tools.vue';
 import Users from '@/views/admin/Users.vue';
 import Waves from '@/views/admin/Waves.vue';
+
 import Profile from '@/views/Profile.vue';
 
 import isUser from '@/auth/isUser';
@@ -27,6 +30,8 @@ declare module 'vue-router'
     {
         requiresAuth?: boolean,     // User must be authenticated to access the route.
         requiresAdmin?: boolean,    // User must be authenticated AND have admin privileges to access the route.
+        hideMainNav?: boolean,      // When true, will hide the main navigation bar on the page.
+        showAdminNav?: boolean,     // When true, will show the main navigation bar on the page.
     }
 }
 
@@ -38,15 +43,20 @@ const routes: RouteRecordRaw[] =
     { path: '/rules', component: Rules },
     { path: '/challenges', component: Challenges },
     { path: '/scoreboard', component: Scoreboard },
-    { path: '/login', component: Login },
-    { path: '/register', component: Register },
+    { path: '/login', component: Login, meta: { hideMainNav: true } },
+    { path: '/register', component: Register, meta: { hideMainNav: true } },
     { path: '/profile', component: Profile, meta: { requiresAuth: true } },
-    { path: '/admin', component: Dashboard, meta: { requiresAdmin: true } },
-    { path: '/admin/categories', component: Categories, meta: { requiresAdmin: true } },
-    { path: '/admin/challenges', component: Challenges, meta: { requiresAdmin: true } },
-    { path: '/admin/tools', component: Tools, meta: { requiresAdmin: true } },
-    { path: '/admin/users', component: Users, meta: { requiresAdmin: true } },
-    { path: '/admin/waves', component: Waves, meta: { requiresAdmin: true } },
+    { path: '/admin', meta: { requiresAdmin: true, showAdminNav: true }, children:
+        [
+            { path: '', component: Dashboard },
+            { path: 'announcements', component: Announcements },
+            { path: 'categories', component: Categories },
+            { path: 'challenges', component: Challenges },
+            { path: 'teams', component: Teams },
+            { path: 'tools', component: Tools },
+            { path: 'users', component: Users },
+            { path: 'waves', component: Waves },
+        ]},
 ];
 
 const router = createRouter({
