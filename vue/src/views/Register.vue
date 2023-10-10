@@ -62,9 +62,9 @@ function onFormSubmit()
 			 */
 			if (res.success === true)
 			{
-				if ('message' in res.data)
+				if ('session' in res.data)
 				{
-					Cookies.set('session', res.data['message']);
+					Cookies.set('session', res.data['session']);
 					router.push({ path: '/challenges' });
 				}
 			}

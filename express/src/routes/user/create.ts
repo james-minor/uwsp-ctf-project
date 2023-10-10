@@ -160,7 +160,7 @@ module.exports = function (path: string, server: Server)
 				res.status(200).json({
 					success: true,
 					data: {
-						message: `${sessionKey}`
+						session: `${sessionKey}`
 					}
 				});
 			});
