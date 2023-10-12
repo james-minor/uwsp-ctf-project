@@ -66,7 +66,7 @@ export default class Server
 
 		/* Setting up middleware to handle form data.
 		 */
-		this.app.use(express.json({ limit: '10M' }));
+		this.app.use(express.json({ limit: 10000000 }));
 		this.app.use(express.urlencoded({ extended: false }));
 
 		/* Setting up the logging middleware to log all API requests.
