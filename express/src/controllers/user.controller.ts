@@ -118,7 +118,7 @@ export async function register(req: Request, res: Response<APIResponse>)
 			}
 		}).then(async () =>
 		{
-			return await login(req, res)
+			return await login(req, res);
 		});
 	});
 }
