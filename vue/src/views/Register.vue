@@ -98,7 +98,9 @@ function validateForm()
 {
 	formValid.value = true;
 
-	if (formData.value.email.length === 0 || formData.value.email.length > 75)
+	/* Lazily validating email.
+	 */
+	if (formData.value.email.length < 5 || formData.value.email.length > 75)
 	{
 		formValid.value = false;
 	}
@@ -108,11 +110,15 @@ function validateForm()
 		formValid.value = false;
 	}
 
+	/* Validating username.
+	 */
 	if (formData.value.username.length < 3 || formData.value.username.length > 30)
 	{
 		formValid.value = false;
 	}
 
+	/* Validating password.
+	 */
 	if (formData.value.password.length < 10)
 	{
 		formValid.value = false;
