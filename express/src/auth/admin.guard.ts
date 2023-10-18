@@ -1,6 +1,6 @@
 import { Request, Response, NextFunction } from 'express';
 import { APIResponse } from '../interfaces/APIResponse';
-import validateSession from './validateSession';
+import validateSession from './session';
 
 export default async function adminGuard(req: Request, res: Response<APIResponse>, next: NextFunction)
 {

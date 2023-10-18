@@ -1,6 +1,6 @@
 import { Request, Response, NextFunction } from 'express';
 import { APIResponse } from '../interfaces/APIResponse';
-import validateSession from './validateSession';
+import validateSession from './session';
 
 /**
  * Middleware that prevents a route from being accessed unless the request Authorization header
