@@ -3,6 +3,7 @@ import { APIResponse } from '../interfaces/APIResponse';
 import client from '../Client';
 import bcrypt from 'bcryptjs';
 import { generateSession } from '../auth/session';
+import { Role } from '@prisma/client';
 
 /**
  * Handles logging in and creating a user session. When passed valid email and password authentication fields,
@@ -22,20 +23,34 @@ export async function login(req: Request, res: Response<APIResponse>)
 		password: undefined,
 	};
 
+	/* Attempting the user login.
+	 */
 	await client.user.findUnique({
 		where: {
 			email: req.body.email
 		}
-	}).then(async (user): Promise<{ id: undefined | number, auth: boolean }> =>
+	}).then(async (user): Promise<{
+		id: undefined | number,	// The user ID in the database.
+		admin: boolean,			// Does the user have elevated privileges?
+		auth: boolean,			// Did the request pass authentication?
+	}> =>
 	{
 		if (!user)
 		{
 			errors.email = 'That user does not exist.';
-			return { id: undefined, auth: false }
+			return {
+				id: undefined,
+				admin: false,
+				auth: false,
+			};
 		}
 
-		return { id: user.id, auth: await bcrypt.compare(req.body.password, user.passwordHash) };
-	}).then(async ({ id, auth }) =>
+		return {
+			id: user.id,
+			admin: user.role === Role.ADMIN,
+			auth: await bcrypt.compare(req.body.password, user.passwordHash),
+		};
+	}).then(async ({ id, admin, auth }) =>
 	{
 		/* Sending error if the userId or password could not be validated.
 		 */
@@ -87,7 +102,8 @@ export async function login(req: Request, res: Response<APIResponse>)
 		res.status(200).json({
 			success: true,
 			data: {
-				'session': sessionKey
+				'session': sessionKey,
+				'admin': admin,
 			}
 		});
 	});
