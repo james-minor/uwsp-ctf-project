@@ -1,8 +1,9 @@
 <script setup lang="ts">
 import { inject, ref } from 'vue'
 import router from '@/router/router';
-import Cookies from 'js-cookie';
 import * as feather from 'feather-icons';
+import FormInput from '@/components/FormInput.vue';
+import { useSessionStore } from '@/stores/session';
 
 const apiBaseUrl = inject('apiBaseURL');
 
@@ -18,9 +19,13 @@ const formErrors = ref({
 	password: '',
 });
 
+const formValid = ref<boolean>(false);
+
+const sessionStore = useSessionStore();
+
 function onFormSubmit()
 {
-	fetch(`${apiBaseUrl}/v1/user/create`,
+	fetch(`${apiBaseUrl}/v1/user`,
 		{
 			method: 'POST',
 			headers: {
@@ -62,14 +67,58 @@ function onFormSubmit()
 			 */
 			if (res.success === true)
 			{
-				if ('session' in res.data)
+				if ('session' in res.data && 'admin' in res.data)
 				{
-					Cookies.set('session', res.data['session']);
+					sessionStore.login(res.data.session, res.data.admin);
 					router.push({ path: '/challenges' });
 				}
 			}
 		});
 }
+
+function onEmailInput(value: string)
+{
+	formData.value.email = value;
+	validateForm();
+}
+
+function onUsernameInput(value: string)
+{
+	formData.value.username = value;
+	validateForm();
+}
+
+function onPasswordInput(value: string)
+{
+	formData.value.password = value;
+	validateForm();
+}
+
+function validateForm()
+{
+	formValid.value = true;
+
+	if (formData.value.email.length === 0 || formData.value.email.length > 75)
+	{
+		formValid.value = false;
+	}
+
+	if (!(formData.value.email.includes('@') && formData.value.email.includes('.')))
+	{
+		formValid.value = false;
+	}
+
+	if (formData.value.username.length < 3 || formData.value.username.length > 30)
+	{
+		formValid.value = false;
+	}
+
+	if (formData.value.password.length < 10)
+	{
+		formValid.value = false;
+	}
+}
+
 </script>
 
 <template>
@@ -78,46 +127,33 @@ function onFormSubmit()
 			<h1>Let's Get Started</h1>
 			<p>Create your user account</p>
 
-			<div class="input-container">
-				<div class="icon" v-html="feather.icons.mail.toSvg({ stroke: 'white' })" />
-				<input
-					name="email"
-					type="email"
-					v-model="formData.email"
-					placeholder="Email"
-					maxlength="75"
-				>
-			</div>
-			<em>{{ formErrors.email }}</em>
-
-			<div class="input-container">
-				<div class="icon" v-html="feather.icons.user.toSvg({ stroke: 'white' })" />
-				<input
-					name="username"
-					type="text"
-					v-model="formData.username"
-					placeholder="Username"
-					minlength="3"
-					maxlength="30"
-				>
-			</div>
-			<em>{{ formErrors.username }}</em>
-
-			<div class="input-container">
-				<div class="icon" v-html="feather.icons.lock.toSvg({ stroke: 'white' })" />
-				<input
-					name="password"
-					type="password"
-					v-model="formData.password"
-					placeholder="Password"
-					minlength="10"
-				>
-			</div>
-			<em>{{ formErrors.password }}</em>
+			<FormInput
+				name="email"
+				:icon="feather.icons.mail"
+				:on-value-changed="onEmailInput"
+				type="email"
+				:error="formErrors.email"
+				:max-length="75"
+			/>
+			<FormInput
+				name="username"
+				:icon="feather.icons.user"
+				:on-value-changed="onUsernameInput"
+				type="text"
+				:error="formErrors.username"
+				:max-length="30"
+			/>
+			<FormInput
+				name="password"
+				:icon="feather.icons.lock"
+				:on-value-changed="onPasswordInput"
+				type="password"
+				:error="formErrors.password"
+			/>
 
 			<div class="button-container">
 				<router-link class="btn" to="/login">Back</router-link>
-				<input class="btn" type="submit" value="Register User">
+				<input class="btn" type="submit" value="Register User" :disabled="!formValid">
 			</div>
 		</form>
 	</div>
@@ -162,51 +198,6 @@ p {
 	margin-bottom: 2rem;
 }
 
-em {
-	display:    block;
-	height: 2rem;
-
-	margin-top: 0.25rem;
-	margin-bottom: 1rem;
-
-	font-style: normal;
-	font-size: 0.9rem;
-	font-weight: bold;
-
-	color: var(--col-accent-red)
-}
-
-input[type="email"],
-input[type="text"],
-input[type="password"] {
-	padding: 0.5rem 0.75rem;
-	border: none;
-	outline: none;
-}
-
-.input-container {
-	display: grid;
-	grid-template-columns: auto 1fr;
-	grid-template-rows: 1fr;
-
-	border: black thin solid;
-}
-
-.input-container:focus-within {
-	outline: var(--col-accent-violet-nt) solid 2px;
-}
-
-.icon {
-	aspect-ratio: 1;
-	background-color: var(--col-main-purple);
-
-	padding: 0.65rem;
-
-	display: flex;
-	align-items: center;
-	justify-content: center;
-}
-
 .button-container {
 	display: grid;
 	grid-template-columns: auto auto;
@@ -230,6 +221,8 @@ input[type="password"] {
 	cursor: pointer;
 
 	text-align: center;
+
+	transition: opacity 0.3s;
 }
 
 .btn:nth-child(1) {
@@ -240,6 +233,11 @@ input[type="password"] {
 	justify-self: end;
 	background-color: var(--col-main-purple);
 	color: white;
+}
+
+.btn:disabled {
+	cursor: not-allowed;
+	opacity: 0.65;
 }
 
 </style>
