@@ -17,6 +17,8 @@ const formErrors = ref({
 	password: '',
 });
 
+const formValid = ref<boolean>(false);
+
 const sessionStore = useSessionStore();
 
 function onFormSubmit()
@@ -66,15 +68,37 @@ function onFormSubmit()
 function onEmailInput(value: string)
 {
 	formData.value.email = value;
-
-	// TODO: client side email validation
+	validateForm();
 }
 
 function onPasswordInput(value: string)
 {
 	formData.value.password = value;
+	validateForm();
+}
 
-	// TODO: client side password validation
+function validateForm()
+{
+	formValid.value = true;
+
+	/* Lazily validating email.
+	 */
+	if (formData.value.email.length < 5 || formData.value.email.length > 75)
+	{
+		formValid.value = false;
+	}
+
+	if (!(formData.value.email.includes('@') && formData.value.email.includes('.')))
+	{
+		formValid.value = false;
+	}
+
+	/* Validating password.
+	 */
+	if (formData.value.password.length < 10)
+	{
+		formValid.value = false;
+	}
 }
 
 </script>
@@ -104,7 +128,7 @@ function onPasswordInput(value: string)
 
 			<router-link to="/register">Create a new account</router-link>
 
-			<input class="btn" type="submit" value="Login">
+			<input class="btn" type="submit" value="Login" :disabled="!formValid">
 		</form>
 	</div>
 </template>
