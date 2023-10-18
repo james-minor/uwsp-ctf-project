@@ -92,21 +92,9 @@ export default class Server
 		{
 			/* Guard to prevent route test files from being public.
 			 */
-			if (typeof route !== 'string' || route.includes('.spec'))
+			if (typeof route === 'string' && route.includes('.route.ts') && !route.includes('.spec'))
 			{
-				return;
-			}
-
-			if (route.includes('.js'))
-			{
-				let endpoint = '/' + route.replace('.js', '');
-				require('./routes' + endpoint)(endpoint, this);
-			}
-
-			if (route.includes('.ts'))
-			{
-				let endpoint = '/' + route.replace('.ts', '');
-				require('./routes' + endpoint)(endpoint, this);
+				require('./routes/' + route)(this.router);
 			}
 		});
 	}
