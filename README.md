@@ -18,6 +18,8 @@ to civil and criminal penalties. If you need more information regarding UWSP tra
 
 ## Getting Started
 
+Ensure you have [Docker 4.24.1](https://www.docker.com/) or newer installed.
+
 All the services for the CTF web app have already been Dockerized, and
 are all **intended to be run as services** using Docker Compose.
 
@@ -36,3 +38,4 @@ If you want to run the API **test suite**, run:
 ```shell
 docker compose -f compose.test.yaml up --exit-code-from express__test; docker compose -f compose.test.yaml down
 ```
+
