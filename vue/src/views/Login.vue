@@ -42,7 +42,11 @@ function onFormSubmit()
 		{
 			if (res.success)
 			{
-
+				if ('session' in res.data && 'admin' in res.data)
+				{
+					sessionStore.login(res.data.session, res.data.admin);
+					router.push({ path: '/challenges' });
+				}
 			}
 			else
 			{
@@ -55,23 +59,6 @@ function onFormSubmit()
 				{
 					return error.key === 'password';
 				})[0].message;
-			}
-
-			if (res.errors !== undefined)
-			{
-
-			}
-
-			/* Storing the session UUID.
-			 */
-			if (res.success === true)
-			{
-				if ('session' in res.data)
-				{
-					console.log(res);
-					sessionStore.login(res.data.session);
-					router.push({ path: '/challenges' });
-				}
 			}
 		});
 }
