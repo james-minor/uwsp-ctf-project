@@ -20,7 +20,8 @@ export const useSessionStore = defineStore('session', () =>
 	 */
 	if (sessionStorage.getItem('session'))
 	{
-		let savedSession = JSON.parse(sessionStorage.getItem('session'));
+		const savedSession = JSON.parse(`${sessionStorage.getItem('session')}`);
+
 		session.value = savedSession.session;
 		hasElevatedPrivileges.value = savedSession.hasElevatedPrivileges;
 	}
