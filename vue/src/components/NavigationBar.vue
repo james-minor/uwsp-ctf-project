@@ -17,6 +17,8 @@
 			<router-link to="/rules">Rules</router-link>
 			<router-link to="/challenges">Challenges</router-link>
 			<router-link to="/scoreboard">Scoreboard</router-link>
+			<router-link v-show="sessionStore.isAuthenticated()" to="/profile">Profile</router-link>
+			<router-link v-show="sessionStore.isAuthenticated(true)" to="/admin">Admin</router-link>
 
 			<router-link v-if="sessionStore.session" class="btn" to="/" @click="sessionStore.logout()"><i v-html="logoutSvg"></i> Logout</router-link>
 			<router-link v-else to="/login" class="btn"><i v-html="loginSvg"></i> Login</router-link>
