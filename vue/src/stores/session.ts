@@ -15,6 +15,15 @@ export const useSessionStore = defineStore('session', () => {
 	 */
 	const hasElevatedPrivileges = ref<boolean>(false);
 
+	/* Pulling state data from sessionStorage, if it exists.
+	 */
+	if (sessionStorage.getItem('session'))
+	{
+		let savedSession = JSON.parse(sessionStorage.getItem('session'));
+		session.value = savedSession.session;
+		hasElevatedPrivileges.value = savedSession.hasElevatedPrivileges;
+	}
+
 	/**
 	 * Receives a session token and stores it in the sessionStore.
 	 * @param token The session token.
