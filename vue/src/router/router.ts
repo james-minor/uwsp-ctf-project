@@ -1,6 +1,5 @@
 import { createRouter, createWebHistory } from 'vue-router';
 import type { RouteRecordRaw, RouteMeta } from 'vue-router';
-import Cookies from 'js-cookie';
 
 import Home from '@/views/Home.vue';
 import Rules from '@/views/Rules.vue';
@@ -18,9 +17,7 @@ import Users from '@/views/admin/Users.vue';
 import Waves from '@/views/admin/Waves.vue';
 
 import Profile from '@/views/Profile.vue';
-
-import isUser from '@/auth/isUser';
-import isAdmin from '@/auth/isAdmin';
+import { useSessionStore } from '@/stores/session';
 
 /* Type declarations for Route metadata.
  */
@@ -68,14 +65,16 @@ const router = createRouter({
  */
 router.beforeEach((to, from) =>
 {
-    if (to.meta.requiresAdmin && !isAdmin(Cookies.get('session')))
+    const sessionStore = useSessionStore();
+
+    if (to.meta.requiresAdmin && !sessionStore.isAuthenticated(true))
     {
         return {
             path: '/login',
         };
     }
 
-    if (to.meta.requiresAuth && !isUser(Cookies.get('session')))
+    if (to.meta.requiresAuth && !sessionStore.isAuthenticated())
     {
         return {
             path: '/login',
