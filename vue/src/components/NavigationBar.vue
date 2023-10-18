@@ -1,8 +1,12 @@
 <script setup lang="ts">
 	import feather from 'feather-icons';
+	import { useSessionStore } from '@/stores/session';
 
 	const title: string = 'Pointer Overflow CTF';
 	const loginSvg: string = feather.icons['log-in'].toSvg({ stroke: 'white' });
+	const logoutSvg: string = feather.icons['log-out'].toSvg({ stroke: 'white' });
+
+	const sessionStore = useSessionStore();
 </script>
 
 <template>
@@ -13,7 +17,9 @@
 			<router-link to="/rules">Rules</router-link>
 			<router-link to="/challenges">Challenges</router-link>
 			<router-link to="/scoreboard">Scoreboard</router-link>
-			<router-link to="/login" class="btn"><i v-html="loginSvg"></i> Login</router-link>
+
+			<router-link v-if="sessionStore.session" class="btn" to="/" @click="sessionStore.logout()"><i v-html="logoutSvg"></i> Logout</router-link>
+			<router-link v-else to="/login" class="btn"><i v-html="loginSvg"></i> Login</router-link>
 		</div>
 	</nav>
 </template>
