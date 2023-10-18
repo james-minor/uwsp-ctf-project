@@ -4,7 +4,8 @@ import { inject, ref } from 'vue';
 /**
  * Store to handle user application sessions.
  */
-export const useSessionStore = defineStore('session', () => {
+export const useSessionStore = defineStore('session', () =>
+{
 	const apiBaseUrl = inject('apiBaseURL');
 
 	/* Ref that holds the user session token string.
