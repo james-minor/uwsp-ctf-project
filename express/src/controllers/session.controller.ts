@@ -23,6 +23,7 @@ export async function login(req: Request, res: Response<APIResponse>)
 		{
 			if (!user)
 			{
+				errors.email = 'That user does not exist.'
 				return false;
 			}
 
@@ -42,8 +43,20 @@ export async function login(req: Request, res: Response<APIResponse>)
 	}
 	else
 	{
-		res.status(200).json({
+		errors.password = 'Incorrect password.'
+
+		res.status(400).json({
 			success: false,
+			errors: [
+				{
+					key: 'email',
+					message: errors.email ? errors.email : ''
+				},
+				{
+					key: 'password',
+					message: errors.password ? errors.password : ''
+				}
+			]
 		});
 	}
 }
