@@ -15,5 +15,5 @@ module.exports = function (router: Router)
 
 	router.delete('/user', [userGuard, userController.remove]);
 
-	router.delete('/user/:id', [adminGuard, userController.kick]);
+	router.delete('/user/:id(\\d+)', [adminGuard, userController.kick]);
 }
