@@ -4,7 +4,19 @@ import client from '../Client';
 
 export async function getAll(req: Request, res: Response<APIResponse>)
 {
-	const announcements = await client.announcement.findMany({});
+	const announcements = await client.announcement.findMany({
+		select: {
+			id: true,
+			body: true,
+			creationDate: true,
+			author: {
+				select: {
+					id: true,
+					username: true,
+				},
+			},
+		},
+	});
 
 	res.status(200).json({
 		success: true,
@@ -45,7 +57,6 @@ export async function get(req: Request, res: Response<APIResponse>)
 
 export function create(req: Request, res: Response<APIResponse>)
 {
-
 }
 
 export function update(req: Request, res: Response<APIResponse>)
@@ -53,7 +64,25 @@ export function update(req: Request, res: Response<APIResponse>)
 
 }
 
-export function remove(req: Request, res: Response<APIResponse>)
+export async function remove(req: Request, res: Response<APIResponse>)
 {
-
+	try
+	{
+		await client.announcement.delete({
+			where: {
+				id: parseInt(req.params['id']),
+			},
+		}).then(() =>
+		{
+			res.status(200).json({
+				success: true,
+			});
+		});
+	}
+	catch (e)
+	{
+		res.status(404).json({
+			success: false,
+		});
+	}
 }
