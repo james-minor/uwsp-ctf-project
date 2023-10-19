@@ -29,14 +29,14 @@
 <style scoped>
 	main {
 		display: flex;
-		min-height: 100svh;
+		flex-direction: column;
 	}
 
 	.navbarPresent {
-		padding-top: var(--len-navbar-height);
+		margin-top: var(--len-navbar-height);
 	}
 
 	.sidebarPresent {
-		padding-left: var(--len-sidebar-width);
+		margin-left: var(--len-sidebar-width);
 	}
 </style>
