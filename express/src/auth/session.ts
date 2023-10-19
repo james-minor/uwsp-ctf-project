@@ -22,46 +22,53 @@ export function generateSession(): string
  */
 export default async function validateSession(token: string, checkElevatedPrivilege: boolean): Promise<boolean>
 {
-	return Client.session.findUnique({
-		where: {
-			key: token,
-		},
-	}).then((session) =>
+	try
 	{
-		/* Checking if the session exists.
-		 */
-		if (!session)
+		return Client.session.findUnique({
+			where: {
+				key: token,
+			},
+		}).then((session) =>
 		{
-			return false;
-		}
-
-		/* Checking if the session is expired.
-		 */
-		const expiryDate = new Date(session.creationDate.toISOString() + session.maxAgeSeconds * 1000);
-		if (expiryDate < new Date())
-		{
-			return false;
-		}
-
-		/* Checking if the session user has elevated privileges, if applicable.
-		 */
-		if (checkElevatedPrivilege)
-		{
-			return Client.user.findUnique({
-				where: {
-					id: session.userId,
-				},
-			}).then((user): boolean =>
+			/* Checking if the session exists.
+			 */
+			if (!session)
 			{
-				if (!user)
+				return false;
+			}
+
+			/* Checking if the session is expired.
+			 */
+			const expiryDate = new Date(session.creationDate.toISOString() + session.maxAgeSeconds * 1000);
+			if (expiryDate < new Date())
+			{
+				return false;
+			}
+
+			/* Checking if the session user has elevated privileges, if applicable.
+			 */
+			if (checkElevatedPrivilege)
+			{
+				return Client.user.findUnique({
+					where: {
+						id: session.userId,
+					},
+				}).then((user): boolean =>
 				{
-					return false;
-				}
+					if (!user)
+					{
+						return false;
+					}
 
-				return user.role === 'ADMIN';
-			});
-		}
+					return user.role === 'ADMIN';
+				});
+			}
 
-		return true;
-	});
+			return true;
+		});
+	}
+	catch (e)
+	{
+		return false;
+	}
 }
