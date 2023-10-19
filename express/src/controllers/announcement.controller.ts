@@ -109,9 +109,31 @@ export async function create(req: Request, res: Response<APIResponse>)
 
 }
 
-export function update(req: Request, res: Response<APIResponse>)
+export async function update(req: Request, res: Response<APIResponse>)
 {
+	console.log(req);
 
+	await client.announcement.update({
+		where: {
+			id: parseInt(req.params['id']),
+		},
+		data: {
+			body: req.body['body']
+		}
+	}).then((result) =>
+	{
+		if (result)
+		{
+			res.status(200).json({
+				success: true,
+			});
+			return;
+		}
+
+		res.status(400).json({
+			success: false,
+		});
+	});
 }
 
 export async function remove(req: Request, res: Response<APIResponse>)
