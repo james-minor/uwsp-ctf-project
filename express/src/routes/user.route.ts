@@ -5,6 +5,10 @@ import adminGuard from '../auth/admin.guard';
 
 module.exports = function (router: Router)
 {
+	router.get('/user', [userGuard, userController.getPrivateUserData]);
+
+	router.get('/user/:id(\\d+)', [userController.getPublicUserData])
+
 	router.post('/user', userController.register);
 
 	router.put('/user', [userGuard, userController.updateInfo]);
