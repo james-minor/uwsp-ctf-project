@@ -7,6 +7,13 @@ import { emailTaken, validEmail, validEmailLength } from '../utils/email';
 import { usernameTaken, validUsernameLength } from '../utils/username';
 import { login } from './session.controller';
 
+/**
+ * Allows a non-authenticated client to create a user account. If no admin user accounts exist when the
+ * user is registered, the resulting user will be given admin privileges.
+ *
+ * @param req The HTTP request.
+ * @param res The HTTP response, implements the APIResponse interface.
+ */
 export async function register(req: Request, res: Response<APIResponse>)
 {
 	let errors: {
@@ -123,6 +130,12 @@ export async function register(req: Request, res: Response<APIResponse>)
 	});
 }
 
+/**
+ * Allows for a user to update their account information.
+ *
+ * @param req The HTTP request.
+ * @param res The HTTP response, implements the APIResponse interface.
+ */
 export async function updateInfo(req: Request, res: Response<APIResponse>)
 {
 	res.status(200).json({
@@ -133,6 +146,12 @@ export async function updateInfo(req: Request, res: Response<APIResponse>)
 	});
 }
 
+/**
+ * Allows for a user to delete their own account.
+ *
+ * @param req The HTTP request.
+ * @param res The HTTP response, implements the APIResponse interface.
+ */
 export async function remove(req: Request, res: Response<APIResponse>)
 {
 	res.status(200).json({
@@ -143,6 +162,12 @@ export async function remove(req: Request, res: Response<APIResponse>)
 	});
 }
 
+/**
+ * Used by an administrator to kick a specific user from the competition.
+ *
+ * @param req The HTTP request.
+ * @param res The HTTP response, implements the APIResponse interface.
+ */
 export async function kick(req: Request, res: Response<APIResponse>)
 {
 	res.status(200).json({
