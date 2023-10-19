@@ -55,8 +55,58 @@ export async function get(req: Request, res: Response<APIResponse>)
 	});
 }
 
-export function create(req: Request, res: Response<APIResponse>)
+export async function create(req: Request, res: Response<APIResponse>)
 {
+	if (!req.headers.authorization)
+	{
+		res.status(400).json({
+			success: false,
+		});
+		return;
+	}
+
+	const authorId: number | undefined = await client.session.findUnique({
+		where: {
+			key: req.headers.authorization.split(' ')[1],
+		},
+		select: {
+			user: {
+				select: {
+					id: true,
+				}
+			}
+		}
+	}).then((result) =>
+	{
+		if (result)
+		{
+			return result['user']['id'];
+		}
+
+		return undefined;
+	});
+
+	if (authorId)
+	{
+		await client.announcement.create({
+			data: {
+				authorId: authorId,
+				body: req.body['body'],
+			}
+		}).then(() =>
+		{
+			res.status(200).json({
+				success: true,
+			});
+		});
+	}
+	else
+	{
+		res.status(400).json({
+			success: false,
+		});
+	}
+
 }
 
 export function update(req: Request, res: Response<APIResponse>)
