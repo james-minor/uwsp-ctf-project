@@ -152,3 +152,68 @@ export async function kick(req: Request, res: Response<APIResponse>)
 		}
 	});
 }
+
+/**
+ * Returns private user data for a logged-in user.
+ *
+ * @param req The HTTP request.
+ * @param res The HTTP response, implements the APIResponse interface
+ */
+export async function getPrivateUserData(req: Request, res: Response<APIResponse>)
+{
+	await client.user.findUnique({
+		where: {
+			id: parseInt(req.params['id'])
+		}
+	}).then((user) =>
+	{
+		if (user)
+		{
+			res.status(200).json({
+				success: true,
+				data: {
+					email: user.email,
+					username: user.username,
+					teamId: user.teamId,
+				}
+			});
+		}
+
+		res.status(500);
+	});
+}
+
+/**
+ * Returns public user data from a passed user ID, for example the user's username.
+ *
+ * @param req The HTTP request.
+ * @param res The HTTP response, implements the APIResponse interface.
+ */
+export async function getPublicUserData(req: Request, res: Response<APIResponse>)
+{
+	await client.user.findUnique({
+		where: {
+			id: parseInt(req.params['id'])
+		}
+	}).then((user) =>
+	{
+		if (user)
+		{
+			res.status(200).json({
+				success: true,
+				data: {
+					username: user.username,
+				}
+			});
+		}
+		else
+		{
+			res.status(200).json({
+				success: false,
+				errors: [
+					{ key: 'error', message: `No username with ID: ${req.params['id']}` },
+				],
+			});
+		}
+	});
+}
