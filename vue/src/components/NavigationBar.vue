@@ -14,11 +14,11 @@
 		<router-link to="/" class="title">{{ title }}</router-link>
 
 		<div class="nav-links">
-			<router-link to="/rules">Rules</router-link>
-			<router-link to="/challenges">Challenges</router-link>
-			<router-link to="/scoreboard">Scoreboard</router-link>
-			<router-link v-show="sessionStore.isAuthenticated()" to="/profile">Profile</router-link>
-			<router-link v-show="sessionStore.isAuthenticated(true)" to="/admin">Admin</router-link>
+			<router-link class="nav-link" to="/rules">Rules</router-link>
+			<router-link class="nav-link" to="/challenges">Challenges</router-link>
+			<router-link class="nav-link" to="/scoreboard">Scoreboard</router-link>
+			<router-link v-show="sessionStore.isAuthenticated()" class="nav-link" to="/profile">Profile</router-link>
+			<router-link v-show="sessionStore.isAuthenticated(true)" class="nav-link" to="/admin">Admin</router-link>
 
 			<router-link v-if="sessionStore.session" class="btn" to="/" @click="sessionStore.logout()"><i v-html="logoutSvg"></i> Logout</router-link>
 			<router-link v-else to="/login" class="btn"><i v-html="loginSvg"></i> Login</router-link>
@@ -66,12 +66,29 @@
 		color: var(--col-text-dark);
 
 		outline: none;
-		transition: color 0.2s;
+		transition: color 0.2s, border-bottom-color 0.2s;
+
+		padding-top: 0.2rem;
+		padding-bottom: 0.2rem;
 	}
 
 	a:hover,
 	a:focus-visible {
 		color: var(--col-main-gold);
+	}
+
+	.nav-link {
+		background-size: 0 2px;
+		background-image:      linear-gradient(90deg, currentColor 100%, currentColor 100%);
+		background-position: left bottom;
+		background-repeat: no-repeat;
+
+		transition: background-size 0.2s;
+	}
+
+	.nav-link:hover,
+	.nav-link:focus-visible {
+		background-size: 3ch 2px;
 	}
 
 	.btn {
