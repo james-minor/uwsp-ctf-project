@@ -1,11 +1,10 @@
 <script setup lang="ts">
 import * as feather from 'feather-icons';
-import { inject, ref } from 'vue';
+import { ref } from 'vue';
 import FormInput from '@/components/FormInput.vue';
 import router from '@/router/router';
 import { useSessionStore } from '@/stores/session';
-
-const apiBaseUrl = inject('apiBaseURL');
+import fetchData from '@/api/fetchData';
 
 const formData = ref({
 	email: '',
@@ -21,26 +20,14 @@ const formValid = ref<boolean>(false);
 
 const sessionStore = useSessionStore();
 
-function onFormSubmit()
+async function onFormSubmit()
 {
-	fetch(`${apiBaseUrl}/v1/session`,
-		{
-			method: 'POST',
-			headers: {
-				'Accept': 'application/json',
-				'Content-Type': 'application/json',
-			},
-
-			body: JSON.stringify({
-				email: formData.value.email,
-				password: formData.value.password,
-			}),
-		})
-		.then(function (res)
+	await fetchData('session', 'POST', { email: formData.value.email, password: formData.value.password })
+		.then((res) =>
 		{
 			return res.json();
 		})
-		.then(function (res)
+		.then((res) =>
 		{
 			if (res.success)
 			{

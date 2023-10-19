@@ -1,13 +1,12 @@
 import { defineStore } from 'pinia';
-import { inject, ref } from 'vue';
+import { ref } from 'vue';
+import fetchData from '@/api/fetchData';
 
 /**
  * Store to handle user application sessions.
  */
 export const useSessionStore = defineStore('session', () =>
 {
-	const apiBaseUrl = inject('apiBaseURL');
-
 	/* Ref that holds the user session token string.
 	 */
 	const session = ref<undefined | string>(undefined);
@@ -43,16 +42,7 @@ export const useSessionStore = defineStore('session', () =>
 	 */
 	async function logout()
 	{
-		await fetch(`${apiBaseUrl}/v1/session`,
-			{
-				method: 'DELETE',
-				headers: {
-					'Accept': 'application/json',
-					'Content-Type': 'application/json',
-					'Authorization': `Bearer ${session.value}`
-				}
-			}
-		);
+		await fetchData('session', 'DELETE');
 
 		session.value = undefined;
 		hasElevatedPrivileges.value = false;

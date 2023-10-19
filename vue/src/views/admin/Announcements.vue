@@ -1,24 +1,14 @@
 <script setup lang="ts">
 import AnnouncementForm from '@/components/admin/AnnouncementForm.vue';
-import { inject, ref } from 'vue';
-import { useSessionStore } from '@/stores/session';
-
-const apiBaseUrl = inject('apiBaseURL');
-const sessionStore = useSessionStore();
+import { ref } from 'vue';
+import fetchData from '@/api/fetchData';
 
 const announcements = ref<[]>([]);
-
 const announcementBody = ref<string>('');
 
 async function fetchAnnouncements()
 {
-	await fetch(`${apiBaseUrl}/v1/announcements`,
-		{
-			method: 'GET',
-			headers: {
-				'Accept': 'application/json',
-			},
-		})
+	await fetchData('announcements', 'GET')
 		.then(async (response) =>
 		{
 			let json = await response.json();
@@ -28,22 +18,10 @@ async function fetchAnnouncements()
 
 async function postAnnouncement()
 {
-	await fetch(`${apiBaseUrl}/v1/announcements`,
-		{
-			method: 'POST',
-			headers: {
-				'Accept': 'application/json',
-				'Authorization': `Bearer ${sessionStore.session}`,
-				'Content-Type': 'application/json',
-			},
-			body: JSON.stringify({
-				body: announcementBody.value
-			}),
-		})
+	await fetchData('announcements', 'POST', { body: announcementBody.value })
 		.then(async (response) =>
 		{
 			// TODO: maybe make sure it posted correctly, popup some sort of error if it didnt?
-			// TODO: client side validation.
 		});
 
 	announcementBody.value = '';

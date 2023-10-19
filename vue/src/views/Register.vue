@@ -1,11 +1,10 @@
 <script setup lang="ts">
-import { inject, ref } from 'vue'
+import { ref } from 'vue'
 import router from '@/router/router';
 import * as feather from 'feather-icons';
 import FormInput from '@/components/FormInput.vue';
 import { useSessionStore } from '@/stores/session';
-
-const apiBaseUrl = inject('apiBaseURL');
+import fetchData from '@/api/fetchData';
 
 const formData = ref({
 	email: '',
@@ -23,27 +22,21 @@ const formValid = ref<boolean>(false);
 
 const sessionStore = useSessionStore();
 
-function onFormSubmit()
+async function onFormSubmit()
 {
-	fetch(`${apiBaseUrl}/v1/user`,
+	await fetchData(
+		'user',
+		'POST',
 		{
-			method: 'POST',
-			headers: {
-				'Accept': 'application/json',
-				'Content-Type': 'application/json',
-			},
-
-			body: JSON.stringify({
-				email: formData.value.email,
-				username: formData.value.username,
-				password: formData.value.password,
-			}),
+			email: formData.value.email,
+			username: formData.value.username,
+			password: formData.value.password,
 		})
-		.then(function (res)
+		.then((res) =>
 		{
 			return res.json();
 		})
-		.then(function (res)
+		.then((res) =>
 		{
 			if (res.errors !== undefined)
 			{
@@ -192,7 +185,7 @@ form {
 	-webkit-box-shadow: 0 0 10px 2px rgba(0, 0, 0, 0.75);
 	-moz-box-shadow:    0 0 10px 2px rgba(0, 0, 0, 0.75);
 
-	min-width: min(55ch, 95%);
+	min-width:          min(55ch, 95%);
 }
 
 h1,
@@ -205,30 +198,30 @@ p {
 }
 
 .button-container {
-	display: grid;
+	display:               grid;
 	grid-template-columns: auto auto;
 }
 
 .btn {
 	background-color: transparent;
-	outline: none;
-	border: currentColor thin solid;
-	border-radius: 7px;
+	outline:          none;
+	border:           currentColor thin solid;
+	border-radius:    7px;
 
-	padding: 0.75rem 1.75rem;
+	padding:          0.75rem 1.75rem;
 
-	display: flex;
-	align-items: center;
+	display:          flex;
+	align-items:      center;
 
-	text-transform: uppercase;
-	text-decoration: none;
+	text-transform:   uppercase;
+	text-decoration:  none;
 
-	color: black;
-	cursor: pointer;
+	color:            black;
+	cursor:           pointer;
 
-	text-align: center;
+	text-align:       center;
 
-	transition: opacity 0.3s;
+	transition:       opacity 0.3s;
 }
 
 .btn:nth-child(1) {
@@ -236,13 +229,13 @@ p {
 }
 
 .btn:nth-child(2) {
-	justify-self: end;
+	justify-self:     end;
 	background-color: var(--col-main-purple);
-	color: white;
+	color:            white;
 }
 
 .btn:disabled {
-	cursor: not-allowed;
+	cursor:  not-allowed;
 	opacity: 0.65;
 }
 

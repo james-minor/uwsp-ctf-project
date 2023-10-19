@@ -1,11 +1,8 @@
 <script setup lang="ts">
-import { inject, ref } from 'vue';
-import { useSessionStore } from '@/stores/session';
+import { ref } from 'vue';
 
 import feather from 'feather-icons';
-
-const sessionStore = useSessionStore();
-const apiBaseUrl = inject('apiBaseURL');
+import fetchData from '@/api/fetchData';
 
 const emit = defineEmits<{
 	(e: 'update'): void,        // Event fired when the announcement data is updated.
@@ -29,18 +26,7 @@ const currentlyEditing = ref<boolean>(false);
 
 async function updateAnnouncement()
 {
-	await fetch(`${apiBaseUrl}/v1/announcement/${props.id}`,
-		{
-			method: 'PUT',
-			headers: {
-				'Accept': 'application/json',
-				'Authorization': `Bearer ${sessionStore.session}`,
-				'Content-Type': 'application/json',
-			},
-			body: JSON.stringify({
-				'body': body.value.toString(),
-			}),
-		})
+	await fetchData(`announcement/${props.id}`, 'PUT', { 'body': body.value.toString() })
 		.then((response) =>
 		{
 			// TODO: make sure response is successful.
@@ -52,14 +38,7 @@ async function updateAnnouncement()
 
 async function deleteAnnouncement()
 {
-	await fetch(`${apiBaseUrl}/v1/announcement/${props.id}`,
-		{
-			method: 'DELETE',
-			headers: {
-				'Accept': 'application/json',
-				'Authorization': `Bearer ${sessionStore.session}`,
-			},
-		})
+	await fetchData(`announcement/${props.id}`, 'DELETE')
 		.then((response) =>
 		{
 			// TODO: make sure response is successful.
