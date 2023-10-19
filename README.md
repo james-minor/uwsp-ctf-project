@@ -1,6 +1,6 @@
 # UWSP CTF Project
 
-![GitHub](https://img.shields.io/github/license/james-minor/uwsp-ctf-project)
+<a href="https://github.com/james-minor/uwsp-ctf-project/blob/master/LICENSE"><img src="https://img.shields.io/github/license/james-minor/uwsp-ctf-project"></a>
 
 An open-source CTF game board created as a capstone project for University of Wisconsin - Stevens Point CIS 480 course.
 
