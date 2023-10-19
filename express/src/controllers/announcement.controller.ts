@@ -111,8 +111,6 @@ export async function create(req: Request, res: Response<APIResponse>)
 
 export async function update(req: Request, res: Response<APIResponse>)
 {
-	console.log(req);
-
 	await client.announcement.update({
 		where: {
 			id: parseInt(req.params['id']),
