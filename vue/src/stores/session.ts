@@ -49,7 +49,7 @@ export const useSessionStore = defineStore('session', () =>
 	}
 
 	/**
-	 * Validates that the client session is validated.
+	 * Validates that the client session is registered locally.
 	 * @param checkElevatedPrivileges If true, checks if the client session is also an admin.
 	 */
 	function isAuthenticated(checkElevatedPrivileges: boolean = false): boolean
