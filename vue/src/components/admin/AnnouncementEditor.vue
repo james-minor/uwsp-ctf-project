@@ -102,7 +102,7 @@ hr {
 	margin-top: 1rem;
 	height: 1px;
 	margin-bottom: 1rem;
-	opacity: 0.06;
+
 	width: 90%;
 	align-self: center;
 
@@ -111,6 +111,7 @@ hr {
 }
 
 textarea {
+	height: 7rem;
 	resize:           none;
 
 	padding:          0.5rem;
