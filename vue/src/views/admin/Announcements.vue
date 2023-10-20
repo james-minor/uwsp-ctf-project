@@ -1,34 +1,24 @@
 <script setup lang="ts">
-import AnnouncementForm from '@/components/admin/AnnouncementForm.vue';
+import AnnouncementEditor from '@/components/admin/AnnouncementEditor.vue';
 import { ref } from 'vue';
 import fetchData from '@/api/fetchData';
+import { useAnnouncementStore } from '@/stores/announcement';
 
-const announcements = ref<[]>([]);
+const announcementStore = useAnnouncementStore();
+
 const announcementBody = ref<string>('');
-
-async function fetchAnnouncements()
-{
-	await fetchData('announcements', 'GET')
-		.then(async (response) =>
-		{
-			let json = await response.json();
-			announcements.value = json.data['announcements'];
-		});
-}
 
 async function postAnnouncement()
 {
 	await fetchData('announcements', 'POST', { body: announcementBody.value })
-		.then(async (response) =>
+		.then(async () =>
 		{
 			// TODO: maybe make sure it posted correctly, popup some sort of error if it didnt?
 		});
 
 	announcementBody.value = '';
-	await fetchAnnouncements();
+	await announcementStore.fetchAnnouncements();
 }
-
-fetchAnnouncements();
 </script>
 
 <template>
@@ -50,9 +40,9 @@ fetchAnnouncements();
 		>
 	</form>
 
-	<AnnouncementForm
-		v-if="announcements.length > 0"
-		v-for="(announcement) in announcements"
+	<AnnouncementEditor
+		v-if="announcementStore.announcements.length > 0"
+		v-for="(announcement) in announcementStore.announcements"
 		:key="announcement['id']"
 
 		:id="announcement['id']"
@@ -60,7 +50,8 @@ fetchAnnouncements();
 		:body="announcement['body']"
 		:creation-date="announcement['creationDate']"
 
-		@delete="fetchAnnouncements"
+		@update="announcementStore.fetchAnnouncements()"
+		@delete="announcementStore.fetchAnnouncements()"
 	/>
 	<span v-else>No Posted Announcements</span>
 </template>
