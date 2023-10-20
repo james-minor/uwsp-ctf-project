@@ -1,6 +1,8 @@
 <script setup lang="ts">
-	import feather from 'feather-icons';
 	import { useSessionStore } from '@/stores/session';
+
+	import feather from 'feather-icons';
+	import AnnouncementButton from '@/components/announcement/AnnouncementButton.vue';
 
 	const title: string = 'Pointer Overflow CTF';
 	const loginSvg: string = feather.icons['log-in'].toSvg({ stroke: 'white' });
@@ -20,6 +22,7 @@
 			<router-link v-show="sessionStore.isAuthenticated()" class="nav-link" to="/profile">Profile</router-link>
 			<router-link v-show="sessionStore.isAuthenticated(true)" class="nav-link" to="/admin">Admin</router-link>
 
+			<AnnouncementButton />
 			<router-link v-if="sessionStore.session" class="btn" to="/" @click="sessionStore.logout()"><i v-html="logoutSvg"></i> Logout</router-link>
 			<router-link v-else to="/login" class="btn"><i v-html="loginSvg"></i> Login</router-link>
 		</div>
