@@ -26,6 +26,73 @@ export async function getAll(req: Request, res: Response<APIResponse>)
 	});
 }
 
+/**
+ * Unlike most other routes, the poll controller sends a server-side event response. This creates a text stream that
+ * sends a new response any time the amount of announcements changes. It's important to note that a message will NOT
+ * be sent if an announcement is simply updated.
+ *
+ * @param req The HTTP request.
+ * @param res The HTTP response, implements the APIResponse interface.
+ */
+export async function poll(req: Request, res:Response)
+{
+	/* Setting and sending the headers for Server-Sent Events.
+	 */
+	res.set({
+		'Access-Control-Allow-Origin': '*',
+		'Cache-Control': 'no-cache',
+		'Content-Type': 'text/event-stream',
+		'Connection': 'keep-alive',
+		'X-Accel-Buffering': 'no',
+	});
+
+	/* How often should the client attempt to reconnect? In milliseconds.
+	 */
+	const attemptReconnectInterval: number = 10000
+	res.write(`retry: ${attemptReconnectInterval}\n\n`);
+
+	let connectionOpen: boolean = true;			// Is the client connection currently open?
+	let numberOfAnnouncements: number = 0;		// Number of announcements in the last sent data packet.
+
+	/* Polling for new announcements.
+	 */
+	while (connectionOpen)
+	{
+		await new Promise(resolve => setTimeout(resolve, 3000));
+
+		await client.announcement.findMany({
+			select: {
+				id: true,
+				body: true,
+				creationDate: true,
+				author: {
+					select: {
+						id: true,
+						username: true,
+					},
+				},
+			},
+		}).then((announcements) =>
+		{
+			/* We only send back a response if there is a different number of announcements since our last response.
+			 */
+			if (announcements.length !== numberOfAnnouncements)
+			{
+				numberOfAnnouncements = announcements.length;
+				res.write('event: message\n');
+				res.write(`data: ${JSON.stringify(announcements)}\n\n`);
+			}
+		});
+	}
+
+	/* We stop polling if the connection closes.
+	 */
+	req.on('close', () =>
+	{
+		connectionOpen = false;
+	});
+}
+
 export async function get(req: Request, res: Response<APIResponse>)
 {
 	await client.announcement.findUnique({
