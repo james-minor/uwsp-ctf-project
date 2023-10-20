@@ -99,29 +99,29 @@ form {
 }
 
 hr {
-	margin-top: 1rem;
-	height: 1px;
-	margin-bottom: 1rem;
+	margin-top:       1rem;
+	height:           1px;
+	margin-bottom:    1rem;
 
-	width: 90%;
-	align-self: center;
+	width:            90%;
+	align-self:       center;
 
-	border: none;
+	border:           none;
 	background-color: var(--col-text-dark);
 }
 
 textarea {
-	height: 7rem;
+	min-height:       11rem;
 	resize:           none;
 
 	padding:          0.5rem;
 	background-color: transparent;
 	color:            var(--col-text-dark);
 
-	border-style: solid;
-	border-width: thin;
-	border-color: currentColor;
-	border-radius: 5px;
+	border-style:     solid;
+	border-width:     thin;
+	border-color:     currentColor;
+	border-radius:    5px;
 }
 
 textarea:disabled {
@@ -149,8 +149,8 @@ button {
 
 	cursor:           pointer;
 
-	border-width: thin;
-	border-style: solid;
+	border-width:     thin;
+	border-style:     solid;
 	border-radius:    5px;
 
 	padding:          0.65rem;
