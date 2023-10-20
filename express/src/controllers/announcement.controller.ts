@@ -5,6 +5,12 @@ import client from '../Client';
 export async function getAll(req: Request, res: Response<APIResponse>)
 {
 	const announcements = await client.announcement.findMany({
+		orderBy: [
+			{
+				creationDate: 'desc'
+			},
+			{}  // This is required to be here or everything breaks, don't ask why.
+		],
 		select: {
 			id: true,
 			body: true,
@@ -61,6 +67,12 @@ export async function poll(req: Request, res:Response)
 		await new Promise(resolve => setTimeout(resolve, 3000));
 
 		await client.announcement.findMany({
+			orderBy: [
+				{
+					creationDate: 'desc'
+				},
+				{}  // This is required to be here or everything breaks, don't ask why.
+			],
 			select: {
 				id: true,
 				body: true,
