@@ -6,6 +6,8 @@ module.exports = function (router: Router)
 {
 	router.get('/announcements', [announcementController.getAll]);
 
+	router.get('/announcements/poll', [announcementController.poll]);
+
 	router.get('/announcement/:id(\\d+)', [announcementController.get]);
 
 	router.post('/announcements', [adminGuard, announcementController.create]);
