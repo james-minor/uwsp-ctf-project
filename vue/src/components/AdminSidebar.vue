@@ -8,6 +8,7 @@
 			<router-link to="/admin">Dashboard</router-link>
 			<router-link to="/admin/announcements">Announcements</router-link>
 			<router-link to="/admin/categories">Categories</router-link>
+			<router-link to="/admin/challenges">Challenges</router-link>
 			<router-link to="/admin/teams">Teams</router-link>
 			<router-link to="/admin/tools">Tools</router-link>
 			<router-link to="/admin/users">Users</router-link>
