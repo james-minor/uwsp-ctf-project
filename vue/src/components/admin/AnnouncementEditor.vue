@@ -107,8 +107,6 @@ form {
 	display:        flex;
 	flex-direction: column;
 
-	padding-top:    0.85rem;
-
 	border-bottom:  thin solid var(--col-body-dark-200);
 }
 
