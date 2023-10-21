@@ -127,4 +127,12 @@ const announcementStore = useAnnouncementStore();
 
 		height: 100%;
 	}
+
+	@media (prefers-color-scheme: light)
+	{
+		.dialog__content {
+			background-color: var(--col-body-light-100);
+			border-left: solid 2px var(--col-body-dark-200);
+		}
+	}
 </style>
