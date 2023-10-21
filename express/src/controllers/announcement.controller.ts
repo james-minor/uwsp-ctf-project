@@ -105,35 +105,6 @@ export async function poll(req: Request, res:Response)
 	});
 }
 
-export async function get(req: Request, res: Response<APIResponse>)
-{
-	await client.announcement.findUnique({
-		where: {
-			id: parseInt(req.params['id']),
-		},
-	}).then((announcement) =>
-	{
-		if (announcement)
-		{
-			res.status(200).json({
-				success: true,
-				data: {
-					announcement
-				},
-			});
-		}
-		else
-		{
-			res.status(404).json({
-				success: false,
-				errors: [
-					{ key: 'error', message: `No announcement with ID: ${req.params['id']}` },
-				],
-			});
-		}
-	});
-}
-
 export async function create(req: Request, res: Response<APIResponse>)
 {
 	if (!req.headers.authorization)

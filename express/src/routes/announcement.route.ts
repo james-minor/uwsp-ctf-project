@@ -8,8 +8,6 @@ module.exports = function (router: Router)
 
 	router.get('/announcements/poll', [announcementController.poll]);
 
-	router.get('/announcement/:id(\\d+)', [announcementController.get]);
-
 	router.post('/announcements', [adminGuard, announcementController.create]);
 
 	router.put('/announcement/:id(\\d+)', [adminGuard, announcementController.update]);
