@@ -73,7 +73,7 @@ export default class Server
 		 */
 		this.app.use((req: Request, res: Response, next: NextFunction) =>
 		{
-			this.logger.info(`${req.method} ${req.url} ${req.protocol.toUpperCase()}/${req.httpVersion}`);
+			this.logger.info(`${res.statusCode} ${req.method} ${req.url} ${req.protocol.toUpperCase()}/${req.httpVersion}`);
 			next();
 		});
 
