@@ -4,6 +4,11 @@ import { ref } from 'vue';
 import feather from 'feather-icons';
 import fetchData from '@/api/fetchData';
 
+import IconButton from '@/components/buttons/IconButton.vue';
+import DeleteButton from '@/components/buttons/DeleteButton.vue';
+import UploadButton from '@/components/buttons/UploadButton.vue';
+import EditButton from '@/components/buttons/EditButton.vue';
+
 const emit = defineEmits<{
 	(e: 'update'): void,        // Event fired when the announcement data is updated.
 	(e: 'delete'): void,        // Event fired when the announcement is deleted.
@@ -59,33 +64,27 @@ function toggleEditState()
 
 <template>
 	<form>
-		<textarea
-			v-model="body"
-			maxlength="1000"
-			:disabled="!currentlyEditing"
-		></textarea>
-		<div class="character-count">
-			<span v-show="currentlyEditing">{{ body.length }}/1000</span>
+		<div class="textarea__container">
+			<textarea
+				v-model="body"
+				maxlength="1000"
+				:disabled="!currentlyEditing"
+			></textarea>
+			<div class="character-count-container">
+				<span class="character-count" v-show="currentlyEditing">{{ body.length }}/1000</span>
+			</div>
 		</div>
 
-		<div class="button-container">
-			<button @click="toggleEditState" type="button">
-				<i v-if="currentlyEditing" v-html="feather.icons['arrow-left'].toSvg({ stroke: 'white' })"/>
-				<i v-else v-html="feather.icons['edit'].toSvg({ stroke: 'white' })"/>
-			</button>
+		<div class="footer">
+			<div class="footer__buttons">
+				<EditButton v-if="!currentlyEditing" @click="toggleEditState"/>
+				<IconButton v-else @click="toggleEditState" :icon="feather.icons['arrow-left']"/>
 
-			<button v-if="!currentlyEditing" @click="deleteAnnouncement" type="button">
-				<i v-html="feather.icons['trash'].toSvg({ stroke: 'white' })"/>
-			</button>
-
-			<button v-else @click="updateAnnouncement" type="button">
-				<i v-html="feather.icons['upload'].toSvg({ stroke: 'white' })"/>
-			</button>
+				<DeleteButton v-if="!currentlyEditing" @click="deleteAnnouncement"/>
+				<UploadButton v-else @click="updateAnnouncement"/>
+			</div>
 		</div>
-
-		<hr>
 	</form>
-
 </template>
 
 <style scoped>
@@ -96,21 +95,12 @@ form {
 	flex-direction: column;
 
 	padding-top:    0.85rem;
-}
 
-hr {
-	margin-top:       1rem;
-	height:           1px;
-	margin-bottom:    1rem;
-
-	width:            90%;
-	align-self:       center;
-
-	border:           none;
-	background-color: var(--col-text-dark);
+	border-bottom:  thin solid var(--col-body-dark-200);
 }
 
 textarea {
+	width:            100%;
 	min-height:       11rem;
 	resize:           none;
 
@@ -118,9 +108,7 @@ textarea {
 	background-color: transparent;
 	color:            var(--col-text-dark);
 
-	border-style:     solid;
-	border-width:     thin;
-	border-color:     currentColor;
+	border: thin solid currentColor;
 	border-radius:    5px;
 }
 
@@ -128,42 +116,29 @@ textarea:disabled {
 	border-color: transparent;
 }
 
+.character-count-container {
+	height: 0.85rem;
+}
+
 .character-count {
-	height:  0.85rem;
-	opacity: 0.5;
-}
-
-.character-count > span {
+	display:     block;
 	font-size:   0.85rem;
-	font-family: monospace;
+	font-family: monospace;;
 }
 
-button {
-	display:          flex;
-	align-items:      center;
-	justify-content:  center;
+.footer {
+	display:               grid;
+	grid-template-columns: 1fr;
+	align-items:           center;
+	justify-content:       center;
 
-	aspect-ratio:     1;
-
-	background-color: transparent;
-
-	cursor:           pointer;
-
-	border-width:     thin;
-	border-style:     solid;
-	border-radius:    5px;
-
-	padding:          0.65rem;
+	margin-top:            0.15rem;
+	margin-bottom:         1rem;
 }
 
-.button-container {
-	align-self:      end;
-
+.footer__buttons {
 	display:         flex;
-	align-items:     center;
-	justify-content: center;
+	justify-content: end;
 	column-gap:      1rem;
-
-	padding-bottom:  0.85rem;
 }
 </style>
