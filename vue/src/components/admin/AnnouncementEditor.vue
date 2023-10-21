@@ -34,9 +34,15 @@ async function updateAnnouncement()
 	await fetchData(`announcement/${props.id}`, 'PUT', { 'body': body.value.toString() })
 		.then((response) =>
 		{
-			// TODO: make sure response is successful.
-			currentlyEditing.value = false;
+			/* This should practically never show; however, in case there is an error this
+			 * acts as a fallback to give some sort of user feedback.
+			 */
+			if (response.hasOwnProperty('success') || response['success'] === false)
+			{
+				alert('Could not update the event.');
+			}
 
+			currentlyEditing.value = false;
 			emit('update');
 		});
 }
@@ -46,7 +52,14 @@ async function deleteAnnouncement()
 	await fetchData(`announcement/${props.id}`, 'DELETE')
 		.then((response) =>
 		{
-			// TODO: make sure response is successful.
+			/* This should practically never show; however, in case there is an error this
+			 * acts as a fallback to give some sort of user feedback.
+			 */
+			if (response.hasOwnProperty('success') || response['success'] === false)
+			{
+				alert('Could not delete the event.');
+			}
+
 			emit('delete');
 		});
 }
