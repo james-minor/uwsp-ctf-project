@@ -18,8 +18,8 @@
 </script>
 
 <template>
-	<navigation-bar v-if="navbarVisible"></navigation-bar>
 	<admin-sidebar v-if="sidebarVisible"></admin-sidebar>
+	<navigation-bar v-if="navbarVisible"></navigation-bar>
 
 	<main :class="{ 'sidebarPresent' : sidebarVisible, 'navbarPresent' : navbarVisible }">
 		<router-view></router-view>
