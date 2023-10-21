@@ -53,66 +53,58 @@ async function postAnnouncement()
 		@update="announcementStore.fetchAnnouncements()"
 		@delete="announcementStore.fetchAnnouncements()"
 	/>
-	<span v-else>No Posted Announcements</span>
+	<span class="announcements-empty" v-else>No Posted Announcements</span>
 </template>
 
 <style scoped>
-	h1 {
-		align-self: start;
-		margin-left: 5%;
-		margin-bottom: 1rem;
-	}
+h1 {
+	align-self:    start;
+	margin-left:   5%;
+	margin-bottom: 1rem;
+}
 
-	li {
-		list-style-type: none;
-	}
+li {
+	list-style-type: none;
+}
 
-	span {
-		width: 100%;
-		text-align: center;
+.announcements-empty {
+	width:      100%;
+	text-align: center;
+}
 
-		opacity: 0.5;
-	}
+form {
+	display:        flex;
+	flex-direction: column;
+	width:          90%;
 
-	form {
-		display: flex;
-		flex-direction: column;
-		width: 90%;
+	margin-bottom:  2rem;
+}
 
-		margin-bottom: 2rem;
-	}
+input[type="submit"] {
+	align-self: end;
+	padding:    0.5rem 1rem;
+}
 
-	input[type="submit"] {
-		align-self: end;
-		padding-left: 1rem;
-		padding-right: 1rem;
-		padding-top: 0.5rem;
-		padding-bottom: 0.5rem;
-	}
+textarea {
+	resize:           none;
 
-	textarea {
-		resize:           none;
+	padding:          0.5rem;
+	background-color: transparent;
+	color:            var(--col-text-dark);
 
-		padding:          0.5rem;
-		background-color: transparent;
-		color:            var(--col-text-dark);
+	border:           thin solid currentColor;
+	border-radius:    5px;
 
-		border-style: solid;
-		border-width: thin;
-		border-color: currentColor;
-		border-radius: 5px;
+	height:           10rem;
+	width:            100%;
+}
 
-		height: 10rem;
-		width: 100%;
-	}
+.character-count {
+	height: 0.85rem;
+}
 
-	.character-count {
-		height:  0.85rem;
-		opacity: 0.5;
-	}
-
-	.character-count > span {
-		font-size:   0.85rem;
-		font-family: monospace;
-	}
+.character-count > span {
+	font-size:   0.85rem;
+	font-family: monospace;
+}
 </style>
