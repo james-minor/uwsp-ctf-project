@@ -1,13 +1,8 @@
 <script setup lang="ts">
 import { ref } from 'vue';
-
-import feather from 'feather-icons';
 import fetchData from '@/api/fetchData';
 
-import IconButton from '@/components/buttons/IconButton.vue';
-import DeleteButton from '@/components/buttons/DeleteButton.vue';
-import UploadButton from '@/components/buttons/UploadButton.vue';
-import EditButton from '@/components/buttons/EditButton.vue';
+import EditorControlGroup from '@/components/admin/EditorControlGroup.vue';
 
 const emit = defineEmits<{
 	(e: 'update'): void,        // Event fired when the announcement data is updated.
@@ -32,12 +27,14 @@ const currentlyEditing = ref<boolean>(false);
 async function updateAnnouncement()
 {
 	await fetchData(`announcement/${props.id}`, 'PUT', { 'body': body.value.toString() })
-		.then((response) =>
+		.then(async (response) =>
 		{
+			let json = await response.json();
+
 			/* This should practically never show; however, in case there is an error this
 			 * acts as a fallback to give some sort of user feedback.
 			 */
-			if (response.hasOwnProperty('success') || response['success'] === false)
+			if (json['success'] === false)
 			{
 				alert('Could not update the event.');
 			}
@@ -50,12 +47,14 @@ async function updateAnnouncement()
 async function deleteAnnouncement()
 {
 	await fetchData(`announcement/${props.id}`, 'DELETE')
-		.then((response) =>
+		.then(async (response) =>
 		{
+			let json = await response.json();
+
 			/* This should practically never show; however, in case there is an error this
 			 * acts as a fallback to give some sort of user feedback.
 			 */
-			if (response.hasOwnProperty('success') || response['success'] === false)
+			if (json['success'] === false)
 			{
 				alert('Could not delete the event.');
 			}
@@ -89,13 +88,13 @@ function toggleEditState()
 		</div>
 
 		<div class="footer">
-			<div class="footer__buttons">
-				<EditButton v-if="!currentlyEditing" @click="toggleEditState"/>
-				<IconButton v-else @click="toggleEditState" :icon="feather.icons['arrow-left']"/>
+			<EditorControlGroup
+				:currently-editing="currentlyEditing"
 
-				<DeleteButton v-if="!currentlyEditing" @click="deleteAnnouncement"/>
-				<UploadButton v-else @click="updateAnnouncement"/>
-			</div>
+				@toggle="toggleEditState"
+				@update="updateAnnouncement"
+				@delete="deleteAnnouncement"
+			/>
 		</div>
 	</form>
 </template>
@@ -119,7 +118,7 @@ textarea {
 	background-color: transparent;
 	color:            var(--col-text-dark);
 
-	border: thin solid currentColor;
+	border:           thin solid currentColor;
 	border-radius:    5px;
 }
 
@@ -138,18 +137,11 @@ textarea:disabled {
 }
 
 .footer {
-	display:               grid;
-	grid-template-columns: 1fr;
-	align-items:           center;
-	justify-content:       center;
-
-	margin-top:            0.15rem;
-	margin-bottom:         1rem;
-}
-
-.footer__buttons {
 	display:         flex;
+	align-items:     end;
 	justify-content: end;
-	column-gap:      1rem;
+
+	margin-top:      0.15rem;
+	margin-bottom:   1rem;
 }
 </style>
