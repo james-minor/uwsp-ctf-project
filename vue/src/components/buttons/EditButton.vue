@@ -1,10 +1,10 @@
 <script setup lang="ts">
-import IconButton from '@/components/buttons/IconButton.vue';
+import AppButton from '@/components/buttons/AppButton.vue';
 import feather from 'feather-icons';
 </script>
 
 <template>
-	<IconButton :icon="feather.icons['edit']"/>
+	<AppButton :icon="feather.icons['edit']" />
 </template>
 
 <style scoped>
