@@ -3,6 +3,7 @@ import AnnouncementEditor from '@/components/admin/AnnouncementEditor.vue';
 import { ref } from 'vue';
 import fetchData from '@/api/fetchData';
 import { useAnnouncementStore } from '@/stores/announcement';
+import AppButton from '@/components/buttons/AppButton.vue';
 
 const announcementStore = useAnnouncementStore();
 
@@ -32,12 +33,7 @@ async function postAnnouncement()
 			<span>{{ announcementBody.length }}/1000</span>
 		</div>
 
-		<input
-			:disabled="announcementBody.length === 0"
-			type="submit"
-			value="POST"
-			@click.prevent="postAnnouncement"
-		>
+		<AppButton class="post" :disabled="announcementBody.length === 0" @click="postAnnouncement">POST</AppButton>
 	</form>
 
 	<AnnouncementEditor
@@ -77,6 +73,7 @@ form {
 	flex-direction: column;
 	width:          90%;
 
+
 	margin-bottom:  2rem;
 }
 
@@ -100,11 +97,15 @@ textarea {
 }
 
 .character-count {
-	height: 0.85rem;
+	height:        0.85rem;
 }
 
 .character-count > span {
 	font-size:   0.85rem;
 	font-family: monospace;
+}
+
+.post {
+	align-self: end;
 }
 </style>
