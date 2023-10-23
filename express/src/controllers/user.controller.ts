@@ -131,17 +131,33 @@ export async function register(req: Request, res: Response<APIResponse>)
 }
 
 /**
- * Allows for a user to update their account information.
+ * Allows for a logged-in user to update their account password.
  *
  * @param req The HTTP request.
  * @param res The HTTP response, implements the APIResponse interface.
  */
-export async function updateInfo(req: Request, res: Response<APIResponse>)
+export async function updatePassword(req: Request, res: Response<APIResponse>)
 {
 	res.status(200).json({
 		success: false,
 		data: {
-			'controller method': 'updateInfo'
+			'controller method': 'updatePassword'
+		}
+	});
+}
+
+/**
+ * Allows for an administrator to update a user account's role.
+ *
+ * @param req The HTTP request.
+ * @param res The HTTP response, implements the APIResponse interface.
+ */
+export async function updateRole(req: Request, res: Response<APIResponse>)
+{
+	res.status(200).json({
+		success: false,
+		data: {
+			'controller method': 'updateRole'
 		}
 	});
 }
