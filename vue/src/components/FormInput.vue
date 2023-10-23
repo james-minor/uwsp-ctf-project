@@ -58,6 +58,9 @@ input[type="password"] {
 	grid-template-rows: 1fr;
 
 	border: black thin solid;
+	border-radius: 5px;
+
+	overflow: hidden;
 }
 
 .input-container:focus-within {
