@@ -170,11 +170,20 @@ export async function remove(req: Request, res: Response<APIResponse>)
  */
 export async function kick(req: Request, res: Response<APIResponse>)
 {
-	res.status(200).json({
-		success: false,
-		data: {
-			'controller method': 'kick'
+	await client.user.delete({
+		where: {
+			id: parseInt(req.params['id']),
 		}
+	}).then(() =>
+	{
+		res.status(200).json({
+			success: true,
+		});
+	}).catch(() =>
+	{
+		res.status(404).json({
+			success: false,
+		});
 	});
 }
 
