@@ -2,10 +2,6 @@
 *.env
 !.example.env
 
-# Astro folders
-/astro/node_modules
-/astro/dist
-
 # Express folders
 /express/node_modules
 /express/dist
