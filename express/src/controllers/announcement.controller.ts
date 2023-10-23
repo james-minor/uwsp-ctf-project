@@ -4,7 +4,7 @@ import client from '../Client';
 
 export async function getAll(req: Request, res: Response<APIResponse>)
 {
-	const announcements = await client.announcement.findMany({
+	await client.announcement.findMany({
 		orderBy: [
 			{
 				creationDate: 'desc'
@@ -22,13 +22,14 @@ export async function getAll(req: Request, res: Response<APIResponse>)
 				},
 			},
 		},
-	});
-
-	res.status(200).json({
-		success: true,
-		data: {
-			announcements: announcements
-		}
+	}).then((announcements) =>
+	{
+		res.status(200).json({
+			success: true,
+			data: {
+				announcements: announcements
+			}
+		});
 	});
 }
 
