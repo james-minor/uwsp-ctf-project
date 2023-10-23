@@ -13,6 +13,8 @@ module.exports = function (router: Router)
 
 	router.put('/user', [userGuard, userController.updateInfo]);
 
+	router.put('/user/:id(\\d+)', [adminGuard, userController.updateRole]);
+
 	router.delete('/user', [userGuard, userController.remove]);
 
 	router.delete('/user/:id(\\d+)', [adminGuard, userController.kick]);
