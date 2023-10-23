@@ -51,7 +51,7 @@ async function postCategory()
 
 		@refresh="fetchCategories()"
 	/>
-	<span class="empty-list" v-else>No Posted Announcements</span>
+	<span class="empty-list" v-else>No Posted Categories</span>
 </template>
 
 <style scoped>
