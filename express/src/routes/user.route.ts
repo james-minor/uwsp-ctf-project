@@ -11,7 +11,7 @@ module.exports = function (router: Router)
 
 	router.post('/user', userController.register);
 
-	router.put('/user', [userGuard, userController.updateInfo]);
+	router.put('/user', [userGuard, userController.updatePassword]);
 
 	router.put('/user/:id(\\d+)', [adminGuard, userController.updateRole]);
 
