@@ -2,6 +2,12 @@ import { Request, Response } from 'express';
 import { APIResponse } from '../interfaces/APIResponse';
 import client from '../Client';
 
+/**
+ * Returns a list of posted announcements, sorted by creationDate, including relevant author information.
+ *
+ * @param req The HTTP request.
+ * @param res The HTTP response, implements the APIResponse interface.
+ */
 export async function getAll(req: Request, res: Response<APIResponse>)
 {
 	await client.announcement.findMany({
@@ -106,8 +112,17 @@ export async function poll(req: Request, res:Response)
 	});
 }
 
+/**
+ * Attempts to post a new announcement.
+ *
+ * @param req The HTTP request.
+ * @param res The HTTP response, implements the APIResponse interface.
+ */
 export async function create(req: Request, res: Response<APIResponse>)
 {
+	/* Since this method is covered by our admin route guard, this should always be true; so this check is mostly
+	 * to satisfy typescript from thinking that req.headers will be undefined, and to act as a secondary safeguard.
+	 */
 	if (!req.headers.authorization)
 	{
 		res.status(400).json({
@@ -116,6 +131,8 @@ export async function create(req: Request, res: Response<APIResponse>)
 		return;
 	}
 
+	/* Gathering the author ID.
+	 */
 	const authorId: number | undefined = await client.session.findUnique({
 		where: {
 			key: req.headers.authorization.split(' ')[1],
@@ -137,6 +154,8 @@ export async function create(req: Request, res: Response<APIResponse>)
 		return undefined;
 	});
 
+	/* Posting the announcement.
+	 */
 	if (authorId)
 	{
 		await client.announcement.create({
@@ -160,6 +179,12 @@ export async function create(req: Request, res: Response<APIResponse>)
 
 }
 
+/**
+ * Attempts to update an existing announcement.
+ *
+ * @param req The HTTP request.
+ * @param res The HTTP response, implements the APIResponse interface.
+ */
 export async function update(req: Request, res: Response<APIResponse>)
 {
 	await client.announcement.update({
@@ -171,20 +196,23 @@ export async function update(req: Request, res: Response<APIResponse>)
 		}
 	}).then((result) =>
 	{
-		if (result)
-		{
-			res.status(200).json({
-				success: true,
-			});
-			return;
-		}
-
+		res.status(200).json({
+			success: true,
+		});
+	}).catch(() =>
+	{
 		res.status(400).json({
 			success: false,
 		});
 	});
 }
 
+/**
+ * Attempts to delete an existing announcement.
+ *
+ * @param req The HTTP request.
+ * @param res The HTTP response, implements the APIResponse interface.
+ */
 export async function remove(req: Request, res: Response<APIResponse>)
 {
 	try
