@@ -122,7 +122,7 @@ function validateForm()
 
 <template>
 	<div class="view">
-		<form method="post" @submit.prevent="onFormSubmit">
+		<form method="post">
 			<h1>Let's Get Started</h1>
 			<p>Create your user account</p>
 
@@ -152,7 +152,7 @@ function validateForm()
 
 			<div class="button-container">
 				<router-link class="btn" to="/login">Back</router-link>
-				<input class="btn" type="submit" value="Register User" :disabled="!formValid">
+				<input class="btn" type="button" @click.prevent="onFormSubmit" value="Register User" :disabled="!formValid">
 			</div>
 		</form>
 	</div>
@@ -168,24 +168,24 @@ function validateForm()
 	display:          flex;
 	align-items:      center;
 	justify-content:  center;
+
+	box-shadow:       inset 0 0 25vw 20px var(--col-main-purple);
 }
 
 form {
-	display:            flex;
-	flex-direction:     column;
+	display:          flex;
+	flex-direction:   column;
 
-	background-color:   white;
-	padding:            2.5rem;
+	background-color: var(--col-body-light-100);
+	color:            var(--col-text-light);
+	padding:          2.5rem;
 
-	color:              black;
+	border-radius:    10px;
+	min-width:        min(55ch, 95%);
 
-	border-radius:      10px;
-
-	box-shadow:         0 0 10px 2px rgba(0, 0, 0, 0.75);
-	-webkit-box-shadow: 0 0 10px 2px rgba(0, 0, 0, 0.75);
-	-moz-box-shadow:    0 0 10px 2px rgba(0, 0, 0, 0.75);
-
-	min-width:          min(55ch, 95%);
+	box-shadow:         0 0 10px 2px rgba(0, 0, 0, 0.5);
+	-webkit-box-shadow: 0 0 10px 2px rgba(0, 0, 0, 0.5);
+	-moz-box-shadow:    0 0 10px 2px rgba(0, 0, 0, 0.5);
 }
 
 h1,

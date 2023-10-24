@@ -136,16 +136,16 @@ form {
 	display:            flex;
 	flex-direction:     column;
 
-	background-color:   white;
+	background-color:   var(--col-body-light-100);
+	color:              var(--col-text-light);
 	padding:            2.5rem;
 
-	color:              black;
-
 	border-radius:      10px;
+	min-width:          min(45ch, 95%);
 
-	box-shadow:         0 0 10px 2px rgba(0, 0, 0, 0.75);
-	-webkit-box-shadow: 0 0 10px 2px rgba(0, 0, 0, 0.75);
-	-moz-box-shadow:    0 0 10px 2px rgba(0, 0, 0, 0.75);
+	box-shadow:         0 0 10px 2px rgba(0, 0, 0, 0.5);
+	-webkit-box-shadow: 0 0 10px 2px rgba(0, 0, 0, 0.5);
+	-moz-box-shadow:    0 0 10px 2px rgba(0, 0, 0, 0.5);
 }
 
 h1,
@@ -155,28 +155,5 @@ p {
 
 p {
 	margin-bottom: 2rem;
-}
-
-
-em {
-	display:    block;
-	height: 2rem;
-
-	margin-top: 0.25rem;
-	margin-bottom: 1rem;
-
-	font-style: normal;
-	font-size: 0.9rem;
-	font-weight: bold;
-
-	color: var(--col-accent-red)
-}
-
-input[type="email"],
-input[type="text"],
-input[type="password"] {
-	padding: 0.5rem 0.75rem;
-	border: none;
-	outline: none;
 }
 </style>
