@@ -49,6 +49,7 @@ button:disabled {
 
 @media (prefers-color-scheme: light) {
 	button {
+		color:            var(--col-text-dark);
 		background-color: var(--col-main-purple);
 		box-shadow:       0 2px 2px 0 rgba(0, 0, 0, 0.45);
 
@@ -61,7 +62,6 @@ button:disabled {
 	}
 
 	button:disabled {
-		color:            var(--col-text-dark);
 		background-color: var(--col-accent-violet-nt);
 		box-shadow:       none;
 	}
