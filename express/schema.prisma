@@ -91,10 +91,11 @@ model Attachment {
 }
 
 model Team {
-	id       Int       @id @default(autoincrement())
-	name     String    @unique @db.VarChar()
-	users    User[]
-	captures Capture[]
+	id         Int       @id @default(autoincrement())
+	name       String    @unique @db.VarChar(40)
+	inviteCode String    @unique @db.Char(8)
+	users      User[]
+	captures   Capture[]
 
 	@@map("teams")
 }
