@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import * as feather from 'feather-icons';
+import FormError from '@/components/form/FormError.vue';
 
 const emit = defineEmits(['update:modelValue', 'input']);
 
@@ -31,24 +32,10 @@ const props = defineProps<{
 			@input="$emit('update:modelValue', ($event.target as HTMLInputElement).value); emit('input')"
 		>
 	</div>
-	<em v-if="props.error !== undefined">{{ props.error }}</em>
+	<FormError :error="props.error" />
 </template>
 
 <style scoped>
-em {
-	display:       block;
-	height:        2rem;
-
-	margin-top:    0.25rem;
-	margin-bottom: 1rem;
-
-	font-style:    normal;
-	font-size:     0.9rem;
-	font-weight:   bold;
-
-	color:         var(--col-accent-red)
-}
-
 input {
 	flex:             1;
 	padding:          0.5rem 0.75rem;
