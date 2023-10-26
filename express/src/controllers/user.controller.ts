@@ -1,11 +1,10 @@
-import { Request, Response } from 'express';
+import { NextFunction, Request, Response } from 'express';
 import { APIResponse } from '../interfaces/APIResponse';
 import client from '../Client';
 import { Role } from '@prisma/client';
 import { generatePasswordHash } from '../auth/password';
 import { emailTaken, validEmail, validEmailLength } from '../utils/email';
 import { usernameTaken, validUsernameLength } from '../utils/username';
-import { login } from './session.controller';
 
 /**
  * Allows a non-authenticated client to create a user account. If no admin user accounts exist when the
@@ -13,8 +12,9 @@ import { login } from './session.controller';
  *
  * @param req The HTTP request.
  * @param res The HTTP response, implements the APIResponse interface.
+ * @param next The next middleware function to call.
  */
-export async function register(req: Request, res: Response<APIResponse>)
+export async function register(req: Request, res: Response<APIResponse>, next: NextFunction)
 {
 	let errors: {
 		email: string | undefined,
@@ -123,9 +123,9 @@ export async function register(req: Request, res: Response<APIResponse>)
 				username: req.body.username,
 				passwordHash: passwordHash
 			}
-		}).then(async () =>
+		}).then(() =>
 		{
-			return await login(req, res);
+			next();
 		});
 	});
 }
@@ -154,11 +154,33 @@ export async function updatePassword(req: Request, res: Response<APIResponse>)
  */
 export async function updateRole(req: Request, res: Response<APIResponse>)
 {
-	res.status(200).json({
-		success: false,
+	/* Validating the role body parameter.
+	 */
+	if (req.body['role'] !== 'ADMIN' && req.body['role'] !== 'USER')
+	{
+		res.status(400).json({
+			success: false,
+		});
+		return;
+	}
+
+	await client.user.update({
+		where: {
+			id: parseInt(req.params['id']),
+		},
 		data: {
-			'controller method': 'updateRole'
+			role: req.body['role'],
 		}
+	}).then(() =>
+	{
+		res.status(200).json({
+			success: true,
+		});
+	}).catch(() =>
+	{
+		res.status(500).json({
+			success: false,
+		});
 	});
 }
 
@@ -265,5 +287,24 @@ export async function getPublicUserData(req: Request, res: Response<APIResponse>
 				],
 			});
 		}
+	});
+}
+
+export async function getAll(req: Request, res: Response<APIResponse>)
+{
+	await client.user.findMany({
+		select: {
+			id: true,
+			username: true,
+			role: true,
+		}
+	}).then((users) =>
+	{
+		res.status(200).json({
+			success: true,
+			data: {
+				users: users,
+			}
+		});
 	});
 }
