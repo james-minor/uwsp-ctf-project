@@ -45,6 +45,8 @@ fetchUsers();
 				modelValue: user['role'],
 			},
 		]"
+
+		@refresh="fetchUsers"
 	/>
 
 	<EmptyListFooter v-else>No Posted Users</EmptyListFooter>
