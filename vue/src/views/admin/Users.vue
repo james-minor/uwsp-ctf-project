@@ -3,6 +3,7 @@ import fetchData from '@/api/fetchData';
 import { ref } from 'vue';
 import ModelEditor from '@/components/admin/ModelEditor.vue';
 import ViewHeader from '@/components/admin/ViewHeader.vue';
+import EmptyListFooter from '@/components/admin/EmptyListFooter.vue';
 
 const users = ref<[]>([]);
 
@@ -23,6 +24,7 @@ fetchUsers();
 	<ViewHeader>Manage Users</ViewHeader>
 
 	<ModelEditor
+		v-if="users.length > 0"
 		v-for="user in users"
 		model="user"
 
@@ -44,6 +46,8 @@ fetchUsers();
 			},
 		]"
 	/>
+
+	<EmptyListFooter v-else>No Posted Users</EmptyListFooter>
 </template>
 
 <style scoped>

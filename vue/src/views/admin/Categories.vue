@@ -4,6 +4,7 @@ import fetchData from '@/api/fetchData';
 import AppButton from '@/components/buttons/AppButton.vue';
 import ModelEditor from '@/components/admin/ModelEditor.vue';
 import ViewHeader from '@/components/admin/ViewHeader.vue';
+import EmptyListFooter from '@/components/admin/EmptyListFooter.vue';
 
 const categories = ref<[]>([]);
 const newCategoryTitle = ref<string>('');
@@ -62,7 +63,7 @@ fetchCategories();
 		@refresh="fetchCategories"
 	/>
 
-	<span class="empty-list" v-else>No Posted Categories</span>
+	<EmptyListFooter v-else>No Posted Categories</EmptyListFooter>
 </template>
 
 <style scoped>

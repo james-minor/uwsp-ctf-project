@@ -5,6 +5,7 @@ import { useAnnouncementStore } from '@/stores/announcement';
 import AppButton from '@/components/buttons/AppButton.vue';
 import ModelEditor from '@/components/admin/ModelEditor.vue';
 import ViewHeader from '@/components/admin/ViewHeader.vue';
+import EmptyListFooter from '@/components/admin/EmptyListFooter.vue';
 
 const announcementStore = useAnnouncementStore();
 
@@ -50,22 +51,17 @@ async function postAnnouncement()
 				type: 'textarea',
 				editable: true,
 				initialValue: announcement['body'],
-				modelValue: announcement['body'],
+				modelValue: announcement['body']
 			}
 		]"
 
 		@refresh="announcementStore.fetchAnnouncements()"
 	/>
 
-	<span class="announcements-empty" v-else>No Posted Announcements</span>
+	<EmptyListFooter v-else>No Posted Announcements</EmptyListFooter>
 </template>
 
 <style scoped>
-.announcements-empty {
-	width:      100%;
-	text-align: center;
-}
-
 form {
 	display:        flex;
 	flex-direction: column;

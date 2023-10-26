@@ -3,6 +3,7 @@ import fetchData from '@/api/fetchData';
 import { ref } from 'vue';
 import ModelEditor from '@/components/admin/ModelEditor.vue';
 import ViewHeader from '@/components/admin/ViewHeader.vue';
+import EmptyListFooter from '@/components/admin/EmptyListFooter.vue';
 
 const teams = ref<[]>([]);
 
@@ -23,6 +24,7 @@ fetchTeams();
 	<ViewHeader>Manage Teams</ViewHeader>
 
 	<ModelEditor
+		v-if="teams.length > 0"
 		v-for="team in teams"
 		model="team"
 
@@ -37,6 +39,8 @@ fetchTeams();
 			},
 		]"
 	/>
+
+	<EmptyListFooter>No Posted Teams</EmptyListFooter>
 </template>
 
 <style scoped>
