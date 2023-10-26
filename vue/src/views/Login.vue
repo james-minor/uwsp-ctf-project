@@ -98,17 +98,21 @@ function validateForm()
 
 			<FormInput
 				name="email"
-				:icon="feather.icons.mail"
-				:on-value-changed="onEmailInput"
 				type="email"
+				v-model="formData.email"
+				:icon="feather.icons.mail"
 				:error="formErrors.email"
+
+				@input="validateForm"
 			/>
 			<FormInput
 				name="password"
-				:icon="feather.icons.lock"
-				:on-value-changed="onPasswordInput"
 				type="password"
+				v-model="formData.password"
+				:icon="feather.icons.lock"
 				:error="formErrors.password"
+
+				@input="validateForm"
 			/>
 
 			<span>OR</span>

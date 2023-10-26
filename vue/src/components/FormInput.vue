@@ -1,66 +1,77 @@
 <script setup lang="ts">
 import * as feather from 'feather-icons';
-import { ref } from 'vue';
 
-const value = ref<string>('');
+const emit = defineEmits(['update:modelValue', 'input']);
 
-defineProps<{
-	name: string,                               // The name of the input field.
-	type: string,                               // The type of the input field
-	error: string,                              // The error message associated with the input.
-	icon?: feather.FeatherIcon,                 // The icon for the input field.
-	onValueChanged: (value: string) => void,    // Callback for when the input text is modified.
-	maxLength?: number,                         // The maximum length of the input field.
+const props = defineProps<{
+	modelValue: string,                 // The v-model value.
+
+	name: string,                       // The name of the input field.
+	type: string,                       // The type of the input field.
+	error?: string,                     // The error message associated with the input.
+	icon?: feather.FeatherIcon,         // The icon for the input field.
+	maxLength?: number,                 // The maximum length of the input field.
+	disabled?: boolean,                 // Is the input disabled from editing?
 }>();
+
+// TODO: we should have a non-visible label for screen readers.
 </script>
 
 <template>
-	<div class="input-container">
-		<div class="icon" v-html="icon?.toSvg({ stroke: 'white' })" />
+	<div :class="['input-container', props.disabled ? 'disabled' : '']">
+		<div v-if="props.icon" class="icon" v-html="props.icon?.toSvg({ stroke: 'white' })"/>
 		<input
-			:name="name"
-			:type="type"
-			:placeholder="name[0].toUpperCase() + name.substring(1)"
-			@input="onValueChanged(value)"
-			v-model="value"
-			:maxlength="maxLength"
+			:name="props.name"
+			:type="props.type"
+			:placeholder="props.name[0].toUpperCase() + props.name.substring(1)"
+			:maxlength="props.maxLength"
+			:disabled="props.disabled"
+
+			:value="modelValue"
+			@input="$emit('update:modelValue', ($event.target as HTMLInputElement).value); emit('input')"
 		>
 	</div>
-	<em>{{ error }}</em>
+	<em v-if="props.error !== undefined">{{ props.error }}</em>
 </template>
 
 <style scoped>
 em {
-	display:    block;
-	height: 2rem;
+	display:       block;
+	height:        2rem;
 
-	margin-top: 0.25rem;
+	margin-top:    0.25rem;
 	margin-bottom: 1rem;
 
-	font-style: normal;
-	font-size: 0.9rem;
-	font-weight: bold;
+	font-style:    normal;
+	font-size:     0.9rem;
+	font-weight:   bold;
 
-	color: var(--col-accent-red)
+	color:         var(--col-accent-red)
 }
 
-input[type="email"],
-input[type="text"],
-input[type="password"] {
-	padding: 0.5rem 0.75rem;
-	border: none;
-	outline: none;
+input {
+	flex:             1;
+	padding:          0.5rem 0.75rem;
+	border:           none;
+	outline:          none;
+
+	color:            var(--col-text-dark);
+	background-color: var(--col-body-dark-100);
+}
+
+input:disabled {
+	color: var(--col-body-dark-300);
+	background-color: var(--col-body-dark-200);
 }
 
 .input-container {
-	display: grid;
-	grid-template-columns: auto 1fr;
-	grid-template-rows: 1fr;
+	display:        flex;
+	flex-direction: row;
 
-	border: black thin solid;
-	border-radius: 5px;
+	border:         2px solid var(--col-body-dark-200);
+	border-radius:  6px;
 
-	overflow: hidden;
+	overflow:       hidden;
 }
 
 .input-container:focus-within {
@@ -68,13 +79,21 @@ input[type="password"] {
 }
 
 .icon {
-	aspect-ratio: 1;
+	aspect-ratio:     1;
 	background-color: var(--col-main-purple);
 
-	padding: 0.65rem;
+	padding:          0.65rem;
 
-	display: flex;
-	align-items: center;
-	justify-content: center;
+	display:          flex;
+	align-items:      center;
+	justify-content:  center;
+}
+
+.input-container.disabled {
+	border-color: transparent;
+}
+
+.input-container.disabled .icon {
+	filter: saturate(0%);
 }
 </style>

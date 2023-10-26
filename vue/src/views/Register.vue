@@ -10,13 +10,28 @@ const formData = ref({
 	email: '',
 	username: '',
 	password: '',
+	teamName: '',
+	inviteCode: '',
 });
 
 const formErrors = ref({
 	email: '',
 	username: '',
 	password: '',
+	teamName: '',
+	inviteCode: '',
 });
+
+const teams = ref<[]>([]);
+
+fetchData('teams', 'GET')
+	.then(async (response) =>
+	{
+		let json = await response.json();
+		teams.value = json.data['teams'];
+	});
+
+const newTeam = ref<boolean>(false);
 
 const formValid = ref<boolean>(false);
 
@@ -31,6 +46,8 @@ async function onFormSubmit()
 			email: formData.value.email,
 			username: formData.value.username,
 			password: formData.value.password,
+			teamName: formData.value.teamName,
+			inviteCode: formData.value.inviteCode,
 		})
 		.then((res) =>
 		{
@@ -38,22 +55,38 @@ async function onFormSubmit()
 		})
 		.then((res) =>
 		{
+			console.log(res);
+
 			if (res.errors !== undefined)
 			{
+				// TODO: god this .concat business is hacky, maybe we should change the error schema?
+				// TODO: trying to join an existing team appears to NOT work?
+				// TODO: make sure that users REQUIRE a team (make teamId not nullable).
+
 				formErrors.value.email = res.errors.filter((error: any) =>
 				{
 					return error.key === 'email';
-				})[0].message;
+				}).concat([{ message: '' }])[0].message;
 
 				formErrors.value.username = res.errors.filter((error: any) =>
 				{
 					return error.key === 'username';
-				})[0].message;
+				}).concat([{ message: '' }])[0].message;
 
 				formErrors.value.password = res.errors.filter((error: any) =>
 				{
 					return error.key === 'password';
-				})[0].message;
+				}).concat([{ message: '' }])[0].message;
+
+				formErrors.value.teamName = res.errors.filter((error: any) =>
+				{
+					return error.key === 'teamName';
+				}).concat([{ message: '' }])[0].message;
+
+				formErrors.value.inviteCode = res.errors.filter((error: any) =>
+				{
+					return error.key === 'inviteCode';
+				}).concat([{ message: '' }])[0].message;
 			}
 
 			/* Storing the session UUID.
@@ -67,24 +100,6 @@ async function onFormSubmit()
 				}
 			}
 		});
-}
-
-function onEmailInput(value: string)
-{
-	formData.value.email = value;
-	validateForm();
-}
-
-function onUsernameInput(value: string)
-{
-	formData.value.username = value;
-	validateForm();
-}
-
-function onPasswordInput(value: string)
-{
-	formData.value.password = value;
-	validateForm();
 }
 
 function validateForm()
@@ -129,26 +144,69 @@ function validateForm()
 			<FormInput
 				name="email"
 				:icon="feather.icons.mail"
-				:on-value-changed="onEmailInput"
 				type="email"
 				:error="formErrors.email"
 				:max-length="75"
+
+				v-model="formData.email"
+				@input="validateForm"
 			/>
 			<FormInput
 				name="username"
 				:icon="feather.icons.user"
-				:on-value-changed="onUsernameInput"
 				type="text"
 				:error="formErrors.username"
 				:max-length="30"
+
+				v-model="formData.username"
+				@input="validateForm"
 			/>
 			<FormInput
 				name="password"
 				:icon="feather.icons.lock"
-				:on-value-changed="onPasswordInput"
 				type="password"
 				:error="formErrors.password"
+
+				v-model="formData.password"
+				@input="validateForm"
 			/>
+
+			<label for="team-type">
+				Create a new team?
+			</label>
+			<input type="checkbox" name="team-type" id="team-type" v-model="newTeam">
+
+			<FormInput
+				v-if="newTeam"
+
+				name="team-name"
+				:icon="feather.icons.users"
+				type="text"
+				:error="formErrors.teamName"
+				:max-length="40"
+
+				v-model="formData.teamName"
+				@input="validateForm"
+			/>
+
+			<div v-else>
+				<select name="team-name" id="team-name" v-model="formData.teamName">
+					<option v-for="team in teams" :value="team['name']">
+						{{ team['name'] }}
+					</option>
+				</select>
+
+				<FormInput
+					name="invite-code"
+					:icon="feather.icons.key"
+					type="text"
+					:error="formErrors.inviteCode"
+					:max-length="8"
+
+					v-model="formData.inviteCode"
+					@input="validateForm"
+				/>
+			</div>
 
 			<div class="button-container">
 				<router-link class="btn" to="/login">Back</router-link>
@@ -237,6 +295,10 @@ p {
 .btn:disabled {
 	cursor:  not-allowed;
 	opacity: 0.65;
+}
+
+select {
+	width: 100%;
 }
 
 </style>
