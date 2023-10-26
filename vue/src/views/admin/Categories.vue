@@ -3,6 +3,7 @@ import { ref } from 'vue';
 import fetchData from '@/api/fetchData';
 import AppButton from '@/components/buttons/AppButton.vue';
 import ModelEditor from '@/components/admin/ModelEditor.vue';
+import ViewHeader from '@/components/admin/ViewHeader.vue';
 
 const categories = ref<[]>([]);
 const newCategoryTitle = ref<string>('');
@@ -16,7 +17,6 @@ async function fetchCategories()
 			categories.value = json.data['categories'];
 		});
 }
-fetchCategories();
 
 async function postCategory()
 {
@@ -30,10 +30,11 @@ async function postCategory()
 	await fetchCategories();
 }
 
+fetchCategories();
 </script>
 
 <template>
-	<h1>Manage Categories</h1>
+	<ViewHeader>Manage Categories</ViewHeader>
 
 	<form>
 		<input type="text" maxlength="15" name="title" v-model="newCategoryTitle">
@@ -65,16 +66,10 @@ async function postCategory()
 </template>
 
 <style scoped>
-h1 {
-	align-self:    start;
-	margin-left:   5%;
-	margin-bottom: 1rem;
-}
-
 form {
 	width:         90%;
 
-	margin:        1rem 5%;
+	margin-bottom: 2rem;
 
 	border:        thin solid white;
 	border-radius: 5px;

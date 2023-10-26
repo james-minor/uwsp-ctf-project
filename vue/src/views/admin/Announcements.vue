@@ -4,6 +4,7 @@ import fetchData from '@/api/fetchData';
 import { useAnnouncementStore } from '@/stores/announcement';
 import AppButton from '@/components/buttons/AppButton.vue';
 import ModelEditor from '@/components/admin/ModelEditor.vue';
+import ViewHeader from '@/components/admin/ViewHeader.vue';
 
 const announcementStore = useAnnouncementStore();
 
@@ -23,7 +24,7 @@ async function postAnnouncement()
 </script>
 
 <template>
-	<h1>Manage Announcements</h1>
+	<ViewHeader>Manage Announcements</ViewHeader>
 	<form>
 		<textarea
 			v-model="announcementBody"
@@ -60,16 +61,6 @@ async function postAnnouncement()
 </template>
 
 <style scoped>
-h1 {
-	align-self:    start;
-	margin-left:   5%;
-	margin-bottom: 1rem;
-}
-
-li {
-	list-style-type: none;
-}
-
 .announcements-empty {
 	width:      100%;
 	text-align: center;
@@ -80,13 +71,7 @@ form {
 	flex-direction: column;
 	width:          90%;
 
-
 	margin-bottom:  2rem;
-}
-
-input[type="submit"] {
-	align-self: end;
-	padding:    0.5rem 1rem;
 }
 
 textarea {
@@ -104,7 +89,7 @@ textarea {
 }
 
 .character-count {
-	height:        0.85rem;
+	height: 0.85rem;
 }
 
 .character-count > span {

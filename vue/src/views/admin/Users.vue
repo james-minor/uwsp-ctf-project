@@ -2,6 +2,7 @@
 import fetchData from '@/api/fetchData';
 import { ref } from 'vue';
 import ModelEditor from '@/components/admin/ModelEditor.vue';
+import ViewHeader from '@/components/admin/ViewHeader.vue';
 
 const users = ref<[]>([]);
 
@@ -19,7 +20,7 @@ fetchUsers();
 </script>
 
 <template>
-	<h1>Manage Users</h1>
+	<ViewHeader>Manage Users</ViewHeader>
 
 	<ModelEditor
 		v-for="user in users"
