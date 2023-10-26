@@ -12,15 +12,18 @@ const emit = defineEmits<{
 }>();
 
 defineProps<{
-	currentlyEditing: boolean,  // Is the button group currently in edit mode?
+	currentlyEditing: boolean,      // Is the button group currently in edit mode?
+	noEditableFields?: boolean,     // Does the editor have any editable fields? If not this hides the edit button.
 }>();
 
 </script>
 
 <template>
-	<div>
-		<EditButton v-if="!currentlyEditing" @click="emit('toggle')"/>
-		<AppButton v-else @click="emit('toggle')" :icon="feather.icons['arrow-left']"/>
+	<div class="editor-controls">
+		<div v-if="noEditableFields === false">
+			<EditButton v-if="!currentlyEditing" @click="emit('toggle')"/>
+			<AppButton v-else @click="emit('toggle')" :icon="feather.icons['arrow-left']"/>
+		</div>
 
 		<DeleteButton v-if="!currentlyEditing" @click="emit('delete')"/>
 		<UploadButton v-else @click="emit('update')"/>
@@ -28,7 +31,7 @@ defineProps<{
 </template>
 
 <style scoped>
-	div {
+	.editor-controls {
 		display: flex;
 		column-gap: 1rem;
 	}
