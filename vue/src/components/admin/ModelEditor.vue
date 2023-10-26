@@ -17,7 +17,6 @@ type field = {
 	type: 'text' | 'textarea',      // The type of input the field should be.
 	editable: boolean,              // Is this field editable?
 	initialValue: string,           // The initial value of the field.
-	currentValue?: string,          // The current value of the field, this only needs to exist on editable fields.
 	maxLength?: number,             // The maximum string length for the input.
 	icon?: feather.FeatherIcon,     // The icon for the input. NOTE: Only visible if type === 'text'.
 }
