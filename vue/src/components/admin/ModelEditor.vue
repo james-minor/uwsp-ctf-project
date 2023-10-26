@@ -110,6 +110,21 @@ function updateModel()
 		});
 }
 
+/* Returns true if the editor has any editable fields.
+ */
+function hasEditableFields(): boolean
+{
+	for (let i = 0; i < editedFields.value.length; i++)
+	{
+		if (editedFields.value[i].editable)
+		{
+			return true;
+		}
+	}
+
+	return false;
+}
+
 resetEditedFields();  // Sets the initial value for the fields on template construction.
 </script>
 
@@ -143,6 +158,7 @@ resetEditedFields();  // Sets the initial value for the fields on template const
 		<div class="editor__footer">
 			<EditorControlGroup
 				:currently-editing="editMode"
+				:no-editable-fields="!hasEditableFields()"
 
 				@toggle="toggleEditMode"
 				@update="updateModel"
