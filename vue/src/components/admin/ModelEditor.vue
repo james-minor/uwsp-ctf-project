@@ -1,0 +1,219 @@
+<script setup lang="ts">
+import { ref } from 'vue';
+import fetchData from '@/api/fetchData';
+import * as feather from 'feather-icons';
+import EditorControlGroup from '@/components/admin/EditorControlGroup.vue';
+import FormInput from '@/components/FormInput.vue';
+import type { FeatherIcon } from 'feather-icons';
+
+const emit = defineEmits<{
+	(e: 'refresh'): void,   // Event fired when the model data is updated.
+}>();
+
+type field = {
+	modelValue: string,             // The v-model value.
+	name: string,                   // Field name, this should be a property on the model. Example: 'username'.
+	type: 'text' | 'textarea',      // The type of input the field should be.
+	editable: boolean,              // Is this field editable?
+	initialValue: string,           // The initial value of the field.
+	currentValue?: string,          // The current value of the field, this only needs to exist on editable fields.
+	maxLength?: number,             // The maximum string length for the input.
+	icon?: feather.FeatherIcon,     // The icon for the input. NOTE: Only visible if type === 'text'.
+}
+
+const props = defineProps<{
+	model: string,      // The model name the editor is modeling. Example: 'user'.
+	id: number,         // The ID of the model within the database table.
+	fields: field[],    // Array to hold the initial state for the visible fields for the model.
+}>();
+
+const editedFields = ref<field[]>(props.fields);
+
+const editMode = ref<boolean>(false);  // Is the editor currently in edit mode?
+
+/* Resets any edited field values to their initial state.
+ */
+function resetEditedFields()
+{
+	for (let i = 0; i < editedFields.value.length; i++)
+	{
+		editedFields.value[i].modelValue = props.fields[i].initialValue;
+	}
+}
+
+/* Handles going in and out of edit mode.
+ */
+function toggleEditMode()
+{
+	editMode.value = !editMode.value;
+
+	/* If exiting edit mode, we reset the edited field values to their initial state.
+	 */
+	if (!editMode.value)
+	{
+		resetEditedFields();
+	}
+}
+
+/* Handles the deletion of model data.
+ */
+async function deleteModel()
+{
+	await fetchData(`${props.model}/${props.id}`, 'DELETE')
+		.then(async (response) =>
+		{
+			let json = await response.json();
+			if (json['success'] !== true)
+			{
+				/* This should practically never show; however, in case there is an error this
+				 * acts as a fallback to give some sort of user feedback. If this is showing in production, something
+				 * is broken.
+				 */
+				resetEditedFields();
+				alert(`Could not delete ${props.model} ID: ${props.id}`);
+			}
+
+			emit('refresh');
+		});
+}
+
+/* Handles the updating of model data.
+ */
+function updateModel()
+{
+	/* Dynamically adding editable field current values to a body object to be sent to the API.
+	 */
+	let body: Record<string, any> = {};
+	for (let i = 0; i < editedFields.value.length; i++)
+	{
+		if (editedFields.value[i].editable)
+		{
+			body[editedFields.value[i].name.toString()] = editedFields.value[i].modelValue;
+		}
+	}
+
+	/* Sending data to the API.
+	 */
+	fetchData(`${props.model}/${props.id}`, 'PUT', body)
+		.then(async (response) =>
+		{
+			let json = await response.json();
+			if (json['success'] !== true)
+			{
+				resetEditedFields();
+				alert(`Could not update ${props.model} ID: ${props.id}`);
+			}
+
+			editMode.value = false;
+			emit('refresh');
+		});
+}
+
+resetEditedFields();  // Sets the initial value for the fields on template construction.
+</script>
+
+<template>
+	<div class="editor">
+		<div class="editor__fields">
+			<div v-for="field in editedFields" :class="['field-wrapper', field.type]">
+				<textarea
+					v-if="field.type === 'textarea'"
+
+					v-model="field.modelValue"
+
+					:placeholder="field.modelValue"
+					:disabled="(!field.editable || !editMode)"
+					:maxlength="field.maxLength"
+				></textarea>
+
+				<FormInput
+					v-if="field.type === 'text'"
+					type="text"
+
+					v-model="field.modelValue"
+
+					:icon="field.icon as FeatherIcon"
+					:name="field.name"
+					:max-length="field.maxLength"
+					:disabled="(!field.editable || !editMode)"
+				/>
+			</div>
+		</div>
+
+		<div class="editor__footer">
+			<EditorControlGroup
+				:currently-editing="editMode"
+
+				@toggle="toggleEditMode"
+				@update="updateModel"
+				@delete="deleteModel"
+			/>
+		</div>
+	</div>
+</template>
+
+<style scoped>
+.editor {
+	width:          90%;
+
+	display:        flex;
+	flex-direction: column;
+
+	row-gap:        1rem;
+	padding:        1rem;
+
+	border:         solid 2px var(--col-body-dark-200);
+	border-radius:  5px;
+
+	margin-top:     1rem;
+	margin-bottom:  1rem;
+}
+
+.editor__fields {
+	display:               grid;
+	grid-template-columns: repeat(2, 1fr);
+	grid-auto-rows:        min-content;
+
+	grid-row-gap:          1rem;
+	grid-column-gap:       1rem;
+
+	width:                 100%;
+}
+
+.field-wrapper.text {
+	width:       100%;
+	grid-column: span 1;
+}
+
+.field-wrapper.text:only-of-type {
+	grid-column: span 2;
+}
+
+.field-wrapper.textarea {
+	width:       100%;
+	grid-column: span 2;
+}
+
+.field-wrapper.text input {
+	width: 100%;
+}
+
+.field-wrapper.textarea textarea {
+	width:  100%;
+	height: 5rem;
+	resize: none;
+}
+
+.editor__footer {
+	display:         flex;
+	justify-content: end;
+}
+
+@media (prefers-color-scheme: light) {
+	.editor {
+		background-color: var(--col-body-light-100);
+		box-shadow:       0 4px 4px 0 rgba(0, 0, 0, 0.45);
+		border-color:     transparent;
+	}
+}
+</style>
