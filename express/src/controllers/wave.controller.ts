@@ -63,11 +63,20 @@ export async function update(req: Request, res: Response<APIResponse>)
 
 export async function remove(req: Request, res: Response<APIResponse>)
 {
-	res.status(200).json({
-		success: false,
-		data: {
-			'controller method': 'remove'
-		}
+	await client.wave.delete({
+		where: {
+			id: parseInt(req.params['id']),
+		},
+	}).then(() =>
+	{
+		res.status(200).json({
+			success: true,
+		});
+	}).catch(() =>
+	{
+		res.status(400).json({
+			success: false,
+		});
 	});
 }
 
