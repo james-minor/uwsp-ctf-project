@@ -178,7 +178,7 @@ resetEditedFields();  // Sets the initial value for the fields on template const
 	padding:        1rem;
 
 	border:         solid 2px var(--col-body-dark-200);
-	border-radius:  5px;
+	border-radius:  6px;
 
 	margin-top:     1rem;
 	margin-bottom:  1rem;
