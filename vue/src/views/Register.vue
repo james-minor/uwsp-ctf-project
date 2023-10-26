@@ -5,6 +5,7 @@ import * as feather from 'feather-icons';
 import FormInput from '@/components/FormInput.vue';
 import { useSessionStore } from '@/stores/session';
 import fetchData from '@/api/fetchData';
+import AppButton from '@/components/buttons/AppButton.vue';
 
 const formData = ref({
 	email: '',
@@ -210,7 +211,7 @@ function validateForm()
 
 			<div class="button-container">
 				<router-link class="btn" to="/login">Back</router-link>
-				<input class="btn" type="button" @click.prevent="onFormSubmit" value="Register User" :disabled="!formValid">
+				<AppButton @click.prevent="onFormSubmit" :disabled="!formValid">Register User</AppButton>
 			</div>
 		</form>
 	</div>
@@ -231,15 +232,15 @@ function validateForm()
 }
 
 form {
-	display:          flex;
-	flex-direction:   column;
+	display:            flex;
+	flex-direction:     column;
 
-	background-color: var(--col-body-light-100);
-	color:            var(--col-text-light);
-	padding:          2.5rem;
+	background-color:   var(--col-body-light-100);
+	color:              var(--col-text-light);
+	padding:            2.5rem;
 
-	border-radius:    10px;
-	min-width:        min(55ch, 95%);
+	border-radius:      10px;
+	min-width:          min(55ch, 95%);
 
 	box-shadow:         0 0 10px 2px rgba(0, 0, 0, 0.5);
 	-webkit-box-shadow: 0 0 10px 2px rgba(0, 0, 0, 0.5);
@@ -287,9 +288,7 @@ p {
 }
 
 .btn:nth-child(2) {
-	justify-self:     end;
-	background-color: var(--col-main-purple);
-	color:            white;
+	justify-self: end;
 }
 
 .btn:disabled {
