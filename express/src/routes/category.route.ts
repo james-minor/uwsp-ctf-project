@@ -1,6 +1,6 @@
 import { Router } from 'express';
 import * as categoryController from '../controllers/category.controller';
-import adminGuard from '../auth/admin.guard';
+import { adminGuard } from '../auth/guard';
 
 module.exports = function (router: Router)
 {

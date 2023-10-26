@@ -1,6 +1,6 @@
 import { Router } from 'express';
 import * as sessionController from '../controllers/session.controller';
-import userGuard from '../auth/user.guard';
+import { userGuard } from '../auth/guard';
 
 module.exports = function (router: Router)
 {

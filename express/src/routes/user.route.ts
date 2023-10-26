@@ -2,8 +2,8 @@ import { Router } from 'express';
 import * as userController from '../controllers/user.controller';
 import * as teamController from '../controllers/team.controller';
 import * as sessionController from '../controllers/session.controller';
-import userGuard from '../auth/user.guard';
-import adminGuard from '../auth/admin.guard';
+import { userGuard } from '../auth/guard';
+import { adminGuard } from '../auth/guard';
 
 module.exports = function (router: Router)
 {
