@@ -60,7 +60,7 @@ input {
 }
 
 input:disabled {
-	color: var(--col-body-dark-300);
+	color:            var(--col-body-dark-300);
 	background-color: var(--col-body-dark-200);
 }
 
@@ -90,10 +90,26 @@ input:disabled {
 }
 
 .input-container.disabled {
-	border-color: transparent;
+	border-color: var(--col-body-dark-200);
 }
 
 .input-container.disabled .icon {
 	filter: saturate(0%);
+}
+
+@media (prefers-color-scheme: light) {
+	input {
+		color: var(--col-text-light);
+		background-color: var(--col-body-light-100);
+	}
+
+	input:disabled {
+		color: var(--col-body-light-300);
+		background-color: var(--col-body-light-200);
+	}
+
+	.input-container.disabled {
+		border-color: var(--col-body-light-200);
+	}
 }
 </style>
