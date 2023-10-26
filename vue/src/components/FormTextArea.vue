@@ -43,6 +43,7 @@ em {
 
 textarea {
 	width: 100%;
+	min-height: 7rem;
 	resize: none;
 
 	padding:          0.5rem 0.75rem;
@@ -62,5 +63,18 @@ textarea:disabled {
 
 textarea:focus-visible {
 	outline: var(--col-accent-violet-nt) solid 2px;
+}
+
+@media (prefers-color-scheme: light) {
+	textarea {
+		color: var(--col-text-light);
+		background-color: var(--col-body-light-100);
+	}
+
+	textarea:disabled {
+		color: var(--col-body-light-300);
+		background-color: var(--col-body-light-200);
+		border-color: var(--col-body-light-200);
+	}
 }
 </style>
