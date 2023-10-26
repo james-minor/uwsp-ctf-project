@@ -5,6 +5,7 @@ import FormInput from '@/components/FormInput.vue';
 import router from '@/router/router';
 import { useSessionStore } from '@/stores/session';
 import fetchData from '@/api/fetchData';
+import AppButton from '@/components/buttons/AppButton.vue';
 
 const formData = ref({
 	email: '',
@@ -50,18 +51,6 @@ async function onFormSubmit()
 				})[0].message;
 			}
 		});
-}
-
-function onEmailInput(value: string)
-{
-	formData.value.email = value;
-	validateForm();
-}
-
-function onPasswordInput(value: string)
-{
-	formData.value.password = value;
-	validateForm();
 }
 
 function validateForm()
@@ -115,11 +104,9 @@ function validateForm()
 				@input="validateForm"
 			/>
 
-			<span>OR</span>
+			<AppButton :disabled="!formValid" @click.prevent="onFormSubmit">Login</AppButton>
 
 			<router-link to="/register">Create a new account</router-link>
-
-			<input class="btn" type="submit" value="Login" :disabled="!formValid">
 		</form>
 	</div>
 </template>
@@ -134,6 +121,8 @@ function validateForm()
 	display:          flex;
 	align-items:      center;
 	justify-content:  center;
+
+	box-shadow:       inset 0 0 25vw 20px var(--col-main-purple);
 }
 
 form {
@@ -159,5 +148,10 @@ p {
 
 p {
 	margin-bottom: 2rem;
+}
+
+a {
+	margin-top: 1rem;
+	text-align: center;
 }
 </style>
