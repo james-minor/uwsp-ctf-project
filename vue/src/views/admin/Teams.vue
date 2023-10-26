@@ -40,7 +40,7 @@ fetchTeams();
 		]"
 	/>
 
-	<EmptyListFooter>No Posted Teams</EmptyListFooter>
+	<EmptyListFooter v-else>No Posted Teams</EmptyListFooter>
 </template>
 
 <style scoped>
