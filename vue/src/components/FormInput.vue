@@ -32,7 +32,7 @@ const props = defineProps<{
 			@input="$emit('update:modelValue', ($event.target as HTMLInputElement).value); emit('input')"
 		>
 	</div>
-	<FormError :error="props.error" />
+	<FormError :error="props.error"/>
 </template>
 
 <style scoped>
@@ -86,12 +86,12 @@ input:disabled {
 
 @media (prefers-color-scheme: light) {
 	input {
-		color: var(--col-text-light);
+		color:            var(--col-text-light);
 		background-color: var(--col-body-light-100);
 	}
 
 	input:disabled {
-		color: var(--col-body-light-300);
+		color:            var(--col-body-light-300);
 		background-color: var(--col-body-light-200);
 	}
 
