@@ -1,8 +1,8 @@
 <script setup lang="ts">
 import { ref } from 'vue';
 import fetchData from '@/api/fetchData';
-import CategoryEditor from '@/components/admin/CategoryEditor.vue';
 import AppButton from '@/components/buttons/AppButton.vue';
+import ModelEditor from '@/components/admin/ModelEditor.vue';
 
 const categories = ref<[]>([]);
 const newCategoryTitle = ref<string>('');
@@ -37,20 +37,30 @@ async function postCategory()
 
 	<form>
 		<input type="text" maxlength="15" name="title" v-model="newCategoryTitle">
-
 		<AppButton :disabled="newCategoryTitle.length === 0" @click="postCategory">POST</AppButton>
 	</form>
 
-	<CategoryEditor
+	<ModelEditor
 		v-if="categories.length > 0"
-		v-for="(category) in categories"
+		v-for="category in categories"
+		model="category"
+
 		:key="category['id']"
-
 		:id="category['id']"
-		:title="category['title']"
+		:fields="[
+			{
+				name: 'title',
+				type: 'text',
+				editable: true,
+				initialValue: category['title'],
+				modelValue: category['title'],
+				maxLength: 15,
+			}
+		]"
 
-		@refresh="fetchCategories()"
+		@refresh="fetchCategories"
 	/>
+
 	<span class="empty-list" v-else>No Posted Categories</span>
 </template>
 
