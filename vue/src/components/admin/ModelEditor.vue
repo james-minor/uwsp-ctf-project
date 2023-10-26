@@ -5,6 +5,7 @@ import * as feather from 'feather-icons';
 import EditorControlGroup from '@/components/admin/EditorControlGroup.vue';
 import FormInput from '@/components/FormInput.vue';
 import type { FeatherIcon } from 'feather-icons';
+import FormTextArea from '@/components/FormTextArea.vue';
 
 const emit = defineEmits<{
 	(e: 'refresh'): void,   // Event fired when the model data is updated.
@@ -116,15 +117,14 @@ resetEditedFields();  // Sets the initial value for the fields on template const
 	<div class="editor">
 		<div class="editor__fields">
 			<div v-for="field in editedFields" :class="['field-wrapper', field.type]">
-				<textarea
+				<FormTextArea
 					v-if="field.type === 'textarea'"
-
 					v-model="field.modelValue"
 
-					:placeholder="field.modelValue"
+					:name="field.name"
+					:max-length="field.maxLength"
 					:disabled="(!field.editable || !editMode)"
-					:maxlength="field.maxLength"
-				></textarea>
+				/>
 
 				<FormInput
 					v-if="field.type === 'text'"
