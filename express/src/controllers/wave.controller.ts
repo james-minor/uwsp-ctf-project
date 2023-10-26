@@ -29,12 +29,25 @@ export async function getAll(req: Request, res: Response<APIResponse>)
 
 export async function create(req: Request, res: Response<APIResponse>)
 {
-	res.status(200).json({
-		success: false,
+	// TODO: validate release date is a valid date string.
+	await client.wave.create({
 		data: {
-			'controller method': 'create'
+			releaseDate: req.body['releaseDate'],
 		}
-	});
+	})
+		.then(() =>
+		{
+			res.status(200).json({
+				success: true,
+			});
+		})
+		.catch(() =>
+		{
+			res.status(400).json({
+				success: false,
+			});
+		});
+	;
 }
 
 export async function update(req: Request, res: Response<APIResponse>)
