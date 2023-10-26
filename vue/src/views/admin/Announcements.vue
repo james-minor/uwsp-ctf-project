@@ -1,9 +1,9 @@
 <script setup lang="ts">
-import AnnouncementEditor from '@/components/admin/AnnouncementEditor.vue';
 import { ref } from 'vue';
 import fetchData from '@/api/fetchData';
 import { useAnnouncementStore } from '@/stores/announcement';
 import AppButton from '@/components/buttons/AppButton.vue';
+import ModelEditor from '@/components/admin/ModelEditor.vue';
 
 const announcementStore = useAnnouncementStore();
 
@@ -36,19 +36,26 @@ async function postAnnouncement()
 		<AppButton class="post" :disabled="announcementBody.length === 0" @click="postAnnouncement">POST</AppButton>
 	</form>
 
-	<AnnouncementEditor
+	<ModelEditor
 		v-if="announcementStore.announcements.length > 0"
-		v-for="(announcement) in announcementStore.announcements"
+		v-for="announcement in announcementStore.announcements"
+		model="announcement"
+
 		:key="announcement['id']"
-
 		:id="announcement['id']"
-		:author-username="announcement['author']['username']"
-		:body="announcement['body']"
-		:creation-date="announcement['creationDate']"
+		:fields="[
+			{
+				name: 'body',
+				type: 'textarea',
+				editable: true,
+				initialValue: announcement['body'],
+				modelValue: announcement['body'],
+			}
+		]"
 
-		@update="announcementStore.fetchAnnouncements()"
-		@delete="announcementStore.fetchAnnouncements()"
+		@refresh="announcementStore.fetchAnnouncements()"
 	/>
+
 	<span class="announcements-empty" v-else>No Posted Announcements</span>
 </template>
 
