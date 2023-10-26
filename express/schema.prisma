@@ -19,7 +19,7 @@ model User {
 	username      String         @unique @db.VarChar(30)
 	passwordHash  String         @db.Char(60)
 	role          Role           @default(USER)
-	team          Team?          @relation(fields: [teamId], references: [id])
+	team          Team?          @relation(fields: [teamId], references: [id], onDelete: Cascade)
 	teamId        Int?
 	announcements Announcement[]
 	session       Session?
