@@ -1,9 +1,48 @@
 <script setup lang="ts">
+import fetchData from '@/api/fetchData';
+import { ref } from 'vue';
+import ModelEditor from '@/components/admin/ModelEditor.vue';
+
+const users = ref<[]>([]);
+
+async function fetchUsers()
+{
+	await fetchData('users', 'GET')
+		.then(async (response) =>
+		{
+			let json = await response.json();
+			users.value = json.data['users'];
+		});
+}
+fetchUsers();
 
 </script>
 
 <template>
-	Users
+	<h1>Manage Users</h1>
+
+	<ModelEditor
+		v-for="user in users"
+		model="user"
+
+		:id="user['id']"
+		:fields="[
+			{
+				name: 'username',
+				type: 'text',
+				editable: false,
+				initialValue: user['username'],
+				modelValue: user['username'],
+			},
+			{
+				name: 'role',
+				type: 'text',
+				editable: true,
+				initialValue: user['role'],
+				modelValue: user['role'],
+			},
+		]"
+	/>
 </template>
 
 <style scoped>
