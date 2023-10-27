@@ -39,8 +39,13 @@ fetchWaves();
 	<ViewHeader>Manage Release Waves</ViewHeader>
 
 	<form>
-		<FormInput type="text" name="releaseDate" v-model="newWaveReleaseDate" />
-		<AppButton :disabled="newWaveReleaseDate.length === 0" @click="postWave">POST</AppButton>
+		<FormInput type="text" name="releaseDate" v-model="newWaveReleaseDate"/>
+		<AppButton
+			:disabled="!new RegExp('^\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}(?:\.\\d+)?(?:Z|[+-]\\d{2}:\\d{2})$').test(newWaveReleaseDate)"
+			@click="postWave"
+		>
+			POST
+		</AppButton>
 	</form>
 
 	<ModelEditor
