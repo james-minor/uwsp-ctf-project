@@ -15,7 +15,21 @@ const props = defineProps<{
 	disabled?: boolean,                 // Is the input disabled from editing?
 }>();
 
-// TODO: we should have a non-visible label for screen readers.
+/* Creates a prettified placeholder string, splitting the name at any '-' characters.
+ */
+function createPlaceholderString(): string
+{
+	const words = props.name.split('-');
+
+	let placeholder = '';
+	for (let word of words)
+	{
+		placeholder += word[0].toUpperCase() + word.substring(1) + ' ';
+	}
+
+	return placeholder;
+}
+
 </script>
 
 <template>
@@ -24,7 +38,7 @@ const props = defineProps<{
 		<input
 			:name="props.name"
 			:type="props.type"
-			:placeholder="props.name[0].toUpperCase() + props.name.substring(1)"
+			:placeholder="createPlaceholderString()"
 			:maxlength="props.maxLength"
 			:disabled="props.disabled"
 
@@ -52,6 +66,8 @@ input:disabled {
 }
 
 .input-container {
+	width: 100%;
+
 	display:        flex;
 	flex-direction: row;
 
