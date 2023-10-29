@@ -5,6 +5,7 @@ import AppButton from '@/components/buttons/AppButton.vue';
 import ModelEditor from '@/components/admin/ModelEditor.vue';
 import ViewHeader from '@/components/admin/ViewHeader.vue';
 import EmptyListFooter from '@/components/admin/EmptyListFooter.vue';
+import FormInput from '@/components/FormInput.vue';
 
 const categories = ref<[]>([]);
 const newCategoryTitle = ref<string>('');
@@ -38,7 +39,7 @@ fetchCategories();
 	<ViewHeader>Manage Categories</ViewHeader>
 
 	<form>
-		<input type="text" maxlength="15" name="title" v-model="newCategoryTitle">
+		<FormInput type="text" name="category-title" :max-length="15" v-model="newCategoryTitle"/>
 		<AppButton :disabled="newCategoryTitle.length === 0" @click="postCategory">POST</AppButton>
 	</form>
 
@@ -80,9 +81,5 @@ form {
 
 	padding:       1rem;
 	column-gap:    1rem;
-}
-
-input {
-	flex: 1;
 }
 </style>
