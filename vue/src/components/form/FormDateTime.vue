@@ -9,15 +9,35 @@ import dayOfYear from 'dayjs/plugin/dayOfYear';
 
 dayjs.extend(dayOfYear);
 
-const currentDate = ref<Dayjs>(dayjs());
+const emit = defineEmits(['update:modelValue', 'input']);
+
+const props = defineProps<{
+	modelValue: string,                 // The v-model value.
+
+	name: string,                       // The name of the input field.
+	disabled?: boolean,                 // Is the input disabled from editing?
+}>();
+
+const currentDate = ref<Dayjs>(dayjs().hour(0).minute(0));
+
 const viewedDate = ref<Dayjs>(currentDate.value);
 
 const popupVisible = ref<boolean>(false);
 
-const currentDateString = ref<string>('');
-
 const currentHour = ref<string>('0');
 const currentMinute = ref<string>('0');
+
+const currentDateString = ref<string>('');
+
+if (dayjs(props.modelValue).isValid())
+{
+	currentDate.value = dayjs(props.modelValue);
+	currentDateString.value = constructDateString();
+}
+else
+{
+	currentDateString.value = constructDateString();
+}
 
 function getCalendarArray(date: Dayjs)
 {
@@ -80,9 +100,9 @@ function getCalendarArray(date: Dayjs)
 	return calendarArray;
 }
 
-function constructDateString()
+function constructDateString(): string
 {
-	currentDateString.value = dayjs(currentDate.value)
+	return dayjs(currentDate.value)
 		.hour(parseInt(currentHour.value === '' ? '0' : currentHour.value, 10))
 		.minute(parseInt(currentMinute.value === '' ? '0' : currentMinute.value, 10))
 		.second(0)
@@ -97,9 +117,9 @@ function updateViewedDate()
 
 function updateCurrentDateFromString()
 {
-	if (dayjs(currentDateString.value).isValid())
+	if (dayjs(props.modelValue).isValid())
 	{
-		currentDate.value = dayjs(currentDateString.value);
+		currentDate.value = dayjs(props.modelValue);
 		currentMinute.value = dayjs(currentDate.value).minute().toString();
 		currentHour.value = dayjs(currentDate.value).hour().toString();
 
@@ -109,6 +129,7 @@ function updateCurrentDateFromString()
 
 getCalendarArray(currentDate.value);
 constructDateString();
+updateCurrentDateFromString();
 
 watch(currentHour, (newValue) =>
 {
@@ -122,7 +143,7 @@ watch(currentHour, (newValue) =>
 		currentHour.value = '23';
 	}
 
-	constructDateString();
+	currentDateString.value = constructDateString();
 }, { flush: 'post' })
 
 watch(currentMinute, (newValue) =>
@@ -137,8 +158,13 @@ watch(currentMinute, (newValue) =>
 		currentMinute.value = '59';
 	}
 
-	constructDateString();
-}, { immediate: true, flush: 'post' })
+	currentDateString.value = constructDateString();
+}, { flush: 'post' })
+
+watch(currentDateString, (newValue) =>
+{
+	emit('update:modelValue', newValue);
+});
 
 </script>
 
@@ -148,10 +174,14 @@ watch(currentMinute, (newValue) =>
 			v-model="currentDateString"
 			name="release-date"
 			type="text"
-			@click="popupVisible = true"
-			@input="popupVisible = true; updateCurrentDateFromString()"
+
+			:disabled="props.disabled"
+
+			@input="updateCurrentDateFromString(); $emit('update:modelValue', $event)"
 		/>
 		<div
+			v-if="!props.disabled"
+
 			role="button"
 			v-html="feather.icons['calendar'].toSvg({})"
 			class="toggle"
@@ -196,8 +226,8 @@ watch(currentMinute, (newValue) =>
 						:style="`grid-column: ${date.weekday + 1} / ${date.weekday + 2};`"
 
 						@click="
-							currentDate = dayjs(date.date).toDate();
-							constructDateString();
+							currentDate = date.date;
+							currentDateString = constructDateString();
 							updateViewedDate();
 						"
 					>
@@ -213,7 +243,7 @@ watch(currentMinute, (newValue) =>
 					type="text"
 					:max-length="2"
 
-					@input="constructDateString()"
+					@input="currentDateString = constructDateString();"
 				/>
 				<FormInput
 					v-model="currentMinute"
@@ -222,7 +252,7 @@ watch(currentMinute, (newValue) =>
 					type="text"
 					:max-length="2"
 
-					@input="constructDateString()"
+					@input="currentDateString = constructDateString();"
 				/>
 			</div>
 		</div>
