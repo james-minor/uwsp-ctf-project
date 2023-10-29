@@ -116,6 +116,8 @@ watch(currentHour, (newValue) =>
 	{
 		currentHour.value = '0';
 	}
+
+	constructDateString();
 }, { flush: 'post' })
 
 watch(currentMinute, (newValue) =>
@@ -124,7 +126,9 @@ watch(currentMinute, (newValue) =>
 	{
 		currentMinute.value = '0';
 	}
-}, { flush: 'post' })
+
+	constructDateString();
+}, { immediate: true, flush: 'post' })
 
 </script>
 
