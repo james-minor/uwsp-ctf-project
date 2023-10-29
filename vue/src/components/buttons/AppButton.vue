@@ -51,7 +51,7 @@ button:disabled {
 	button {
 		color:            var(--col-text-dark);
 		background-color: var(--col-main-purple);
-		box-shadow:       0 2px 2px 0 rgba(0, 0, 0, 0.45);
+		box-shadow:       0 3px 3px 0 rgba(0, 0, 0, 0.45);
 
 		transition:       box-shadow 0.05s;
 	}
@@ -62,6 +62,7 @@ button:disabled {
 	}
 
 	button:disabled {
+		color:            var(--col-text-dark);
 		background-color: var(--col-accent-violet-nt);
 		box-shadow:       none;
 	}
