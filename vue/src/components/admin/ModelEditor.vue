@@ -6,6 +6,7 @@ import EditorControlGroup from '@/components/admin/EditorControlGroup.vue';
 import FormInput from '@/components/FormInput.vue';
 import type { FeatherIcon } from 'feather-icons';
 import FormTextArea from '@/components/FormTextArea.vue';
+import FormDateTime from '@/components/form/FormDateTime.vue';
 
 const emit = defineEmits<{
 	(e: 'refresh'): void,   // Event fired when the model data is updated.
@@ -14,7 +15,7 @@ const emit = defineEmits<{
 type field = {
 	modelValue: string,             // The v-model value.
 	name: string,                   // Field name, this should be a property on the model. Example: 'username'.
-	type: 'text' | 'textarea',      // The type of input the field should be.
+	type: 'text' | 'textarea' | 'date', // The type of input the field should be.
 	editable: boolean,              // Is this field editable?
 	initialValue: string,           // The initial value of the field.
 	maxLength?: number,             // The maximum string length for the input.
@@ -151,6 +152,14 @@ resetEditedFields();  // Sets the initial value for the fields on template const
 					:max-length="field.maxLength"
 					:disabled="(!field.editable || !editMode)"
 				/>
+
+				<FormDateTime
+					v-if="field.type === 'date'"
+					v-model="field.modelValue"
+
+					:name="field.name"
+					:disabled="(!field.editable || !editMode)"
+				/>
 			</div>
 		</div>
 
@@ -205,6 +214,11 @@ resetEditedFields();  // Sets the initial value for the fields on template const
 }
 
 .field-wrapper.textarea {
+	width:       100%;
+	grid-column: span 2;
+}
+
+.field-wrapper.date {
 	width:       100%;
 	grid-column: span 2;
 }
