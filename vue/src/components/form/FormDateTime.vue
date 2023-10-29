@@ -117,6 +117,11 @@ watch(currentHour, (newValue) =>
 		currentHour.value = '0';
 	}
 
+	if (parseInt(newValue, 10) > 23)
+	{
+		currentHour.value = '23';
+	}
+
 	constructDateString();
 }, { flush: 'post' })
 
@@ -125,6 +130,11 @@ watch(currentMinute, (newValue) =>
 	if (newValue !== '' && !new RegExp('^[0-9]+$').test(newValue))
 	{
 		currentMinute.value = '0';
+	}
+
+	if (parseInt(newValue, 10) > 59)
+	{
+		currentMinute.value = '59';
 	}
 
 	constructDateString();
@@ -138,7 +148,6 @@ watch(currentMinute, (newValue) =>
 			v-model="currentDateString"
 			name="release-date"
 			type="text"
-
 			@click="popupVisible = true"
 			@input="popupVisible = true; updateCurrentDateFromString()"
 		/>
@@ -228,6 +237,7 @@ watch(currentMinute, (newValue) =>
 }
 
 input {
+	width: 100%;
 	position: relative;
 }
 
@@ -248,6 +258,8 @@ input {
 
 	border-radius:    5px;
 	border:           2px solid var(--col-body-dark-300);
+
+	z-index: 100;
 }
 
 .date-picker__header {
