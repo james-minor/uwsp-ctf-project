@@ -95,8 +95,6 @@ function updateViewedDate()
 	viewedDate.value = dayjs(currentDate.value);
 }
 
-// TODO: make sure that the hour and minute are numbers ONLY.
-
 function updateCurrentDateFromString()
 {
 	if (dayjs(currentDateString.value).isValid())
@@ -112,17 +110,7 @@ function updateCurrentDateFromString()
 getCalendarArray(currentDate.value);
 constructDateString();
 
-function validateHour()
-{
-	currentHour.value = '69';
-
-	if (!new RegExp('^[0-9]+$').test(currentHour.value))
-	{
-		currentHour.value = '0';
-	}
-}
-
-watch(currentHour, (newValue, oldValue) =>
+watch(currentHour, (newValue) =>
 {
 	if (newValue !== '' && !new RegExp('^[0-9]+$').test(newValue))
 	{
@@ -130,14 +118,13 @@ watch(currentHour, (newValue, oldValue) =>
 	}
 }, { flush: 'post' })
 
-watch(currentMinute, (newValue, oldValue) =>
+watch(currentMinute, (newValue) =>
 {
 	if (newValue !== '' && !new RegExp('^[0-9]+$').test(newValue))
 	{
 		currentMinute.value = '0';
 	}
 }, { flush: 'post' })
-
 
 </script>
 
@@ -163,7 +150,9 @@ watch(currentMinute, (newValue, oldValue) =>
 				<div class="date-picker__header">
 					<div
 						role="button"
-						v-html="feather.icons['chevron-left'].toSvg({ stroke: 'white' })"
+						v-html="feather.icons['chevron-left'].toSvg()"
+
+						class="date-picker__prev"
 
 						@click="viewedDate = dayjs(viewedDate).subtract(1, 'month')"
 					/>
@@ -173,7 +162,9 @@ watch(currentMinute, (newValue, oldValue) =>
 					</span>
 					<div
 						role="button"
-						v-html="feather.icons['chevron-right'].toSvg({ stroke: 'white' })"
+						v-html="feather.icons['chevron-right'].toSvg()"
+
+						class="date-picker__next"
 
 						@click="viewedDate = dayjs(viewedDate).add(1, 'month')"
 					/>
@@ -319,7 +310,7 @@ input {
 	display:               grid;
 	grid-template-columns: repeat(2, 1fr);
 
-	padding: 0.5rem;
+	padding:               0.5rem;
 
 	align-items:           center;
 	justify-content:       center;
@@ -334,6 +325,26 @@ input {
 	transform: translateY(-50%);
 	right:     0.5rem;
 	cursor:    pointer;
+}
+
+.date-picker__prev,
+.date-picker__next {
+	cursor: pointer;
+}
+
+@media (prefers-color-scheme: light) {
+	.popup-container {
+		color:            var(--col-text-light);
+		background-color: var(--col-body-light-100);
+
+		border-color:     var(--col-body-light-100);
+
+		box-shadow:       0 0 10px 1px rgba(0, 0, 0, 0.3);
+	}
+
+	.date-picker__day--diff-month {
+		color: var(--col-body-light-300);
+	}
 }
 
 </style>
