@@ -1,11 +1,12 @@
 <script setup lang="ts">
-import { ref } from 'vue';
+import { ref, watch } from 'vue';
 import fetchData from '@/api/fetchData';
 import ViewHeader from '@/components/admin/ViewHeader.vue';
 import EmptyListFooter from '@/components/admin/EmptyListFooter.vue';
 import ModelEditor from '@/components/admin/ModelEditor.vue';
 import AppButton from '@/components/buttons/AppButton.vue';
-import FormInput from '@/components/FormInput.vue';
+import FormDateTime from '@/components/form/FormDateTime.vue';
+import dayjs from 'dayjs';
 
 const waves = ref<[]>([]);
 const newWaveReleaseDate = ref<string>('');
@@ -39,9 +40,12 @@ fetchWaves();
 	<ViewHeader>Manage Release Waves</ViewHeader>
 
 	<form>
-		<FormInput type="text" name="releaseDate" v-model="newWaveReleaseDate"/>
+		<FormDateTime
+			v-model="newWaveReleaseDate"
+			name="releaseDate"
+		/>
 		<AppButton
-			:disabled="!new RegExp('^\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}(?:\.\\d+)?(?:Z|[+-]\\d{2}:\\d{2})$').test(newWaveReleaseDate)"
+			:disabled="!dayjs(newWaveReleaseDate).isValid()"
 			@click="postWave"
 		>
 			POST
@@ -57,7 +61,7 @@ fetchWaves();
 		:fields="[
 			{
 				name: 'releaseDate',
-				type: 'text',
+				type: 'date',
 				editable: true,
 				initialValue: wave['releaseDate'],
 				modelValue: wave['releaseDate'],
