@@ -4,6 +4,7 @@ import { ref } from 'vue';
 import ModelEditor from '@/components/admin/ModelEditor.vue';
 import ViewHeader from '@/components/admin/ViewHeader.vue';
 import EmptyListFooter from '@/components/admin/EmptyListFooter.vue';
+import { FieldType } from '@/enum/FieldType';
 
 const teams = ref<[]>([]);
 
@@ -32,7 +33,7 @@ fetchTeams();
 		:fields="[
 			{
 				name: 'name',
-				type: 'text',
+				type: FieldType.TEXT,
 				editable: false,
 				initialValue: team['name'],
 				modelValue: team['name'],

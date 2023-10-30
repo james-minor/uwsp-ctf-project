@@ -6,6 +6,7 @@ import ModelEditor from '@/components/admin/ModelEditor.vue';
 import ViewHeader from '@/components/admin/ViewHeader.vue';
 import EmptyListFooter from '@/components/admin/EmptyListFooter.vue';
 import FormInput from '@/components/FormInput.vue';
+import { FieldType } from '@/enum/FieldType';
 
 const categories = ref<[]>([]);
 const newCategoryTitle = ref<string>('');
@@ -53,7 +54,7 @@ fetchCategories();
 		:fields="[
 			{
 				name: 'title',
-				type: 'text',
+				type: FieldType.TEXT,
 				editable: true,
 				initialValue: category['title'],
 				modelValue: category['title'],

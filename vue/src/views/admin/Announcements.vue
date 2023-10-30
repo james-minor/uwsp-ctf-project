@@ -6,6 +6,7 @@ import AppButton from '@/components/buttons/AppButton.vue';
 import ModelEditor from '@/components/admin/ModelEditor.vue';
 import ViewHeader from '@/components/admin/ViewHeader.vue';
 import EmptyListFooter from '@/components/admin/EmptyListFooter.vue';
+import { FieldType } from '@/enum/FieldType';
 
 const announcementStore = useAnnouncementStore();
 
@@ -48,7 +49,7 @@ async function postAnnouncement()
 		:fields="[
 			{
 				name: 'body',
-				type: 'textarea',
+				type: FieldType.TEXT_AREA,
 				editable: true,
 				initialValue: announcement['body'],
 				modelValue: announcement['body']

@@ -1,11 +1,12 @@
 <script setup lang="ts">
-import { ref, watch } from 'vue';
+import { ref } from 'vue';
 import fetchData from '@/api/fetchData';
 import ViewHeader from '@/components/admin/ViewHeader.vue';
 import EmptyListFooter from '@/components/admin/EmptyListFooter.vue';
 import ModelEditor from '@/components/admin/ModelEditor.vue';
 import AppButton from '@/components/buttons/AppButton.vue';
 import FormDateTime from '@/components/form/FormDateTime.vue';
+import { FieldType } from '@/enum/FieldType';
 import dayjs from 'dayjs';
 
 const waves = ref<[]>([]);
@@ -61,7 +62,7 @@ fetchWaves();
 		:fields="[
 			{
 				name: 'releaseDate',
-				type: 'date',
+				type: FieldType.DATE,
 				editable: true,
 				initialValue: wave['releaseDate'],
 				modelValue: wave['releaseDate'],

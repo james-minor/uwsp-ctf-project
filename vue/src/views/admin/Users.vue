@@ -4,6 +4,7 @@ import { ref } from 'vue';
 import ModelEditor from '@/components/admin/ModelEditor.vue';
 import ViewHeader from '@/components/admin/ViewHeader.vue';
 import EmptyListFooter from '@/components/admin/EmptyListFooter.vue';
+import { FieldType } from '@/enum/FieldType';
 
 const users = ref<[]>([]);
 
@@ -32,17 +33,17 @@ fetchUsers();
 		:fields="[
 			{
 				name: 'username',
-				type: 'text',
+				type: FieldType.TEXT,
 				editable: false,
 				initialValue: user['username'],
-				modelValue: user['username'],
+				modelValue: user['username']
 			},
 			{
 				name: 'role',
-				type: 'text',
+				type: FieldType.TEXT,
 				editable: true,
 				initialValue: user['role'],
-				modelValue: user['role'],
+				modelValue: user['role']
 			},
 		]"
 
