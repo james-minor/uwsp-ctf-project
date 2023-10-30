@@ -9,6 +9,7 @@ import Login from '@/views/Login.vue';
 import Register from '@/views/Register.vue';
 
 import Announcements from '@/views/admin/Announcements.vue';
+import AdminChallenges from '@/views/admin/Challenges.vue';
 import Categories from '@/views/admin/Categories.vue';
 import Dashboard from '@/views/admin/Dashboard.vue';
 import Teams from '@/views/admin/Teams.vue';
@@ -48,7 +49,7 @@ const routes: RouteRecordRaw[] =
             { path: '', component: Dashboard },
             { path: 'announcements', component: Announcements },
             { path: 'categories', component: Categories },
-            { path: 'challenges', component: Challenges },
+            { path: 'challenges', component: AdminChallenges },
             { path: 'teams', component: Teams },
             { path: 'tools', component: Tools },
             { path: 'users', component: Users },
