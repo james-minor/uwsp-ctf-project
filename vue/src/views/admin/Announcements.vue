@@ -7,6 +7,7 @@ import ModelEditor from '@/components/admin/ModelEditor.vue';
 import ViewHeader from '@/components/admin/ViewHeader.vue';
 import EmptyListFooter from '@/components/admin/EmptyListFooter.vue';
 import { FieldType } from '@/enum/FieldType';
+import FormTextArea from '@/components/admin/FormTextArea.vue';
 
 const announcementStore = useAnnouncementStore();
 
@@ -28,10 +29,11 @@ async function postAnnouncement()
 <template>
 	<ViewHeader>Manage Announcements</ViewHeader>
 	<form>
-		<textarea
+		<FormTextArea
 			v-model="announcementBody"
-			maxlength="1000"
-		></textarea>
+			name="body"
+			max-length="1000"
+		/>
 		<div class="character-count">
 			<span>{{ announcementBody.length }}/1000</span>
 		</div>
