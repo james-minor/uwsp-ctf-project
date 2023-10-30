@@ -6,6 +6,7 @@ import router from '@/router/router';
 import { useSessionStore } from '@/stores/session';
 import fetchData from '@/api/fetchData';
 import AppButton from '@/components/buttons/AppButton.vue';
+import FormError from '@/components/form/FormError.vue';
 
 const formData = ref({
 	email: '',
@@ -87,22 +88,22 @@ function validateForm()
 
 			<FormInput
 				name="email"
-				type="email"
+				type="text"
 				v-model="formData.email"
 				:icon="feather.icons.mail"
-				:error="formErrors.email"
 
 				@input="validateForm"
 			/>
+			<FormError :error="formErrors.email" />
 			<FormInput
 				name="password"
 				type="password"
 				v-model="formData.password"
 				:icon="feather.icons.lock"
-				:error="formErrors.password"
 
 				@input="validateForm"
 			/>
+			<FormError :error="formErrors.password" />
 
 			<AppButton :disabled="!formValid" @click.prevent="onFormSubmit">Login</AppButton>
 
@@ -122,23 +123,20 @@ function validateForm()
 	align-items:      center;
 	justify-content:  center;
 
-	box-shadow:       inset 0 0 25vw 20px var(--col-main-purple);
+	box-shadow:       inset 0 0 45vw 20px var(--col-main-purple);
 }
 
 form {
-	display:            flex;
-	flex-direction:     column;
+	display:          flex;
+	flex-direction:   column;
 
-	background-color:   var(--col-body-light-100);
-	color:              var(--col-text-light);
-	padding:            2.5rem;
+	background-color: var(--col-body-dark-100);
+	color:            var(--col-text-dark);
+	padding:          2.5rem;
 
-	border-radius:      10px;
-	min-width:          min(45ch, 95%);
+	border-radius:    10px;
+	min-width:        min(45ch, 95%);
 
-	box-shadow:         0 0 10px 2px rgba(0, 0, 0, 0.5);
-	-webkit-box-shadow: 0 0 10px 2px rgba(0, 0, 0, 0.5);
-	-moz-box-shadow:    0 0 10px 2px rgba(0, 0, 0, 0.5);
 }
 
 h1,
@@ -153,5 +151,25 @@ p {
 a {
 	margin-top: 1rem;
 	text-align: center;
+
+	color:      white;
+
+	transition: color 0.2s;
+}
+
+a:focus-visible,
+a:hover {
+	color: var(--col-main-purple);
+}
+
+@media (prefers-color-scheme: light) {
+	form {
+		background-color:   var(--col-body-light-100);
+		color:              var(--col-text-light);
+
+		box-shadow:         0 0 10px 2px rgba(0, 0, 0, 0.5);
+		-webkit-box-shadow: 0 0 10px 2px rgba(0, 0, 0, 0.5);
+		-moz-box-shadow:    0 0 10px 2px rgba(0, 0, 0, 0.5);
+	}
 }
 </style>

@@ -6,6 +6,7 @@ import FormInput from '@/components/FormInput.vue';
 import { useSessionStore } from '@/stores/session';
 import fetchData from '@/api/fetchData';
 import AppButton from '@/components/buttons/AppButton.vue';
+import FormError from '@/components/form/FormError.vue';
 
 const formData = ref({
 	email: '',
@@ -145,50 +146,50 @@ function validateForm()
 			<FormInput
 				name="email"
 				:icon="feather.icons.mail"
-				type="email"
-				:error="formErrors.email"
+				type="text"
 				:max-length="75"
 
 				v-model="formData.email"
 				@input="validateForm"
 			/>
+			<FormError :error="formErrors.email" />
 			<FormInput
 				name="username"
 				:icon="feather.icons.user"
 				type="text"
-				:error="formErrors.username"
 				:max-length="30"
 
 				v-model="formData.username"
 				@input="validateForm"
 			/>
+			<FormError :error="formErrors.username" />
 			<FormInput
 				name="password"
 				:icon="feather.icons.lock"
 				type="password"
-				:error="formErrors.password"
 
 				v-model="formData.password"
 				@input="validateForm"
 			/>
+			<FormError :error="formErrors.password" />
 
 			<label for="team-type">
 				Create a new team?
 			</label>
 			<input type="checkbox" name="team-type" id="team-type" v-model="newTeam">
 
-			<FormInput
-				v-if="newTeam"
+			<div v-if="newTeam">
+				<FormInput
+					name="team-name"
+					:icon="feather.icons.users"
+					type="text"
+					:max-length="40"
 
-				name="team-name"
-				:icon="feather.icons.users"
-				type="text"
-				:error="formErrors.teamName"
-				:max-length="40"
-
-				v-model="formData.teamName"
-				@input="validateForm"
-			/>
+					v-model="formData.teamName"
+					@input="validateForm"
+				/>
+				<FormError :error="formErrors.teamName" />
+			</div>
 
 			<div v-else>
 				<select name="team-name" id="team-name" v-model="formData.teamName">
@@ -201,12 +202,12 @@ function validateForm()
 					name="invite-code"
 					:icon="feather.icons.key"
 					type="text"
-					:error="formErrors.inviteCode"
 					:max-length="8"
 
 					v-model="formData.inviteCode"
 					@input="validateForm"
 				/>
+				<FormError :error="formErrors.inviteCode" />
 			</div>
 
 			<div class="button-container">
@@ -228,15 +229,15 @@ function validateForm()
 	align-items:      center;
 	justify-content:  center;
 
-	box-shadow:       inset 0 0 25vw 20px var(--col-main-purple);
+	box-shadow:       inset 0 0 45vw 20px var(--col-main-purple);
 }
 
 form {
 	display:            flex;
 	flex-direction:     column;
 
-	background-color:   var(--col-body-light-100);
-	color:              var(--col-text-light);
+	background-color:   var(--col-body-dark-100);
+	color:              var(--col-text-dark);
 	padding:            2.5rem;
 
 	border-radius:      10px;
@@ -300,4 +301,14 @@ select {
 	width: 100%;
 }
 
+@media (prefers-color-scheme: light) {
+	form {
+		background-color:   var(--col-body-light-100);
+		color:              var(--col-text-light);
+
+		box-shadow:         0 0 10px 2px rgba(0, 0, 0, 0.5);
+		-webkit-box-shadow: 0 0 10px 2px rgba(0, 0, 0, 0.5);
+		-moz-box-shadow:    0 0 10px 2px rgba(0, 0, 0, 0.5);
+	}
+}
 </style>
