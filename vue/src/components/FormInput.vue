@@ -1,6 +1,5 @@
 <script setup lang="ts">
 import * as feather from 'feather-icons';
-import FormError from '@/components/form/FormError.vue';
 
 const emit = defineEmits(['update:modelValue', 'input']);
 
@@ -9,7 +8,6 @@ const props = defineProps<{
 
 	name: string,                       // The name of the input field.
 	type: string,                       // The type of the input field.
-	error?: string,                     // The error message associated with the input.
 	icon?: feather.FeatherIcon,         // The icon for the input field.
 	maxLength?: number,                 // The maximum length of the input field.
 	disabled?: boolean,                 // Is the input disabled from editing?
@@ -43,10 +41,9 @@ function createPlaceholderString(): string
 			:disabled="props.disabled"
 
 			:value="modelValue"
-			@input="$emit('update:modelValue', ($event.target as HTMLInputElement).value); emit('input')"
+			@input="$emit('update:modelValue', ($event.target as HTMLInputElement).value); $emit('input', ($event.target as HTMLInputElement).value)"
 		>
 	</div>
-	<FormError :error="props.error"/>
 </template>
 
 <style scoped>
