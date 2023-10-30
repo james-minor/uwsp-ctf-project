@@ -4,7 +4,7 @@ import fetchData from '@/api/fetchData';
 import EditorControlGroup from '@/components/admin/EditorControlGroup.vue';
 import FormInput from '@/components/form/FormInput.vue';
 import type { FeatherIcon } from 'feather-icons';
-import FormTextArea from '@/components/FormTextArea.vue';
+import FormTextArea from '@/components/admin/FormTextArea.vue';
 import FormDateTime from '@/components/form/FormDateTime.vue';
 import FormSelect from '@/components/form/FormSelect.vue';
 import { FieldType } from '@/enum/FieldType';
