@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import * as feather from 'feather-icons';
 import { ref } from 'vue';
-import FormInput from '@/components/FormInput.vue';
+import FormInput from '@/components/form/FormInput.vue';
 import router from '@/router/router';
 import { useSessionStore } from '@/stores/session';
 import fetchData from '@/api/fetchData';

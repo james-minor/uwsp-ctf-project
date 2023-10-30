@@ -5,7 +5,7 @@ import AppButton from '@/components/buttons/AppButton.vue';
 import ModelEditor from '@/components/admin/ModelEditor.vue';
 import ViewHeader from '@/components/admin/ViewHeader.vue';
 import EmptyListFooter from '@/components/admin/EmptyListFooter.vue';
-import FormInput from '@/components/FormInput.vue';
+import FormInput from '@/components/form/FormInput.vue';
 import { FieldType } from '@/enum/FieldType';
 
 const categories = ref<[]>([]);

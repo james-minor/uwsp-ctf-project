@@ -2,13 +2,13 @@
 import { ref } from 'vue';
 import fetchData from '@/api/fetchData';
 import EditorControlGroup from '@/components/admin/EditorControlGroup.vue';
-import FormInput from '@/components/FormInput.vue';
+import FormInput from '@/components/form/FormInput.vue';
 import type { FeatherIcon } from 'feather-icons';
 import FormTextArea from '@/components/FormTextArea.vue';
 import FormDateTime from '@/components/form/FormDateTime.vue';
 import FormSelect from '@/components/form/FormSelect.vue';
 import { FieldType } from '@/enum/FieldType';
-import { Field } from '@/types/Field';
+import type { Field } from '@/types/Field';
 
 const emit = defineEmits<{
 	(e: 'refresh'): void,   // Event fired when the model data is updated.

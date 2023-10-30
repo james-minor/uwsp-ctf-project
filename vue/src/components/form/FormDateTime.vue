@@ -3,7 +3,7 @@
 import { ref, watch } from 'vue';
 import * as feather from 'feather-icons';
 import dayjs, { Dayjs } from 'dayjs';
-import FormInput from '@/components/FormInput.vue';
+import FormInput from '@/components/form/FormInput.vue';
 
 import dayOfYear from 'dayjs/plugin/dayOfYear';
 

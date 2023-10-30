@@ -2,7 +2,7 @@
 import { ref } from 'vue'
 import router from '@/router/router';
 import * as feather from 'feather-icons';
-import FormInput from '@/components/FormInput.vue';
+import FormInput from '@/components/form/FormInput.vue';
 import { useSessionStore } from '@/stores/session';
 import fetchData from '@/api/fetchData';
 import AppButton from '@/components/buttons/AppButton.vue';
