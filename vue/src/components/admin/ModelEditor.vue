@@ -1,34 +1,26 @@
 <script setup lang="ts">
 import { ref } from 'vue';
 import fetchData from '@/api/fetchData';
-import * as feather from 'feather-icons';
 import EditorControlGroup from '@/components/admin/EditorControlGroup.vue';
 import FormInput from '@/components/FormInput.vue';
 import type { FeatherIcon } from 'feather-icons';
 import FormTextArea from '@/components/FormTextArea.vue';
 import FormDateTime from '@/components/form/FormDateTime.vue';
+import FormSelect from '@/components/form/FormSelect.vue';
+import { FieldType } from '@/enum/FieldType';
+import { Field } from '@/types/Field';
 
 const emit = defineEmits<{
 	(e: 'refresh'): void,   // Event fired when the model data is updated.
 }>();
 
-type field = {
-	modelValue: string,             // The v-model value.
-	name: string,                   // Field name, this should be a property on the model. Example: 'username'.
-	type: 'text' | 'textarea' | 'date', // The type of input the field should be.
-	editable: boolean,              // Is this field editable?
-	initialValue: string,           // The initial value of the field.
-	maxLength?: number,             // The maximum string length for the input.
-	icon?: feather.FeatherIcon,     // The icon for the input. NOTE: Only visible if type === 'text'.
-}
-
 const props = defineProps<{
 	model: string,      // The model name the editor is modeling. Example: 'user'.
 	id: number,         // The ID of the model within the database table.
-	fields: field[],    // Array to hold the initial state for the visible fields for the model.
+	fields: Field[],    // Array to hold the initial state for the visible fields for the model.
 }>();
 
-const editedFields = ref<field[]>(props.fields);
+const editedFields = ref<Field[]>(props.fields);
 
 const editMode = ref<boolean>(false);  // Is the editor currently in edit mode?
 
@@ -133,7 +125,7 @@ resetEditedFields();  // Sets the initial value for the fields on template const
 		<div class="editor__fields">
 			<div v-for="field in editedFields" :class="['field-wrapper', field.type]">
 				<FormTextArea
-					v-if="field.type === 'textarea'"
+					v-if="field.type === FieldType.TEXT_AREA"
 					v-model="field.modelValue"
 
 					:name="field.name"
@@ -142,7 +134,7 @@ resetEditedFields();  // Sets the initial value for the fields on template const
 				/>
 
 				<FormInput
-					v-if="field.type === 'text'"
+					v-if="field.type === FieldType.TEXT"
 					type="text"
 
 					v-model="field.modelValue"
@@ -154,10 +146,18 @@ resetEditedFields();  // Sets the initial value for the fields on template const
 				/>
 
 				<FormDateTime
-					v-if="field.type === 'date'"
+					v-if="field.type === FieldType.DATE"
 					v-model="field.modelValue"
 
 					:name="field.name"
+					:disabled="(!field.editable || !editMode)"
+				/>
+
+				<FormSelect
+					v-if="field.type === FieldType.SELECT"
+					v-model="field.modelValue"
+
+					:options="field.options ? field.options : []"
 					:disabled="(!field.editable || !editMode)"
 				/>
 			</div>
@@ -220,6 +220,11 @@ resetEditedFields();  // Sets the initial value for the fields on template const
 
 .field-wrapper.date {
 	width:       100%;
+	grid-column: span 2;
+}
+
+.field-wrapper.select {
+	width: 100%;
 	grid-column: span 2;
 }
 
