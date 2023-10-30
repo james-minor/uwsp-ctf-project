@@ -84,7 +84,7 @@ model Attachment {
 	id          Int       @id @default(autoincrement())
 	title       String    @db.VarChar(30)
 	source      String
-	challenge   Challenge @relation(fields: [challengeId], references: [id])
+	challenge   Challenge @relation(fields: [challengeId], references: [id], onDelete: Cascade)
 	challengeId Int
 
 	@@map("attachments")
