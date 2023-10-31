@@ -32,7 +32,7 @@ async function postAnnouncement()
 		<FormTextArea
 			v-model="announcementBody"
 			name="body"
-			max-length="1000"
+			:max-length="1000"
 		/>
 		<div class="character-count">
 			<span>{{ announcementBody.length }}/1000</span>
