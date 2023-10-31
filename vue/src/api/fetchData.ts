@@ -1,5 +1,6 @@
 import { apiBaseURL } from '@/APIBaseURL';
 import { useSessionStore } from '@/stores/session';
+import handleResponse from '@/api/handleResponse';
 
 /**
  * Function to remove a lot of the redundant boilerplate code being written to fetch data from our backend API.
@@ -28,7 +29,7 @@ export default async function fetchData(
 
 	/* Removing the leading forward-slash from the endpoint.
 	 */
-	let parsedEndpoint= endpoint;
+	let parsedEndpoint = endpoint;
 	if (endpoint.charAt(0) === '/')
 	{
 		parsedEndpoint = endpoint.substring(1);
@@ -42,18 +43,26 @@ export default async function fetchData(
 		parsedBody = JSON.stringify(body);
 	}
 
-	switch (method)
+	if (method === 'GET')
 	{
-		case 'GET':
-			return await fetch(`${apiBaseURL}/v1/${parsedEndpoint}`, {
-				method: method,
-				headers: requestHeaders,
-			});
-		default:
-			return await fetch(`${apiBaseURL}/v1/${parsedEndpoint}`, {
-				method: method,
-				headers: requestHeaders,
-				body: parsedBody ? parsedBody : '',
-			});
+		return await fetch(`${apiBaseURL}/v1/${parsedEndpoint}`, {
+			method: method,
+			headers: requestHeaders,
+		}).then((response) =>
+		{
+			return handleResponse(response);
+		});
+	}
+	else
+	{
+		return await fetch(`${apiBaseURL}/v1/${parsedEndpoint}`, {
+			method: method,
+			headers: requestHeaders,
+			body: parsedBody ? parsedBody : '',
+		}).then((response) =>
+		{
+			return handleResponse(response);
+		});
 	}
 }
+
