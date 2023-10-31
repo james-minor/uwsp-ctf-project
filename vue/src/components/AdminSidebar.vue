@@ -7,6 +7,7 @@
 		<nav>
 			<router-link to="/admin">Dashboard</router-link>
 			<router-link to="/admin/announcements">Announcements</router-link>
+			<router-link to="/admin/attachments">Attachments</router-link>
 			<router-link to="/admin/categories">Categories</router-link>
 			<router-link to="/admin/challenges">Challenges</router-link>
 			<router-link to="/admin/teams">Teams</router-link>

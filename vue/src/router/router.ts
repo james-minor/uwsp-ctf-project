@@ -1,5 +1,6 @@
 import { createRouter, createWebHistory } from 'vue-router';
 import type { RouteRecordRaw, RouteMeta } from 'vue-router';
+import { useSessionStore } from '@/stores/session';
 
 import Home from '@/views/Home.vue';
 import Rules from '@/views/Rules.vue';
@@ -9,6 +10,7 @@ import Login from '@/views/Login.vue';
 import Register from '@/views/Register.vue';
 
 import Announcements from '@/views/admin/Announcements.vue';
+import Attachments from '@/views/admin/Attachments.vue';
 import AdminChallenges from '@/views/admin/Challenges.vue';
 import Categories from '@/views/admin/Categories.vue';
 import Dashboard from '@/views/admin/Dashboard.vue';
@@ -18,7 +20,6 @@ import Users from '@/views/admin/Users.vue';
 import Waves from '@/views/admin/Waves.vue';
 
 import Profile from '@/views/Profile.vue';
-import { useSessionStore } from '@/stores/session';
 
 /* Type declarations for Route metadata.
  */
@@ -48,6 +49,7 @@ const routes: RouteRecordRaw[] =
         [
             { path: '', component: Dashboard },
             { path: 'announcements', component: Announcements },
+            { path: 'attachments', component: Attachments },
             { path: 'categories', component: Categories },
             { path: 'challenges', component: AdminChallenges },
             { path: 'teams', component: Teams },
