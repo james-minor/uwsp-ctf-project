@@ -5,12 +5,10 @@ const props = defineProps<{
 	modelValue: string,                 // The v-model value.
 
 	name: string,                       // The name associated with the textarea.
-	error?: string,                     // The error message associated with the textarea.
 	maxLength?: number,                 // The maximum length of the textarea field.
 	disabled?: boolean,                 // Is the textarea disabled from editing?
 }>();
 
-// TODO: we should have a non-visible label for screen readers.
 </script>
 
 <template>
@@ -23,24 +21,9 @@ const props = defineProps<{
 		:value="modelValue"
 		@input="$emit('update:modelValue', ($event.target as HTMLInputElement).value); emit('input')"
 	></textarea>
-	<em v-if="props.error !== undefined">{{ props.error }}</em>
 </template>
 
 <style scoped>
-em {
-	display:       block;
-	height:        2rem;
-
-	margin-top:    0.25rem;
-	margin-bottom: 1rem;
-
-	font-style:    normal;
-	font-size:     0.9rem;
-	font-weight:   bold;
-
-	color:         var(--col-accent-red)
-}
-
 textarea {
 	width: 100%;
 	min-height: 7rem;
