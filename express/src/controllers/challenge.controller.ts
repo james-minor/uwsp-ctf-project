@@ -89,7 +89,28 @@ export async function getAll(req: Request, res: Response<APIResponse>)
 
 export async function create(req: Request, res: Response<APIResponse>)
 {
-
+	await client.challenge.create({
+		data: {
+			categoryId: parseInt(req.body['categoryId']),
+			waveId: parseInt(req.body['waveId']),
+			value: parseInt(req.body['value']),
+			title: req.body['title'],
+			body: req.body['body'],
+			flag: req.body['flag'],
+		}
+	})
+		.then(() =>
+		{
+			res.status(200).json({
+				success: true,
+			});
+		})
+		.catch(() =>
+		{
+			res.status(400).json({
+				success: false,
+			});
+		})
 }
 
 export async function update(req: Request, res: Response<APIResponse>)
