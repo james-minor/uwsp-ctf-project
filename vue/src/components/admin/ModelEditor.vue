@@ -157,6 +157,7 @@ resetEditedFields();  // Sets the initial value for the fields on template const
 					v-if="field.type === FieldType.SELECT"
 					v-model="field.modelValue"
 
+					:name="field.name"
 					:options="field.options ? field.options : []"
 					:disabled="(!field.editable || !editMode)"
 				/>

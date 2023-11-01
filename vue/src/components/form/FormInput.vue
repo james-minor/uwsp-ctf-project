@@ -1,5 +1,7 @@
 <script setup lang="ts">
 import * as feather from 'feather-icons';
+import getPrettyPlaceholderString from '../../util/getPrettyPlaceholderString';
+import FormFieldSet from '@/components/form/FormFieldSet.vue';
 
 const emit = defineEmits(['update:modelValue', 'input']);
 
@@ -12,44 +14,27 @@ const props = defineProps<{
 	maxLength?: number,                 // The maximum length of the input field.
 	disabled?: boolean,                 // Is the input disabled from editing?
 }>();
-
-/* Creates a prettified placeholder string, splitting the name at any '-' characters.
- */
-function createPlaceholderString(): string
-{
-	const words = props.name.split('-');
-
-	let placeholder = '';
-	for (let word of words)
-	{
-		placeholder += word[0].toUpperCase() + word.substring(1) + ' ';
-	}
-
-	return placeholder;
-}
-
 </script>
 
 <template>
-	<div :class="['input-container', props.disabled ? 'disabled' : '']">
+	<FormFieldSet :disabled="props.disabled" :label="props.name" :hide-label="!!props.icon">
 		<div v-if="props.icon" class="icon" v-html="props.icon?.toSvg({ stroke: 'white' })"/>
 		<input
 			:name="props.name"
 			:type="props.type"
-			:placeholder="createPlaceholderString()"
+			:placeholder="getPrettyPlaceholderString(props.name)"
 			:maxlength="props.maxLength"
-			:disabled="props.disabled"
 
 			:value="modelValue"
 			@input="$emit('update:modelValue', ($event.target as HTMLInputElement).value); $emit('input', ($event.target as HTMLInputElement).value)"
 		>
-	</div>
+	</FormFieldSet>
 </template>
 
 <style scoped>
 input {
 	flex:             1;
-	padding:          0.5rem 0.75rem;
+	padding:          0.25rem 0.75rem 0.5rem;
 	border:           none;
 	outline:          none;
 
@@ -58,24 +43,7 @@ input {
 }
 
 input:disabled {
-	color:            var(--col-body-dark-300);
-	background-color: var(--col-body-dark-200);
-}
-
-.input-container {
-	width: 100%;
-
-	display:        flex;
-	flex-direction: row;
-
-	border:         2px solid var(--col-body-dark-200);
-	border-radius:  6px;
-
-	overflow:       hidden;
-}
-
-.input-container:focus-within {
-	outline: var(--col-accent-violet-nt) solid 2px;
+	color: var(--col-body-dark-300);
 }
 
 .icon {
@@ -89,11 +57,7 @@ input:disabled {
 	justify-content:  center;
 }
 
-.input-container.disabled {
-	border-color: var(--col-body-dark-200);
-}
-
-.input-container.disabled .icon {
+.input-container:disabled .icon {
 	filter: saturate(0%);
 }
 
@@ -105,10 +69,9 @@ input:disabled {
 
 	input:disabled {
 		color:            var(--col-body-light-300);
-		background-color: var(--col-body-light-200);
 	}
 
-	.input-container.disabled {
+	.input-container:disabled {
 		border-color: var(--col-body-light-200);
 	}
 }

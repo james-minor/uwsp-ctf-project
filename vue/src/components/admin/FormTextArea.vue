@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import FormFieldSet from '@/components/form/FormFieldSet.vue';
+
 const emit = defineEmits(['update:modelValue', 'input']);
 
 const props = defineProps<{
@@ -12,36 +14,36 @@ const props = defineProps<{
 </script>
 
 <template>
-	<textarea
-		:name="props.name"
-		:placeholder="props.name[0].toUpperCase() + props.name.substring(1) + '...'"
-		:maxlength="props.maxLength"
-		:disabled="props.disabled"
+	<FormFieldSet :disabled="props.disabled" :label="props.name">
+		<textarea
+			:name="props.name"
+			:placeholder="props.name[0].toUpperCase() + props.name.substring(1) + '...'"
+			:maxlength="props.maxLength"
+			:disabled="props.disabled"
 
-		:value="modelValue"
-		@input="$emit('update:modelValue', ($event.target as HTMLInputElement).value); emit('input')"
-	></textarea>
+			:value="modelValue"
+			@input="$emit('update:modelValue', ($event.target as HTMLInputElement).value); emit('input')"
+		></textarea>
+	</FormFieldSet>
 </template>
 
 <style scoped>
 textarea {
-	width: 100%;
-	min-height: 7rem;
-	resize: none;
+	width:            100%;
+	min-height:       7rem;
+	resize:           none;
 
-	padding:          0.5rem 0.75rem;
+	padding:          0.25rem 0.75rem 0.5rem;
 	outline:          none;
 
 	color:            var(--col-text-dark);
 	background-color: var(--col-body-dark-100);
 
-	border:         2px solid var(--col-body-dark-200);
-	border-radius:  6px;
+	border:           none;
 }
 
 textarea:disabled {
 	color: var(--col-body-dark-300);
-	background-color: var(--col-body-dark-200);
 }
 
 textarea:focus-visible {
@@ -50,14 +52,14 @@ textarea:focus-visible {
 
 @media (prefers-color-scheme: light) {
 	textarea {
-		color: var(--col-text-light);
+		color:            var(--col-text-light);
 		background-color: var(--col-body-light-100);
 	}
 
 	textarea:disabled {
-		color: var(--col-body-light-300);
+		color:            var(--col-body-light-300);
 		background-color: var(--col-body-light-200);
-		border-color: var(--col-body-light-200);
+		border-color:     var(--col-body-light-200);
 	}
 }
 </style>

@@ -1,10 +1,13 @@
 <script setup lang="ts">
 import * as feather from 'feather-icons';
 import type { SelectOption } from '@/types/SelectOption';
+import getPrettyPlaceholderString from '../../util/getPrettyPlaceholderString';
+import FormFieldSet from '@/components/form/FormFieldSet.vue';
 
 const props = defineProps<{
 	modelValue: string,                 // The v-model value.
 
+	name: string,                       // The input name.
 	options: SelectOption[],            // The options within the select field.
 	disabled?: boolean,                 // Is the select dropdown disabled/
 }>();
@@ -12,7 +15,7 @@ const props = defineProps<{
 </script>
 
 <template>
-	<div class="select-wrapper" :class="{ 'disabled': props.disabled }">
+	<FormFieldSet :disabled="props.disabled" :label="props.name">
 		<select
 			v-model="props.modelValue"
 
@@ -29,42 +32,23 @@ const props = defineProps<{
 			</option>
 		</select>
 		<div v-if="!props.disabled" class="select__arrow" v-html="feather.icons['chevron-down'].toSvg()"/>
-	</div>
+	</FormFieldSet>
 </template>
 
 <style scoped>
-.select-wrapper {
-	position:         relative;
-
-	width:            100%;
-	outline:          none;
-
-	background-color: var(--col-body-dark-100);
-
-	border:           2px solid var(--col-body-dark-200);
-	border-radius:    6px;
-}
-
-.select-wrapper.disabled {
-	background-color: var(--col-body-dark-200);
-}
-
-.select-wrapper:focus-within {
-	outline: var(--col-accent-violet-nt) solid 2px;
-}
-
 .select__arrow {
-	position:  absolute;
-	top:       50%;
-	transform: translateY(-50%);
-	right:     0.5rem;
+	position:       absolute;
+	top:            50%;
+	transform:      translateY(-50%);
+	right:          0.5rem;
+	pointer-events: none;
 }
 
 select {
 	appearance:       none;
 	width:            100%;
 	height:           100%;
-	padding:          0.5rem 0.75rem;
+	padding:          0.25rem 0.75rem 0.5rem;
 
 	background-color: transparent;
 	outline:          none;
@@ -83,5 +67,4 @@ select:disabled {
 	color:  var(--col-body-dark-300);
 	cursor: default;
 }
-
 </style>
