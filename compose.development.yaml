@@ -27,6 +27,8 @@ services:
     networks:
       - ctf-network
     restart: "unless-stopped"
+    volumes:
+      - file-data:/files
 
   nginx:
     build: ./nginx
@@ -96,4 +98,5 @@ networks:
     driver: bridge
 
 volumes:
+  file-data:
   db-data:
