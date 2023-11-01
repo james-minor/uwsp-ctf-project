@@ -75,7 +75,7 @@ model Challenge {
 	body        String       @db.VarChar(750)
 	attachments Attachment[]
 	captures    Capture[]
-	flag        String
+	flag        String       @db.VarChar(50)
 
 	@@map("challenges")
 }
