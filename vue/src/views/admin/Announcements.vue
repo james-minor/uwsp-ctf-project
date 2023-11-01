@@ -7,7 +7,7 @@ import ModelEditor from '@/components/admin/ModelEditor.vue';
 import ViewHeader from '@/components/admin/ViewHeader.vue';
 import EmptyListFooter from '@/components/admin/EmptyListFooter.vue';
 import { FieldType } from '@/enum/FieldType';
-import FormTextArea from '@/components/admin/FormTextArea.vue';
+import FormTextArea from '@/components/form/FormTextArea.vue';
 
 const announcementStore = useAnnouncementStore();
 
