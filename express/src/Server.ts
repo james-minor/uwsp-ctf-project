@@ -3,6 +3,9 @@ import ILogger from './logging/ILogger';
 import fs from 'fs';
 import path from 'path';
 import helmet from 'helmet';
+import multer from 'multer';
+import mime from 'mime-types';
+import crypto from 'node:crypto';
 
 export default class Server
 {
@@ -64,8 +67,30 @@ export default class Server
 		 */
 		this.app.use(helmet());
 
+		/* Setting up multer middleware to handle file uploads.
+		 */
+		const storage = multer.diskStorage({
+			destination: (req, file, cb) =>
+			{
+				cb(null, '/files');
+			},
+			filename: (req, file, cb) =>
+			{
+				cb(null, crypto.randomBytes(32).toString('hex') + '.' + mime.extension(file.mimetype));
+			},
+		});
+
+		const upload = multer({
+			storage: storage,
+			limits: {
+				fileSize: 1000 * 1000 * 10,
+				files: 1,
+			}
+		});
+
 		/* Setting up middleware to handle form data.
 		 */
+		this.app.use(upload.single('file'));
 		this.app.use(express.json({ limit: 10000000 }));
 		this.app.use(express.urlencoded({ extended: false }));
 
