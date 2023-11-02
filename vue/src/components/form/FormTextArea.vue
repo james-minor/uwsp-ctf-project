@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import FormFieldSet from '@/components/form/FormFieldSet.vue';
+import getPrettyPlaceholderString from '@/util/getPrettyPlaceholderString';
 
 const emit = defineEmits(['update:modelValue', 'input']);
 
@@ -17,7 +18,7 @@ const props = defineProps<{
 	<FormFieldSet :disabled="props.disabled" :label="props.name">
 		<textarea
 			:name="props.name"
-			:placeholder="props.name[0].toUpperCase() + props.name.substring(1) + '...'"
+			:placeholder="getPrettyPlaceholderString(props.name) + '...'"
 			:maxlength="props.maxLength"
 			:disabled="props.disabled"
 
