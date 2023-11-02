@@ -7,13 +7,24 @@ import { useSessionStore } from '@/stores/session';
 import fetchData from '@/api/fetchData';
 import AppButton from '@/components/buttons/AppButton.vue';
 import FormError from '@/components/form/FormError.vue';
+import FormSelect from '@/components/form/FormSelect.vue';
+import fetchModelArray from '@/api/fetchModelArray';
+import type { SelectOption } from '@/types/SelectOption';
 
-const formData = ref({
+const formData = ref<{
+	email: string,
+	username: string,
+	password: string,
+	teamName: string,
+	inviteCode: string,
+	createNewTeam: boolean,
+}>({
 	email: '',
 	username: '',
 	password: '',
 	teamName: '',
 	inviteCode: '',
+	createNewTeam: false,
 });
 
 const formErrors = ref({
@@ -33,11 +44,11 @@ fetchData('teams', 'GET')
 		teams.value = json.data['teams'];
 	});
 
-const newTeam = ref<boolean>(false);
-
 const formValid = ref<boolean>(false);
 
 const sessionStore = useSessionStore();
+
+const teamOptionsArray = ref<SelectOption[]>([]);
 
 async function onFormSubmit()
 {
@@ -50,6 +61,7 @@ async function onFormSubmit()
 			password: formData.value.password,
 			teamName: formData.value.teamName,
 			inviteCode: formData.value.inviteCode,
+			createNewTeam: formData.value.createNewTeam,
 		})
 		.then((res) =>
 		{
@@ -135,6 +147,28 @@ function validateForm()
 	}
 }
 
+async function getTeamOptionsArray()
+{
+	let teams = await fetchModelArray('teams');
+	for (let team of teams)
+	{
+		teamOptionsArray.value.push({
+			value: team['name'],
+			text: team['name'],
+		});
+	}
+
+	if (teamOptionsArray.value.length === 0)
+	{
+		formData.value.createNewTeam = true;
+	}
+	else
+	{
+		formData.value.teamName = teamOptionsArray.value[0].value;
+	}
+}
+
+getTeamOptionsArray();
 </script>
 
 <template>
@@ -173,12 +207,14 @@ function validateForm()
 			/>
 			<FormError :error="formErrors.password" />
 
-			<label for="team-type">
-				Create a new team?
-			</label>
-			<input type="checkbox" name="team-type" id="team-type" v-model="newTeam">
+			<div v-if="teamOptionsArray.length > 0">
+				<label for="team-type">
+					Create a new team
+				</label>
+				<input type="checkbox" name="team-type" id="team-type" v-model="formData.createNewTeam">
+			</div>
 
-			<div v-if="newTeam">
+			<div v-if="formData.createNewTeam">
 				<FormInput
 					name="team-name"
 					:icon="feather.icons.users"
@@ -192,12 +228,12 @@ function validateForm()
 			</div>
 
 			<div v-else>
-				<select name="team-name" id="team-name" v-model="formData.teamName">
-					<option v-for="team in teams" :value="team['name']">
-						{{ team['name'] }}
-					</option>
-				</select>
+				<FormSelect
+					v-model="formData.teamName"
 
+					name="team-name"
+					:options="teamOptionsArray"
+				/>
 				<FormInput
 					name="invite-code"
 					:icon="feather.icons.key"
@@ -295,10 +331,6 @@ p {
 .btn:disabled {
 	cursor:  not-allowed;
 	opacity: 0.65;
-}
-
-select {
-	width: 100%;
 }
 
 @media (prefers-color-scheme: light) {
