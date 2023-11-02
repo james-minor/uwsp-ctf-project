@@ -6,7 +6,7 @@
  */
 export default function getPrettyPlaceholderString(value: string): string
 {
-	const words = value.replace('-', ' ').split(/(?=[A-Z])/);
+	const words = value.split(/(?=[A-Z-])/).map(word => word.replace('-', ''));
 
 	let placeholder = '';
 	for (let word of words)
@@ -14,5 +14,5 @@ export default function getPrettyPlaceholderString(value: string): string
 		placeholder += word[0].toUpperCase() + word.substring(1) + ' ';
 	}
 
-	return placeholder;
+	return placeholder.substring(0, placeholder.length - 1);
 }
