@@ -18,7 +18,8 @@ const props = defineProps<{
 
 <template>
 	<FormFieldSet :disabled="props.disabled" :label="props.name" :hide-label="!!props.icon">
-		<div v-if="props.icon" class="icon" v-html="props.icon?.toSvg({ stroke: 'white' })"/>
+		<div v-if="props.icon" :class="{'icon': true, 'disabled': props.disabled}"
+		     v-html="props.icon?.toSvg({ stroke: 'white' })"/>
 		<input
 			:name="props.name"
 			:type="props.type"
@@ -39,7 +40,7 @@ input {
 	outline:          none;
 
 	color:            var(--col-text-dark);
-	background-color: var(--col-body-dark-100);
+	background-color: transparent;
 }
 
 input:disabled {
@@ -57,7 +58,7 @@ input:disabled {
 	justify-content:  center;
 }
 
-.input-container:disabled .icon {
+.icon.disabled {
 	filter: saturate(0%);
 }
 
@@ -68,11 +69,7 @@ input:disabled {
 	}
 
 	input:disabled {
-		color:            var(--col-body-light-300);
-	}
-
-	.input-container:disabled {
-		border-color: var(--col-body-light-200);
+		color: var(--col-body-light-300);
 	}
 }
 </style>
