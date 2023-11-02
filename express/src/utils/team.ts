@@ -19,7 +19,7 @@ export function validTeamNameLength(name: string): boolean
  */
 export function validInviteCodeLength(code: string): boolean
 {
-	return code.length != 8;
+	return code.length == 8;
 }
 
 /**
