@@ -39,6 +39,8 @@ fetchTeams();
 				modelValue: team['name'],
 			},
 		]"
+
+		@refresh="fetchTeams"
 	/>
 
 	<EmptyListFooter v-else>No Posted Teams</EmptyListFooter>
