@@ -49,6 +49,8 @@
 
 		padding-left: 1ch;
 		padding-right: 1ch;
+
+		z-index: 1000;
 	}
 
 	.nav-links {
