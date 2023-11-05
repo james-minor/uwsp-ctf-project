@@ -5,6 +5,18 @@ import ModelEditor from '@/components/admin/ModelEditor.vue';
 import ViewHeader from '@/components/admin/ViewHeader.vue';
 import EmptyListFooter from '@/components/admin/EmptyListFooter.vue';
 import { FieldType } from '@/enum/FieldType';
+import type { SelectOption } from '@/types/SelectOption';
+
+const roles = ref<SelectOption[]>([
+	{
+		value: 'ADMIN',
+		text: 'ADMIN',
+	},
+	{
+		value: 'USER',
+		text: 'USER',
+	},
+]);
 
 const users = ref<[]>([]);
 
@@ -36,14 +48,15 @@ fetchUsers();
 				type: FieldType.TEXT,
 				editable: false,
 				initialValue: user['username'],
-				modelValue: user['username']
+				modelValue: user['username'],
 			},
 			{
 				name: 'role',
-				type: FieldType.TEXT,
+				type: FieldType.SELECT,
 				editable: true,
 				initialValue: user['role'],
-				modelValue: user['role']
+				modelValue: user['role'],
+				options: roles,
 			},
 		]"
 
