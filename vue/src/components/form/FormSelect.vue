@@ -1,7 +1,6 @@
 <script setup lang="ts">
 import * as feather from 'feather-icons';
 import type { SelectOption } from '@/types/SelectOption';
-import getPrettyPlaceholderString from '../../util/getPrettyPlaceholderString';
 import FormFieldSet from '@/components/form/FormFieldSet.vue';
 
 const props = defineProps<{
@@ -66,5 +65,15 @@ option {
 select:disabled {
 	color:  var(--col-body-dark-300);
 	cursor: default;
+}
+
+@media (prefers-color-scheme: light) {
+	select {
+		color: var(--col-text-light);
+	}
+
+	select:disabled {
+		color: var(--col-body-light-300);
+	}
 }
 </style>
