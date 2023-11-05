@@ -59,7 +59,6 @@ textarea:focus-visible {
 
 	textarea:disabled {
 		color:            var(--col-body-light-300);
-		background-color: var(--col-body-light-200);
 		border-color:     var(--col-body-light-200);
 	}
 }
