@@ -38,7 +38,7 @@ textarea {
 	outline:          none;
 
 	color:            var(--col-text-dark);
-	background-color: var(--col-body-dark-100);
+	background-color: transparent;
 
 	border:           none;
 }
@@ -58,8 +58,8 @@ textarea:focus-visible {
 	}
 
 	textarea:disabled {
-		color:            var(--col-body-light-300);
-		border-color:     var(--col-body-light-200);
+		color:        var(--col-body-light-300);
+		border-color: var(--col-body-light-200);
 	}
 }
 </style>
