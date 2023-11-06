@@ -34,6 +34,8 @@ const props = defineProps<{
 
 <style scoped>
 input {
+	width: 100%;
+
 	flex:             1;
 	padding:          0.25rem 0.75rem 0.5rem;
 	border:           none;
