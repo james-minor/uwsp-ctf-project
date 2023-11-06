@@ -276,7 +276,7 @@ input {
 	top:              calc(100% + 0.5rem);
 	left:             50%;
 
-	width:            min(40ch, 100%);
+	width:            min(40ch, 95vw);
 
 	transform:        translateX(-50%);
 
