@@ -12,27 +12,26 @@
 	--col-accent-blue-nt:   #82B5BA;
 
 	/* UWSP Style Guide Accent Colors */
-	--col-accent-orange:  #FF3300;
-	--col-accent-blue:    #007279;
-	--col-accent-red:     #B61D22;
-	--col-accent-brown:   #6D473B;
+	--col-accent-orange:    #FF3300;
+	--col-accent-blue:      #007279;
+	--col-accent-red:       #B61D22;
+	--col-accent-brown:     #6D473B;
 
 	/* Application Dark-Theme Colors */
-	--col-body-light-100: #FFFFFF;
-	--col-body-light-200: #ECECEC;
-	--col-body-light-300: #C4C4C4;
-
-	--col-text-light:     #1C1C1C;
+	--col-body-light-100:   #FFFFFF;
+	--col-body-light-200:   #DEDEDE;
+	--col-body-light-300:   #B9B9B9;
+	--col-text-light:       #1C1C1C;
 
 	/* Application Light-Theme Colors */
-	--col-body-dark-100:  #131313;
-	--col-body-dark-200:  #252525;
-	--col-body-dark-300:  #424242;
-	--col-text-dark:      #F0F0F0;
+	--col-body-dark-100:    #131313;
+	--col-body-dark-200:    #313131;
+	--col-body-dark-300:    #626262;
+	--col-text-dark:        #F0F0F0;
 
 	/* Application Length Variables */
 	--len-navbar-height:    4.5rem;
-	--len-sidebar-width:	30%;
+	--len-sidebar-width:    30%;
 }
 
 body {
