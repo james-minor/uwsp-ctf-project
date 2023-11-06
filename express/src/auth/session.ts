@@ -20,8 +20,17 @@ export function generateSession(): string
  *
  * @returns Promise<boolean> True if the session token was valid.
  */
-export default async function validateSession(token: string, checkElevatedPrivilege: boolean): Promise<boolean>
+export default async function validateSession(token: string | undefined, checkElevatedPrivilege: boolean): Promise<boolean>
 {
+	/* Exiting early if the token is undefined.
+	 */
+	if (!token)
+	{
+		return false;
+	}
+
+	/* Validating the token string.
+	 */
 	try
 	{
 		return Client.session.findUnique({
