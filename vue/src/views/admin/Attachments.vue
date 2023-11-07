@@ -11,6 +11,7 @@ import ModelEditor from '@/components/admin/ModelEditor.vue';
 import { FieldType } from '@/enum/FieldType';
 import AppButton from '@/components/buttons/AppButton.vue';
 import getSelectOptionsArray from '@/util/getSelectOptionsArray';
+import fetchData from '@/api/fetchData';
 
 const sessionStore = useSessionStore();
 
@@ -79,6 +80,16 @@ async function fetchAttachments()
 	attachments.value = await fetchModelArray('attachments');
 }
 
+async function openAttachmentFile(id: number)
+{
+	await fetchData(`attachment/${id}`, 'GET')
+		.then(res => res.blob())
+		.then(blob =>
+		{
+			window.open(URL.createObjectURL(blob), '_blank');
+		});
+}
+
 fetchChallenges();
 fetchAttachments();
 </script>
@@ -106,7 +117,8 @@ fetchAttachments();
 		<AppButton
 			@click.prevent="postAttachment"
 			:disabled="newAttachmentData.title === '' || newAttachmentData.file === undefined || newAttachmentData.challengeId === ''"
-		>POST</AppButton>
+		>POST
+		</AppButton>
 	</form>
 
 	<ModelEditor
@@ -137,7 +149,7 @@ fetchAttachments();
 
 		@refresh="fetchAttachments"
 	>
-		<a target="_blank" :href="`${apiBaseURL}/v1/attachment/${attachment['id']}?session=${sessionStore.session}`">View</a>
+		<AppButton @click="openAttachmentFile(attachment['id'])" >View</AppButton>
 	</ModelEditor>
 </template>
 

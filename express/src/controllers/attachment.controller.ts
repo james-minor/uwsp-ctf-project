@@ -28,17 +28,24 @@ export async function getAll(req: Request, res: Response<APIResponse>)
 /**
  * Returns an attachment file, if the attachment's challenge has been released. Otherwise, returns a 404 error.
  *
- * If passed a 'session' query parameter, will check if that is a valid admin session token. If so, will return the
- * attachment file, even if the attachment's challenge has not been released.
+ * Note that this will always return the attachment file if an admin is requesting the file.
  *
  * @param req The HTTP request.
  * @param res The HTTP response.
  */
 export async function get(req: Request, res: Response)
 {
+	/* Validating headers.
+	 */
+	if (!req.headers.authorization)
+	{
+		res.status(403);
+		return;
+	}
+
 	/* Sending the attachment for users with ADMIN role.
 	 */
-	if (await validateSession(String(req.query['session']), true))
+	if (await validateSession(req.headers.authorization.split(' ')[1], true))
 	{
 		await client.attachment.findUnique({
 			where: {
