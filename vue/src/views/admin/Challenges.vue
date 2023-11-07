@@ -140,8 +140,8 @@ fetchWaves();
 				name: 'categoryId',
 				type: FieldType.SELECT,
 				editable: true,
-				initialValue: String(challenge['categoryId']),
-				modelValue: String(challenge['categoryId']),
+				initialValue: String(challenge['challengeId']),
+				modelValue: String(challenge['challengeId']),
 				options: categoryOptionsArray,
 			}
 		]"
