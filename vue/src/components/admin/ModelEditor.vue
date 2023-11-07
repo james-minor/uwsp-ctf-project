@@ -122,6 +122,8 @@ resetEditedFields();  // Sets the initial value for the fields on template const
 
 <template>
 	<div class="editor">
+		<span class="model-id">ID: {{ props.id }}</span>
+
 		<div class="editor__fields">
 			<div v-for="field in editedFields" :class="['field-wrapper', field.type]">
 				<FormTextArea
@@ -181,6 +183,7 @@ resetEditedFields();  // Sets the initial value for the fields on template const
 
 <style scoped>
 .editor {
+	position:       relative;
 	width:          90%;
 
 	display:        flex;
@@ -197,7 +200,7 @@ resetEditedFields();  // Sets the initial value for the fields on template const
 }
 
 .editor__fields {
-	position: relative;
+	position:              relative;
 	display:               grid;
 	grid-template-columns: repeat(2, 1fr);
 	grid-auto-rows:        min-content;
@@ -228,7 +231,7 @@ resetEditedFields();  // Sets the initial value for the fields on template const
 }
 
 .field-wrapper.select {
-	width: 100%;
+	width:       100%;
 	grid-column: span 2;
 }
 
@@ -245,6 +248,12 @@ resetEditedFields();  // Sets the initial value for the fields on template const
 .editor__footer {
 	display:         flex;
 	justify-content: end;
+}
+
+.model-id {
+	color:       var(--col-body-dark-300);
+	font-family: monospace;
+	text-align:  right;
 }
 
 @media (prefers-color-scheme: light) {
