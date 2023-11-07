@@ -86,8 +86,6 @@ fetchAttachments();
 <template>
 	<ViewHeader>Manage Attachments</ViewHeader>
 
-	{{ attachments }}
-
 	<form>
 		<FormInput
 			v-model="newAttachmentData.title"
