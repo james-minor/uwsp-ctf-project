@@ -164,6 +164,8 @@ resetEditedFields();  // Sets the initial value for the fields on template const
 			</div>
 		</div>
 
+		<slot></slot>
+
 		<div class="editor__footer">
 			<EditorControlGroup
 				:currently-editing="editMode"
@@ -195,6 +197,7 @@ resetEditedFields();  // Sets the initial value for the fields on template const
 }
 
 .editor__fields {
+	position: relative;
 	display:               grid;
 	grid-template-columns: repeat(2, 1fr);
 	grid-auto-rows:        min-content;
