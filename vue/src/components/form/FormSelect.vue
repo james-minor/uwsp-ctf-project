@@ -8,16 +8,13 @@ const props = defineProps<{
 
 	name: string,                       // The input name.
 	options: SelectOption[],            // The options within the select field.
-	disabled?: boolean,                 // Is the select dropdown disabled/
+	disabled?: boolean,                 // Is the select dropdown disabled?
 }>();
-
 </script>
 
 <template>
 	<FormFieldSet :disabled="props.disabled" :label="props.name">
 		<select
-			v-model="props.modelValue"
-
 			:disabled="props.disabled"
 
 			@change="$emit('update:modelValue', ($event.target as HTMLInputElement).value)"
