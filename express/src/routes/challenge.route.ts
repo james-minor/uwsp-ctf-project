@@ -4,8 +4,6 @@ import { adminGuard, userGuard } from '../auth/guard';
 
 module.exports = function (router: Router)
 {
-	router.get('/challenges/released', [challengeController.getReleased]);
-
 	router.get('/challenges', [challengeController.getAll])
 
 	router.post('/challenges', [adminGuard, challengeController.create])
