@@ -21,7 +21,7 @@ export default async function getSelectOptionsArray(
 	let output: SelectOption[] = [];
 
 	let modelCollection = await fetchModelArray(model);
-	for (let model: any of modelCollection)
+	for (let model of modelCollection)
 	{
 		output.push({
 			value: String(model[key]),
