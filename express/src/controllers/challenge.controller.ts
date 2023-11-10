@@ -172,5 +172,85 @@ export async function remove(req: Request, res: Response<APIResponse>)
  */
 export async function solve(req: Request, res: Response<APIResponse>)
 {
-	// TODO: implement.
+	/* Seeing if the client solved the flag.
+	 */
+	const solved = await client.challenge.findUnique({
+		where: {
+			id: parseInt(req.params['id']),
+			flag: req.body['flag'],
+		},
+	}).then((challenge) =>
+	{
+		return !!challenge;
+	}).catch(() =>
+	{
+		return false;
+	});
+
+	if (solved)
+	{
+		/* Getting the client teamId.
+		 */
+		await client.user.findFirst({
+			where: {
+				session: {
+					key: {
+						equals: String(req.headers.authorization).split(' ')[1],
+					}
+				}
+			}
+		}).then(async (user) =>
+		{
+			/* Validating that the user session is valid.
+			 */
+			if (!(user && user.teamId))
+			{
+				res.status(403);
+				return;
+			}
+
+			/* Validating that the team has not already solved this challenge.
+			 */
+			const captures = await client.capture.findMany({
+				where: {
+					teamId: user.teamId,
+					challengeId: parseInt(req.params['id']),
+				}
+			});
+
+			if (captures.length > 0)
+			{
+				res.status(400).json({
+					success: false,
+					errors: [
+						{ key: 'flag', message: 'You have already solved this challenge.' }
+					]
+				});
+				return;
+			}
+
+			/* Posting the capture to the database.
+			 */
+			await client.capture.create({
+				data: {
+					teamId: user.teamId,
+					challengeId: parseInt(req.params['id']),
+				}
+			}).then(() =>
+			{
+				res.status(200).json({
+					success: true,
+				});
+			});
+		});
+	}
+	else
+	{
+		res.status(400).json({
+			success: false,
+			errors: [
+				{ key: 'flag', message: 'Incorrect flag.' }
+			]
+		});
+	}
 }
