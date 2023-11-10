@@ -24,6 +24,7 @@ export async function getAll(req: Request, res: Response<APIResponse>)
 				{}
 			],
 			include: {
+				attachments: true,
 				category: true,
 				wave: true,
 			}
@@ -74,6 +75,7 @@ export async function getAll(req: Request, res: Response<APIResponse>)
 	}
 }
 
+// TODO: documentation.
 export async function create(req: Request, res: Response<APIResponse>)
 {
 	await client.challenge.create({
@@ -100,6 +102,7 @@ export async function create(req: Request, res: Response<APIResponse>)
 		})
 }
 
+// TODO: documentation.
 export async function update(req: Request, res: Response<APIResponse>)
 {
 	console.log(req.body);
@@ -129,7 +132,7 @@ export async function update(req: Request, res: Response<APIResponse>)
 	});
 }
 
-
+// TODO: documentation.
 export async function remove(req: Request, res: Response<APIResponse>)
 {
 	await client.challenge.delete({
@@ -157,5 +160,5 @@ export async function remove(req: Request, res: Response<APIResponse>)
  */
 export async function solve(req: Request, res: Response<APIResponse>)
 {
-
+	// TODO: implement.
 }
