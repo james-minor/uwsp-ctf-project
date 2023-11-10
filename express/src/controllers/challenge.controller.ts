@@ -126,7 +126,7 @@ export async function update(req: Request, res: Response<APIResponse>)
 			body: req.body['body'],
 			flag: req.body['flag'],
 		}
-	}).then((result) =>
+	}).then(() =>
 	{
 		res.status(200).json({
 			success: true,
