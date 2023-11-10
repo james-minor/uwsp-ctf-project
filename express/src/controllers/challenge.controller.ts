@@ -75,7 +75,12 @@ export async function getAll(req: Request, res: Response<APIResponse>)
 	}
 }
 
-// TODO: documentation.
+/**
+ * Creates a challenge entry in the database.
+ *
+ * @param req The HTTP request.
+ * @param res The HTTP response, implements the APIResponse interface.
+ */
 export async function create(req: Request, res: Response<APIResponse>)
 {
 	await client.challenge.create({
@@ -102,11 +107,13 @@ export async function create(req: Request, res: Response<APIResponse>)
 		})
 }
 
-// TODO: documentation.
+/**
+ * Updates a challenges data in the database.
+ * @param req The HTTP request.
+ * @param res The HTTP response, implements the APIResponse interface.
+ */
 export async function update(req: Request, res: Response<APIResponse>)
 {
-	console.log(req.body);
-
 	await client.challenge.update({
 		where: {
 			id: parseInt(req.params['id']),
@@ -132,7 +139,12 @@ export async function update(req: Request, res: Response<APIResponse>)
 	});
 }
 
-// TODO: documentation.
+/**
+ * Removes a challenge entry from the database. Cascades down the deletion to attachments as well.
+ *
+ * @param req The HTTP request.
+ * @param res The HTTP response, implements the APIResponse interface.
+ */
 export async function remove(req: Request, res: Response<APIResponse>)
 {
 	await client.challenge.delete({
