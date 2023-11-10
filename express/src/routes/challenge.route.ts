@@ -12,5 +12,5 @@ module.exports = function (router: Router)
 
 	router.delete('/challenge/:id(\\d+)', [adminGuard, challengeController.remove]);
 
-	router.post('/challenge/solve/:id(\\d+)', [userGuard, challengeController.solve]);
+	router.post('/challenge/:id(\\d+)/solve', [userGuard, challengeController.solve]);
 }
