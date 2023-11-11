@@ -28,6 +28,11 @@ export async function register(req: Request, res: Response<APIResponse>, next: N
 
 	/* Validating email.
 	 */
+	if (!req.body.email)
+	{
+		errors.email = 'Please provide an email address.';
+	}
+
 	if (!validEmailLength(req.body.email))
 	{
 		errors.email = 'Email address cannot be more than 75 characters.';
@@ -62,6 +67,11 @@ export async function register(req: Request, res: Response<APIResponse>, next: N
 
 	/* Validating password.
 	 */
+	if (!req.body.password)
+	{
+		errors.password = 'Please provide a password.';
+	}
+
 	if (req.body.password.length < 10)
 	{
 		errors.password = 'Password must be at least 10 characters.';
@@ -126,6 +136,11 @@ export async function register(req: Request, res: Response<APIResponse>, next: N
 		}).then(() =>
 		{
 			next();
+		}).catch(() =>
+		{
+			res.status(500).json({
+				success: false,
+			});
 		});
 	});
 }
@@ -138,11 +153,61 @@ export async function register(req: Request, res: Response<APIResponse>, next: N
  */
 export async function updatePassword(req: Request, res: Response<APIResponse>)
 {
-	res.status(200).json({
-		success: false,
-		data: {
-			'controller method': 'updatePassword'
+	if (!req.headers.authorization)
+	{
+		res.status(403).json({
+			success: false,
+		});
+		return;
+	}
+
+	if (!req.body.password || req.body.password.length < 10)
+	{
+		res.status(400).json({
+			success: false,
+		});
+		return;
+	}
+
+	await client.session.findUnique({
+		where: {
+			key: req.headers.authorization.split(' ')[1],
+		},
+		include: {
+			user: {
+				select: {
+					passwordHash: true,
+				}
+			}
 		}
+	}).then(async (session) =>
+	{
+		if (!session)
+		{
+			res.status(400).json({
+				success: false,
+			});
+			return;
+		}
+
+		await client.user.update({
+			where: {
+				id: session.userId
+			},
+			data: {
+				passwordHash: await generatePasswordHash(req.body.password),
+			}
+		}).then(() =>
+		{
+			res.status(200).json({
+				success: true,
+			});
+		});
+	}).catch(() =>
+	{
+		res.status(400).json({
+			success: false,
+		});
 	});
 }
 
@@ -233,25 +298,56 @@ export async function kick(req: Request, res: Response<APIResponse>)
  */
 export async function getPrivateUserData(req: Request, res: Response<APIResponse>)
 {
-	await client.user.findUnique({
+	if (!req.headers.authorization)
+	{
+		return;
+	}
+
+	await client.user.findFirst({
 		where: {
-			id: parseInt(req.params['id'])
+			session: {
+				is: {
+					key: req.headers.authorization.split(' ')[1]
+				}
+			}
+		},
+		select: {
+			email: true,
+			username: true,
+			role: true,
+			team: {
+				select: {
+					name: true,
+					inviteCode: true,
+				}
+			}
 		}
 	}).then((user) =>
 	{
-		if (user)
+		if (user && user['team'])
 		{
 			res.status(200).json({
 				success: true,
 				data: {
 					email: user.email,
 					username: user.username,
-					teamId: user.teamId,
+					role: user.role,
+					teamName: user['team']['name'],
+					inviteCode: user['team']['inviteCode'],
 				}
 			});
 		}
-
-		res.status(500);
+		else
+		{
+			res.status(404).json({
+				success: false,
+			});
+		}
+	}).catch(() =>
+	{
+		res.status(500).json({
+			success: false,
+		});
 	});
 }
 
