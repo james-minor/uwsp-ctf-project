@@ -42,7 +42,7 @@ export async function getAll(req: Request, res: Response<APIResponse>)
 	 */
 	else
 	{
-		await client.challenge.findMany({
+		const released = await client.challenge.findMany({
 			select: {
 				id: true,
 				title: true,
@@ -62,16 +62,39 @@ export async function getAll(req: Request, res: Response<APIResponse>)
 					}
 				},
 			}
-		})
-			.then(async (challenges) =>
-			{
-				res.status(200).json({
-					success: true,
-					data: {
-						challenges: challenges
+		});
+
+		const unreleased = await client.challenge.findMany({
+			select: {
+				id: true,
+				title: true,
+				value: true,
+				category: true,
+				wave: true,
+			},
+			where: {
+				categoryId: {
+					not: null,
+				},
+				wave: {
+					releaseDate: {
+						gte: new Date(),
 					}
-				});
-			});
+				},
+			}
+		});
+
+		/* Combining the unreleased and released array.
+		 */
+		let challenges: any[] = released;
+		challenges = challenges.concat(unreleased);
+
+		res.status(200).json({
+			success: true,
+			data: {
+				challenges: challenges,
+			}
+		});
 	}
 }
 

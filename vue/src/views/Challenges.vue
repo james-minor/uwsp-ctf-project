@@ -101,6 +101,10 @@ async function attemptSolve()
 				<h2>{{ selected['title'] }}</h2>
 				<p>{{ selected['body'] }}</p>
 
+				<p v-if="!sessionStore.hasElevatedPrivileges && new Date(selected['wave']['releaseDate']) > new Date()">
+					This challenge will unlock at {{ selected['wave']['releaseDate'] }}.
+				</p>
+
 				<AttachmentButton
 					v-for="attachment in selected['attachments']"
 					:attachment-id="attachment['id']"

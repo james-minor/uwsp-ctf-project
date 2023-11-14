@@ -22,7 +22,7 @@ const open = ref<boolean>(false);
 
 				:key="challenge['id']"
 
-				class="challenge-button"
+				:class="{'challenge-button': true, 'challenge-button--unreleased': new Date(challenge['wave']['releaseDate']) > new Date()}"
 
 				@click="$emit('select', challenge['id'])"
 			>
@@ -61,14 +61,18 @@ const open = ref<boolean>(false);
 }
 
 .challenge-button {
-	padding:       1rem;
+	padding:               1rem;
 
-	border-bottom: dashed thin var(--col-body-dark-200);
+	border-bottom:         dashed thin var(--col-body-dark-200);
 
-	display: grid;
+	display:               grid;
 	grid-template-columns: repeat(2, 1fr);
 
-	cursor: pointer;
+	cursor:                pointer;
+}
+
+.challenge-button--unreleased {
+	color: var(--col-body-dark-300);
 }
 
 .challenge-button span:nth-child(2) {
@@ -81,5 +85,9 @@ const open = ref<boolean>(false);
 
 .challenge-button:hover {
 	background-color: var(--col-body-dark-300);
+}
+
+.challenge-button--unreleased:hover {
+	color: var(--col-text-dark);
 }
 </style>
