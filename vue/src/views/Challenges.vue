@@ -2,8 +2,6 @@
 
 import fetchData from '@/api/fetchData';
 
-import * as feather from 'feather-icons'
-
 import { ref } from 'vue';
 import fetchModelArray from '@/api/fetchModelArray';
 import ChallengeDropdown from '@/components/ChallengeDropdown.vue';
@@ -26,6 +24,8 @@ const flagData = ref<{
 const categories = ref<[]>([]);
 const challenges = ref<[]>([]);
 const selected = ref<any>(undefined);
+
+const flagString = ref<string>('');
 
 fetchModelArray('categories').then((res) => categories.value = res);
 fetchModelArray('challenges').then((res) => challenges.value = res);
@@ -51,6 +51,11 @@ function onSelectChallenge(challengeId: number)
 		if (challenge['id'] === challengeId)
 		{
 			selected.value = challenge;
+
+			if (sessionStore.hasElevatedPrivileges)
+			{
+				flagString.value = String(selected.value['flag']);
+			}
 		}
 	}
 }
@@ -103,13 +108,20 @@ async function attemptSolve()
 				</AttachmentButton>
 
 				<FormInput
-					v-if="sessionStore.session"
+					v-if="sessionStore.session && !sessionStore.hasElevatedPrivileges"
 
 					v-model="flagData.value"
 					name="flag"
 					type="text"
+				/>
+				<FormInput
+					v-else
 
-					:icon="feather.icons['flag']"
+					v-model="flagString"
+					name="flag"
+					type="text"
+
+					:disabled="true"
 				/>
 				<FormError :error="flagData.error"></FormError>
 				<AppButton
