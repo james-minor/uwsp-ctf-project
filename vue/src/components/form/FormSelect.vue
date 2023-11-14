@@ -2,6 +2,7 @@
 import * as feather from 'feather-icons';
 import type { SelectOption } from '@/types/SelectOption';
 import FormFieldSet from '@/components/form/FormFieldSet.vue';
+import getPrettyPlaceholderString from '../../util/getPrettyPlaceholderString';
 
 const props = defineProps<{
 	modelValue: string,                 // The v-model value.
@@ -10,6 +11,9 @@ const props = defineProps<{
 	options: SelectOption[],            // The options within the select field.
 	disabled?: boolean,                 // Is the select dropdown disabled?
 }>();
+
+console.log(`model value for ${props.name}`);
+console.log(props.modelValue)
 </script>
 
 <template>
@@ -19,6 +23,7 @@ const props = defineProps<{
 
 			@change="$emit('update:modelValue', ($event.target as HTMLInputElement).value)"
 		>
+			<option value="" :selected="props.modelValue === '' || props.modelValue === null" disabled hidden>Select a {{ getPrettyPlaceholderString(name) }}</option>
 			<option
 				v-for="option in props.options"
 				:value="option.value"
