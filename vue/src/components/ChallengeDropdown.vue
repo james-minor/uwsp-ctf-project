@@ -68,6 +68,8 @@ const open = ref<boolean>(false);
 
 	display: grid;
 	grid-template-columns: repeat(2, 1fr);
+
+	cursor: pointer;
 }
 
 .challenge-button span:nth-child(2) {
