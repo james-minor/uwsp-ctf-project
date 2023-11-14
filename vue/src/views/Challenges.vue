@@ -115,7 +115,7 @@ async function attemptSolve()
 					type="text"
 				/>
 				<FormInput
-					v-else
+					v-if="sessionStore.hasElevatedPrivileges"
 
 					v-model="flagString"
 					name="flag"
