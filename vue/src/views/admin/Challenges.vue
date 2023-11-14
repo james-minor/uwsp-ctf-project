@@ -10,6 +10,7 @@ import fetchData from '@/api/fetchData';
 import AppButton from '@/components/buttons/AppButton.vue';
 import FormTextArea from '@/components/form/FormTextArea.vue';
 import FormSelect from '@/components/form/FormSelect.vue';
+import EmptyListFooter from '@/components/admin/EmptyListFooter.vue';
 
 const challenges = ref<[]>([]);
 const categoryOptionsArray = ref<SelectOption[]>([]);
@@ -33,12 +34,7 @@ const newChallengeData = ref<{
 
 async function postChallenge()
 {
-	await fetchData('challenges', 'POST', newChallengeData.value)
-		.then(async (response) =>
-		{
-			// TODO: maybe make sure it posted correctly, popup some sort of error if it didnt?
-		});
-
+	await fetchData('challenges', 'POST', newChallengeData.value);
 	await fetchChallenges();
 }
 
@@ -132,22 +128,24 @@ fetchWaves();
 				name: 'waveId',
 				type: FieldType.SELECT,
 				editable: true,
-				initialValue: String(challenge['waveId']),
-				modelValue: String(challenge['waveId']),
+				initialValue: challenge['waveId'] ? challenge['waveId'] : '',
+				modelValue: challenge['waveId'] ? challenge['waveId'] : '',
 				options: waveOptionsArray,
 			},
 			{
 				name: 'categoryId',
 				type: FieldType.SELECT,
 				editable: true,
-				initialValue: String(challenge['challengeId']),
-				modelValue: String(challenge['challengeId']),
+				initialValue: challenge['categoryId'] ? challenge['categoryId'] : '',
+				modelValue: challenge['categoryId'] ? challenge['categoryId'] : '',
 				options: categoryOptionsArray,
 			}
 		]"
 
 		@refresh="fetchChallenges"
 	/>
+
+	<EmptyListFooter v-else>No Posted Challenges</EmptyListFooter>
 </template>
 
 <style scoped>
