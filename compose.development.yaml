@@ -88,8 +88,6 @@ services:
             - ./vue/dist/
         - action: rebuild
           path: ./vue/package.json
-    environment:
-      VITE_API_URL: "http://localhost:80/api"
     networks:
       - ctf-network
 
