@@ -6,7 +6,8 @@ envsubst < /etc/nginx/templates/james-minor.conf.template > /etc/nginx/conf.d/ja
 # Run Certbot standalone to obtain the initial SSL certificate.
 certbot certonly --standalone --non-interactive --agree-tos --email webmaster@"$NGINX_SERVER_NAME" -d "$NGINX_SERVER_NAME"
 
+# Starting crond service.
+crond
+
 # Starting NGINX.
 exec nginx -g 'daemon off;'
-
-# TODO: setup a cronjob to RENEW the certificate.

@@ -23,7 +23,21 @@ server {
 }
 
 # HTTP Routing.
-# TODO: do HTTP -> HTTPS routing here.
+server {
+    listen 80;
+    server_name ${NGINX_SERVER_NAME} www.${NGINX_SERVER_NAME};
+
+    # Routing for Certbot webroot authentication.
+    location ^~ /.well-known/acme-challenge/ {
+        default_type "text/plain";
+        root /var/www/certbot;
+    }
+
+    # HTTP -> HTTPS Redirect.
+    location / {
+        return 301 https://${NGINX_SERVER_NAME}$request_uri;
+    }
+}
 
 # HTTPS Routing.
 server {
@@ -33,11 +47,6 @@ server {
     # Adding SSL certificates.
     ssl_certificate     /etc/letsencrypt/live/${NGINX_SERVER_NAME}/fullchain.pem;
     ssl_certificate_key /etc/letsencrypt/live/${NGINX_SERVER_NAME}/privkey.pem;
-
-    # Routing for Certbot authentication.
-    location /.well-known/acme-challenge/ {
-        root /var/www/certbot;
-    }
 
     # Routing to front-end.
     location / {
