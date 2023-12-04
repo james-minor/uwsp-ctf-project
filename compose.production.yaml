@@ -55,13 +55,14 @@ services:
 
   vue:
     container_name: "vue"
-    build: ./vue
-    command: "CMD http-server dist -p 8000"
+    build:
+      context: ./vue
+      args:
+        API_URL: "https://${NGINX_SERVER_NAME}/api"
+    command: "http-server dist -p 8000"
     depends_on:
       express:
         condition: service_started
-    environment:
-      VITE_API_URL: "https://${NGINX_SERVER_NAME}/api"
     networks:
       - ctf-network
 

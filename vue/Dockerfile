@@ -1,5 +1,9 @@
 FROM node:lts-alpine
 
+# Getting the API URL from the compose file and exposing to Vite.
+ARG API_URL="http://localhost:80/api"
+ENV VITE_API_URL=${API_URL}
+
 # install simple http server for serving static content
 RUN npm install -g http-server
 
