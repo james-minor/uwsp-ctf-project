@@ -9,7 +9,6 @@ server {
 
         # Prevents WS error from appearing in console when Vue is hosting a development server.
         proxy_http_version 1.1;
-        proxy_set_header Upgrade $http_upgrade;
     }
 
     # Routing to API.
@@ -23,29 +22,22 @@ server {
     }
 }
 
-# Redirecting HTTP -> HTTPS.
-server {
-    listen 80;
-    server_name ${NGINX_SERVER_NAME} www.${NGINX_SERVER_NAME};
+# HTTP Routing.
+# TODO: do HTTP -> HTTPS routing here.
 
-    # Routing for Certbot authentication.
-    location /.well-known/acme-challenge/ {
-        root /var/www/certbot;
-    }
-
-    location / {
-        return 301 https://${NGINX_SERVER_NAME}$request_uri;
-    }
-}
-
-# Routing production traffic.
+# HTTPS Routing.
 server {
     listen 443 ssl;
     server_name ${NGINX_SERVER_NAME} www.${NGINX_SERVER_NAME};
 
     # Adding SSL certificates.
-    ssl_certificate /var/www/certs/fullchain.pem;
-    ssl_certificate_key /var/www/certs/privkey.pem;
+    ssl_certificate     /etc/letsencrypt/live/${NGINX_SERVER_NAME}/fullchain.pem;
+    ssl_certificate_key /etc/letsencrypt/live/${NGINX_SERVER_NAME}/privkey.pem;
+
+    # Routing for Certbot authentication.
+    location /.well-known/acme-challenge/ {
+        root /var/www/certbot;
+    }
 
     # Routing to front-end.
     location / {
@@ -53,7 +45,6 @@ server {
 
         # Prevents WS error from appearing in console when Vue is hosting a development server.
         proxy_http_version 1.1;
-        proxy_set_header Upgrade $http_upgrade;
     }
 
     # Routing to API.

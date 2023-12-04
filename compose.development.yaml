@@ -41,7 +41,7 @@ services:
     develop:
       watch:
         - action: rebuild
-          path: ./nginx/templates
+          path: ./nginx
     environment:
       NGINX_SERVER_NAME: ${NGINX_SERVER_NAME}
     networks:
