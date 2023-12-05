@@ -51,13 +51,23 @@ p {
 	text-align: left;
 }
 
+h1 {
+	margin-bottom: 1rem;
+}
+
 p {
 	margin-bottom: 1rem;
+	max-width: 85ch;
 }
 
 .button-container {
 	display: flex;
 	flex-direction: row;
 	gap: 1rem;
+}
+
+button {
+	padding-left: 2rem;
+	padding-right: 2rem;
 }
 </style>
