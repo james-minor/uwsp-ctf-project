@@ -69,6 +69,7 @@ async function attemptSolve()
 
 			if (!json['errors'])
 			{
+				alert('Correct! You have solved this challenge.');
 				return;
 			}
 
